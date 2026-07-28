@@ -5,7 +5,7 @@ import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { StaffHelpModal } from './components/layout/StaffHelpModal';
 import { KeyboardShortcutsModal } from './components/layout/KeyboardShortcutsModal';
-import { OperationsDashboard } from './components/dashboard/OperationsDashboard';
+import { DashboardRouter } from './components/dashboard/RoleDashboards';
 import { AICommandCenter } from './components/commandCenter/AICommandCenter';
 import { StudentManagement } from './components/students/StudentManagement';
 import { TeacherManagement } from './components/teachers/TeacherManagement';
@@ -32,7 +32,9 @@ import {
   INITIAL_ATTENDANCE_RECORDS
 } from './data/mockDatabase';
 
-import { Role, CurrentUser, Student, Teacher, FeeRecord, DocumentItem, TimetableSlot, EscalationItem, AIActionLog, SupplyItem, CollaborativeTask, AttendanceRecord } from './types';
+import { Student, Teacher, FeeRecord, DocumentItem, TimetableSlot, EscalationItem, AIActionLog, SupplyItem, CollaborativeTask, AttendanceRecord, CurrentUser, Role } from './types';
+import { canAccess, getDefaultDashboard } from './hooks/usePermissions';
+import { APP_ROUTES } from './config/routes';
 import { initializeDatabase } from './lib/db-init';
 
 function InitDBRoute() {
@@ -57,6 +59,20 @@ function CoreApplication() {
   
   const [currentRole, setCurrentRole] = useState<Role>(initialRole);
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+
+  // Fallback for direct role URL testing
+  const activeUser = currentUser || { id: 'TEST-000', name: 'Test User', role: currentRole };
+
+  useEffect(() => {
+    // Route Protection
+    if (isAuthenticated && activeUser) {
+      const currentRoute = APP_ROUTES.find(r => r.id === activeModule);
+      if (!currentRoute || !canAccess(activeUser, currentRoute.permission)) {
+        console.warn(`Unauthorized access attempt to ${activeModule}. Redirecting to default dashboard.`);
+        setActiveModule(getDefaultDashboard(activeUser.role));
+      }
+    }
+  }, [activeModule, isAuthenticated, activeUser]);
   const [initialCommandPrompt, setInitialCommandPrompt] = useState<string | undefined>(undefined);
 
   // Staff Accessibility States
@@ -335,11 +351,9 @@ function CoreApplication() {
       setIsAuthenticated(true);
       setCurrentRole(user.role);
       setCurrentUser(user);
+      setActiveModule(getDefaultDashboard(user.role));
     }} />;
   }
-
-  // Fallback for direct role URL testing
-  const activeUser = currentUser || { id: 'TEST-000', name: 'Test User', role: currentRole };
 
   return (
     <div className={`min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans antialiased selection:bg-blue-500 selection:text-white ${
@@ -369,17 +383,17 @@ function CoreApplication() {
           onSelectModule={setActiveModule}
           unresolvedEscalationsCount={unresolvedEscalationsCount}
           onOpenHelpGuide={() => setIsHelpModalOpen(true)}
-          currentRole={currentRole}
+          currentUser={activeUser}
         />
 
         {/* Main Workspace Area */}
         <main className="flex-1 p-4 lg:p-8 overflow-y-auto">
-          {activeModule === 'admin-panel' && currentRole === 'Admin' && (
+          {activeModule === 'admin-panel' && canAccess(activeUser, 'staff.manage') && (
             <SuperAdminDashboard />
           )}
 
           {activeModule === 'dashboard' && (
-            <OperationsDashboard
+            <DashboardRouter
               currentUser={currentUser}
               onNavigate={setActiveModule}
               onOpenCommandCenter={handleOpenCommandCenter}

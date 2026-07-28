@@ -3,6 +3,7 @@ import { ShieldCheck, UserPlus, Users, Key, AlertCircle } from 'lucide-react';
 import { ref, get, set, child } from 'firebase/database';
 import { db } from '../../lib/firebase';
 import { Role } from '../../types';
+import { STAFF_ROLES, ROLE_CONFIGS } from '../../config/rbac';
 
 export const SuperAdminDashboard: React.FC = () => {
   const [users, setUsers] = useState<any[]>([]);
@@ -11,11 +12,9 @@ export const SuperAdminDashboard: React.FC = () => {
   // Form State
   const [newStaffId, setNewStaffId] = useState('');
   const [newName, setNewName] = useState('');
-  const [newRole, setNewRole] = useState<Role>('Teacher' as Role);
+  const [newRole, setNewRole] = useState<Role>('Class Teacher' as Role);
   const [newPassword, setNewPassword] = useState('');
   const [feedback, setFeedback] = useState({ type: '', message: '' });
-
-  const AVAILABLE_ROLES: Role[] = ['Admin', 'Vice Principal', 'Accountant', 'Registrar', 'Operations Lead', 'Teacher' as Role];
 
   const fetchUsers = async () => {
     try {
@@ -107,7 +106,7 @@ export const SuperAdminDashboard: React.FC = () => {
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Role Assignment</label>
               <select value={newRole} onChange={e => setNewRole(e.target.value as Role)} className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
-                {AVAILABLE_ROLES.map(r => (
+                {STAFF_ROLES.map(r => (
                   <option key={r} value={r}>{r}</option>
                 ))}
               </select>
@@ -173,6 +172,34 @@ export const SuperAdminDashboard: React.FC = () => {
           </div>
         </div>
 
+      </div>
+
+      {/* Roles & Permissions Matrix */}
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mt-6">
+        <div className="p-6 border-b border-slate-100">
+          <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <ShieldCheck className="w-5 h-5 text-blue-600" />
+            Roles & Permissions Matrix
+          </h2>
+          <p className="text-sm text-slate-500 mt-1">Centralized RBAC architecture read-only view. Shows active permissions for each role.</p>
+        </div>
+        
+        <div className="overflow-x-auto p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {Object.entries(ROLE_CONFIGS).map(([role, config]) => (
+              <div key={role} className="border border-slate-200 rounded-xl p-4 bg-slate-50">
+                <div className="font-bold text-slate-900 border-b border-slate-200 pb-2 mb-3">{role}</div>
+                <div className="flex flex-wrap gap-1.5">
+                  {config.permissions.map(perm => (
+                    <span key={perm} className="px-2 py-0.5 bg-white border border-slate-200 text-slate-600 text-[10px] font-mono rounded">
+                      {perm}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

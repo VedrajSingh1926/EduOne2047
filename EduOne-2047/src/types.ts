@@ -1,10 +1,36 @@
-export type Role = 'Admin' | 'Vice Principal' | 'Accountant' | 'Registrar' | 'Operations Lead' | 'Teacher' | 'User ID Administrator';
+export type Role = 
+  | 'Super Admin'
+  | 'Principal'
+  | 'Vice Principal'
+  | 'Class Teacher'
+  | 'Subject Teacher'
+  | 'Exam Coordinator'
+  | 'Accountant'
+  | 'Receptionist'
+  | 'Librarian'
+  | 'Counselor'
+  | 'Transport Manager'
+  | 'IT Support'
+  | 'Security Guard'
+  | 'Student'
+  | 'Parent';
 
 export interface CurrentUser {
+  uid?: string;
+  staffId?: string;
   id: string;
   name: string;
+  email?: string;
+  phone?: string;
+  department?: string;
   role: Role;
-}export type Severity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+  status?: string;
+  schoolId?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export type Severity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 
 export interface Student {
   id: string;

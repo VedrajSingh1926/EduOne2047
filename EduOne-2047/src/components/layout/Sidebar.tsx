@@ -1,27 +1,15 @@
 import React from 'react';
-import {
-  LayoutDashboard,
-  Bot,
-  Users,
-  GraduationCap,
-  CalendarCheck,
-  Receipt,
-  FileSearch,
-  CalendarDays,
-  AlertTriangle,
-  BarChart3,
-  CheckSquare,
-  Mail,
-  HelpCircle,
-  Sparkles
-} from 'lucide-react';
+import { HelpCircle, Sparkles } from 'lucide-react';
+import { APP_ROUTES, AppRoute } from '../../config/routes';
+import { CurrentUser } from '../../types';
+import { canAccess } from '../../hooks/usePermissions';
 
 interface SidebarProps {
   activeModule: string;
   onSelectModule: (moduleId: string) => void;
   unresolvedEscalationsCount: number;
   onOpenHelpGuide?: () => void;
-  currentRole: string;
+  currentUser: CurrentUser;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -29,29 +17,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectModule,
   unresolvedEscalationsCount,
   onOpenHelpGuide,
-  currentRole
+  currentUser
 }) => {
-  const primaryOps = [
-    { id: 'dashboard', label: 'Operations Dashboard', icon: LayoutDashboard },
-    { id: 'attendance', label: 'Smart Attendance', icon: CalendarCheck },
-    { id: 'teachers', label: 'Teachers & Substitutes', icon: GraduationCap },
-    { id: 'students', label: 'Student Directory', icon: Users },
-    { id: 'fees', label: 'Fee & Bank Ledger', icon: Receipt },
-    { id: 'timetable', label: 'School Timetable', icon: CalendarDays },
-  ];
+  const permittedRoutes = APP_ROUTES.filter(route => canAccess(currentUser, route.permission));
 
-  const commsAndDocs = [
-    { id: 'gmail-inbox', label: 'Gmail & Parent Comms', icon: Mail },
-    { id: 'documents', label: 'Admission OCR & Docs', icon: FileSearch },
-    { id: 'needs-attention', label: 'Needs Attention', icon: AlertTriangle, count: unresolvedEscalationsCount },
-    { id: 'command-center', label: 'AI Command Center', icon: Bot },
-    { id: 'reports', label: 'Reports & Analytics', icon: BarChart3 },
-    { id: 'tasks', label: 'Staff Task Board', icon: CheckSquare },
-  ];
-
-  if (currentRole === 'Admin') {
-    commsAndDocs.push({ id: 'admin-panel', label: 'Super Admin Panel', icon: Users });
-  }
+  const primaryOps = permittedRoutes.filter(r => r.section === 'primary');
+  const commsAndDocs = permittedRoutes.filter(r => r.section === 'comms');
 
   return (
     <aside className="w-64 bg-white border-r-2 border-slate-200 p-4 flex flex-col justify-between shrink-0 hidden md:flex min-h-[calc(100vh-61px)] shadow-2xs">
@@ -84,7 +55,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         isActive ? 'text-white' : 'text-slate-500'
                       }`}
                     />
-                    <span className="truncate">{item.label}</span>
+                    <span className="truncate">{item.title}</span>
                   </div>
                 </button>
               );
@@ -103,6 +74,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {commsAndDocs.map((item) => {
               const Icon = item.icon;
               const isActive = activeModule === item.id;
+              const count = item.id === 'needs-attention' ? unresolvedEscalationsCount : undefined;
               return (
                 <button
                   key={item.id}
@@ -119,16 +91,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         isActive ? 'text-white' : 'text-slate-500'
                       }`}
                     />
-                    <span className="truncate">{item.label}</span>
+                    <span className="truncate">{item.title}</span>
                   </div>
 
-                  {item.count !== undefined && item.count > 0 && (
+                  {count !== undefined && count > 0 && (
                     <span
                       className={`px-1.5 py-0.5 text-[10px] font-black rounded-full shrink-0 ${
                         isActive ? 'bg-white text-blue-700' : 'bg-red-600 text-white'
                       }`}
                     >
-                      {item.count}
+                      {count}
                     </span>
                   )}
                 </button>
