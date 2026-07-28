@@ -13,7 +13,7 @@ const redirectToCoreApp = (user: UserAccount) => {
   const coreAppUrl = (import.meta as any).env?.VITE_CORE_APP_URL || 'https://eduone-2047-core.vercel.app';
   
   // You could pass the role as a query param for the demo, e.g., ?role=Admin
-  window.location.href = `${coreAppUrl}?role=${encodeURIComponent(user.role)}`;
+  window.open(`${coreAppUrl}?role=${encodeURIComponent(user.role)}`, '_blank');
 };
 
 export default function App() {
