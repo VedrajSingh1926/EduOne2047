@@ -1,0 +1,8 @@
+{
+  "name": "EduOne2047",
+  "description": "Next-Gen AI Autonomous School Operations Platform & Administrative Command System.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,178 @@
+import React, { useState } from 'react';
+import {
+  Sparkles,
+  RefreshCw
+} from 'lucide-react';
+import { TimetableSlot, Teacher } from '../../types';
+
+interface AITimetableProps {
+  timetable: TimetableSlot[];
+  teachers: Teacher[];
+  onGenerateTimetable: () => void;
+  onAssignSubstitute: (slotId: string, substituteTeacherName: string) => void;
+}
+
+export const AITimetable: React.FC<AITimetableProps> = ({
+  timetable,
+  teachers,
+  onGenerateTimetable,
+  onAssignSubstitute
+}) => {
+  const [selectedDay, setSelectedDay] = useState<'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday'>('Monday');
+  const [selectedClass, setSelectedClass] = useState('Grade 10-A');
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] as const;
+  const periods = [1, 2, 3, 4, 5];
+
+  const handleRunOptimizer = () => {
+    setIsGenerating(true);
+    setTimeout(() => {
+      onGenerateTimetable();
+      setIsGenerating(false);
+    }, 1200);
+  };
+
+  const getSubjectColor = (subject: string) => {
+    if (subject.includes('Physics') || subject.includes('Science')) return 'bg-blue-50 text-blue-700 border-blue-200';
+    if (subject.includes('Math')) return 'bg-indigo-50 text-indigo-700 border-indigo-200';
+    if (subject.includes('Chemistry')) return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+    if (subject.includes('English') || subject.includes('Literature')) return 'bg-purple-50 text-purple-700 border-purple-200';
+    if (subject.includes('Computer') || subject.includes('Coding')) return 'bg-sky-50 text-sky-700 border-sky-200';
+    return 'bg-slate-50 text-slate-700 border-slate-200';
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Title Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Timetable Matrix</h1>
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            Weekly schedule matrix, room allocations, and substitute teacher assignments.
+          </p>
+        </div>
+
+        <button
+          onClick={handleRunOptimizer}
+          disabled={isGenerating}
+          className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs self-start sm:self-auto"
+        >
+          {isGenerating ? (
+            <>
+              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+              <span>Optimizing...</span>
+            </>
+          ) : (
+            <>
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Generate Timetable</span>
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* Controls & Filter Bar */}
+      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="flex items-center gap-1 overflow-x-auto w-full sm:w-auto">
+          {days.map((day) => (
+            <button
+              key={day}
+              onClick={() => setSelectedDay(day)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                selectedDay === day
+                  ? 'bg-slate-900 text-white font-semibold'
+                  : 'text-slate-600 hover:bg-slate-100'
+              }`}
+            >
+              {day}
+            </button>
+          ))}
+        </div>
+
+        <select
+          value={selectedClass}
+          onChange={(e) => setSelectedClass(e.target.value)}
+          className="px-3 py-1.5 text-xs bg-slate-100/70 rounded-lg border border-slate-200 text-slate-700 font-medium focus:outline-none"
+        >
+          <option value="ALL">All Classes</option>
+          <option value="Grade 10-A">Grade 10-A</option>
+          <option value="Grade 10-B">Grade 10-B</option>
+          <option value="Grade 11-A">Grade 11-A</option>
+        </select>
+      </div>
+
+      {/* Calendar Grid View (Google Calendar Style) */}
+      <div className="rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse min-w-[700px]">
+            <thead>
+              <tr className="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                <th className="p-3.5 pl-4 w-24">Period</th>
+                <th className="p-3.5">Subject & Class</th>
+                <th className="p-3.5">Room</th>
+                <th className="p-3.5">Assigned Faculty</th>
+                <th className="p-3.5 text-right pr-4">Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 text-xs">
+              {periods.map((periodNum) => {
+                const slots = timetable.filter(
+                  (s) => s.day === selectedDay && s.period === periodNum && (selectedClass === 'ALL' || s.gradeClass === selectedClass)
+                );
+
+                if (slots.length === 0) {
+                  return (
+                    <tr key={periodNum} className="hover:bg-slate-50/50">
+                      <td className="p-3.5 pl-4 font-semibold text-slate-400">Period {periodNum}</td>
+                      <td colSpan={4} className="p-3.5 text-slate-400 italic">No scheduled class</td>
+                    </tr>
+                  );
+                }
+
+                return slots.map((slot) => (
+                  <tr key={slot.id} className="hover:bg-slate-50/80 transition-colors">
+                    <td className="p-3.5 pl-4">
+                      <div className="font-semibold text-slate-900">Period {slot.period}</div>
+                      <div className="text-[10px] text-slate-400">{slot.timeSlot}</div>
+                    </td>
+
+                    <td className="p-3.5">
+                      <div className="flex items-center gap-2">
+                        <span className={`px-2.5 py-1 text-xs font-semibold rounded-lg border ${getSubjectColor(slot.subject)}`}>
+                          {slot.subject}
+                        </span>
+                        <span className="text-slate-500 text-xs font-medium">{slot.gradeClass}</span>
+                      </div>
+                    </td>
+
+                    <td className="p-3.5 text-slate-600 font-medium">{slot.room}</td>
+
+                    <td className="p-3.5">
+                      <div className="font-medium text-slate-900">{slot.teacherName}</div>
+                      {slot.isSubstitute && (
+                        <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded mt-0.5 inline-block">
+                          Substitute (Replaced: {slot.originalTeacherName})
+                        </span>
+                      )}
+                    </td>
+
+                    <td className="p-3.5 text-right pr-4">
+                      <button
+                        onClick={() => onAssignSubstitute(slot.id, 'Dr. Alok Nath')}
+                        className="text-xs font-medium text-blue-600 hover:text-blue-700 hover:underline"
+                      >
+                        Reassign
+                      </button>
+                    </td>
+                  </tr>
+                ));
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+

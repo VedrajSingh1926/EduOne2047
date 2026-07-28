@@ -1,0 +1,196 @@
+export type Role = 
+  | 'Principal' 
+  | 'Vice Principal' 
+  | 'User ID Administrator' 
+  | 'Admin' 
+  | 'Teacher' 
+  | 'General Staff' 
+  | 'Accountant' 
+  | 'Registrar';
+
+export interface UserAccount {
+  id: string;
+  userId: string;
+  name: string;
+  role: Role;
+  passwordHash?: string;
+  department: string;
+  email: string;
+  phone: string;
+  status: 'ACTIVE' | 'LOCKED' | 'SUSPENDED';
+  dateIssued: string;
+  lastLogin?: string;
+  issuedBy?: string;
+  mustChangePassword?: boolean;
+}
+
+export interface IDAuditLog {
+  id: string;
+  targetUserId: string;
+  targetName: string;
+  action: 'CREATED_ID' | 'RESET_PASSWORD' | 'LOCKED_ACCOUNT' | 'UNLOCKED_ACCOUNT' | 'UPDATED_ROLE';
+  performedBy: string;
+  timestamp: string;
+  details: string;
+}
+
+export type Severity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+
+export interface Student {
+  id: string;
+  name: string;
+  rollNo: string;
+  grade: string;
+  section: string;
+  parentName: string;
+  parentPhone: string;
+  parentEmail: string;
+  attendancePct: number;
+  feeStatus: 'PAID' | 'PENDING' | 'OVERDUE' | 'PARTIAL' | 'MISMATCH';
+  totalFees: number;
+  paidFees: number;
+  pendingFees: number;
+  documentsStatus: 'VERIFIED' | 'PENDING' | 'MISSING';
+  riskFlag?: string;
+  avatarUrl?: string;
+}
+
+export interface Teacher {
+  id: string;
+  name: string;
+  subject: string;
+  secondarySubjects: string[];
+  gradeClasses: string[];
+  status: 'PRESENT' | 'ABSENT' | 'ON_LEAVE';
+  availability: string;
+  lecturesPerWeek: number;
+  maxLecturesPerDay: number;
+  phone: string;
+  email: string;
+  avatarUrl?: string;
+}
+
+export interface AttendanceRecord {
+  id: string;
+  date: string;
+  gradeClass: string;
+  studentId: string;
+  studentName: string;
+  status: 'PRESENT' | 'ABSENT' | 'LATE' | 'EXCUSED';
+  riskDetected?: boolean;
+  riskReason?: string;
+}
+
+export interface FeeRecord {
+  id: string;
+  studentId: string;
+  studentName: string;
+  gradeClass: string;
+  invoiceNo: string;
+  receiptNo?: string;
+  amount: number;
+  paidAmount: number;
+  dueDate: string;
+  paidDate?: string;
+  paymentMode?: 'ONLINE' | 'UPI' | 'BANK_TRANSFER' | 'CASH' | 'CHECK';
+  status: 'PAID' | 'PENDING' | 'OVERDUE' | 'MISMATCH';
+  confidenceScore?: number;
+  mismatchReason?: string;
+  sourceDoc?: string;
+}
+
+export interface DocumentItem {
+  id: string;
+  fileName: string;
+  type: 'ADMISSION_FORM' | 'FEE_RECEIPT' | 'LEAVE_APPLICATION' | 'TRANSFER_CERTIFICATE' | 'SUPPLY_INVOICE';
+  uploadedAt: string;
+  studentOrTeacherName?: string;
+  extractedFields: Record<string, any>;
+  confidenceScore: number;
+  status: 'NEEDS_REVIEW' | 'APPROVED' | 'REJECTED';
+  reason?: string;
+  fileSize?: string;
+}
+
+export interface TimetableSlot {
+  id: string;
+  day: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday';
+  period: number;
+  timeSlot: string;
+  gradeClass: string;
+  subject: string;
+  teacherId: string;
+  teacherName: string;
+  room: string;
+  isSubstitute?: boolean;
+  originalTeacherName?: string;
+}
+
+export interface EscalationItem {
+  id: string;
+  title: string;
+  category: 'FEE_MISMATCH' | 'OCR_REVIEW' | 'TEACHER_ABSENT' | 'MISSING_DOC' | 'PARENT_COMPLAINT' | 'SUPPLY_SHORTAGE';
+  severity: Severity;
+  entityName: string;
+  reason: string;
+  source: string;
+  confidenceScore: number;
+  requiresHumanApproval: boolean;
+  createdAt: string;
+  suggestedAction: string;
+  status: 'UNRESOLVED' | 'RESOLVED' | 'IN_PROGRESS';
+}
+
+export interface AIActionLog {
+  id: string;
+  agentName: 'Admission Agent' | 'Finance Agent' | 'Timetable Agent' | 'Attendance Agent' | 'Operations Agent';
+  actionTitle: string;
+  details: string;
+  confidenceScore: number;
+  reason: string;
+  source: string;
+  timestamp: string;
+  status: 'SUCCESS' | 'REQUIRES_APPROVAL' | 'EXECUTIVE_ESCALATED';
+}
+
+export interface SupplyItem {
+  id: string;
+  itemName: string;
+  category: 'Paper & Printing' | 'Stationery' | 'Lab Equipment' | 'Sports Gear' | 'IT Hardware';
+  currentStock: number;
+  minThreshold: number;
+  unit: string;
+  monthlyBurnRate: number;
+  predictedRunoutDays: number;
+  status: 'HEALTHY' | 'LOW_STOCK' | 'CRITICAL';
+  supplier: string;
+  estimatedCost: number;
+}
+
+export interface CollaborativeTask {
+  id: string;
+  title: string;
+  assignedRole: Role;
+  assignedTo: string;
+  priority: 'HIGH' | 'MEDIUM' | 'LOW';
+  dueDate: string;
+  status: 'BACKLOG' | 'IN_PROGRESS' | 'UNDER_REVIEW' | 'COMPLETED';
+  module: string;
+  aiSuggested?: boolean;
+}
+
+export interface CommandMessage {
+  id: string;
+  sender: 'user' | 'ai';
+  text: string;
+  timestamp: string;
+  actionResult?: {
+    type: string;
+    summary: string;
+    confidenceScore: number;
+    reason: string;
+    source: string;
+    data?: any;
+    requiresApproval?: boolean;
+  };
+}
