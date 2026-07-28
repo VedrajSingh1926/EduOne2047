@@ -18,7 +18,7 @@ import { ReportsAnalytics } from './components/analytics/ReportsAnalytics';
 import { CollaborativeTaskManager } from './components/tasks/CollaborativeTaskManager';
 import { GmailCommsCenter } from './components/gmail/GmailCommsCenter';
 import { LoginForm } from './components/auth/LoginForm';
-
+import { SuperAdminDashboard } from './components/admin/SuperAdminDashboard';
 import {
   INITIAL_STUDENTS,
   INITIAL_TEACHERS,
@@ -33,6 +33,17 @@ import {
 } from './data/mockDatabase';
 
 import { Role, Student, Teacher, FeeRecord, DocumentItem, TimetableSlot, EscalationItem, AIActionLog, SupplyItem, CollaborativeTask, AttendanceRecord } from './types';
+import { initializeDatabase } from './lib/db-init';
+
+function InitDBRoute() {
+  const [status, setStatus] = useState('Initializing...');
+  useEffect(() => {
+    initializeDatabase().then((success) => {
+      setStatus(success ? 'Database populated successfully!' : 'Failed to populate database.');
+    });
+  }, []);
+  return <div className="p-10 text-xl font-bold text-white bg-slate-900 min-h-screen">{status}</div>;
+}
 
 function CoreApplication() {
   const [activeModule, setActiveModule] = useState<string>('dashboard');
@@ -355,10 +366,15 @@ function CoreApplication() {
           onSelectModule={setActiveModule}
           unresolvedEscalationsCount={unresolvedEscalationsCount}
           onOpenHelpGuide={() => setIsHelpModalOpen(true)}
+          currentRole={currentRole}
         />
 
         {/* Main Workspace Area */}
         <main className="flex-1 p-4 lg:p-8 overflow-y-auto">
+          {activeModule === 'admin-panel' && currentRole === 'Admin' && (
+            <SuperAdminDashboard />
+          )}
+
           {activeModule === 'dashboard' && (
             <OperationsDashboard
               onNavigate={setActiveModule}
@@ -510,6 +526,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<LandingPage onOpenLogin={() => navigate('/app')} />} />
       <Route path="/app" element={<CoreApplication />} />
+      <Route path="/init-db" element={<InitDBRoute />} />
     </Routes>
   );
 }

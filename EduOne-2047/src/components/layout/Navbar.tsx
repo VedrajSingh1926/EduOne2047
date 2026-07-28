@@ -46,16 +46,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenShortcuts
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [showRoleDropdown, setShowRoleDropdown] = useState(false);
   const [isListening, setIsListening] = useState(false);
-
-  const roles: { role: Role; label: string; desc: string }[] = [
-    { role: 'Admin', label: 'School Admin / Principal', desc: 'Full system oversight & final approval authority' },
-    { role: 'Vice Principal', label: 'Vice Principal', desc: 'Academic schedule, teachers & substitution' },
-    { role: 'Accountant', label: 'Chief Accountant', desc: 'Fee ledger, bank reconciliation & receipts' },
-    { role: 'Registrar', label: 'School Registrar', desc: 'Student records, admission OCR & documents' },
-    { role: 'Operations Lead', label: 'Operations & Supply Lead', desc: 'Supply chain, inventory & facility ops' }
-  ];
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -280,46 +271,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </button>
 
-          {/* Role Persona Switcher */}
-          <div className="relative">
-            <button
-              onClick={() => setShowRoleDropdown(!showRoleDropdown)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-blue-800 text-white text-xs font-bold transition-all shadow-2xs"
-            >
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-              <span>{currentRole}</span>
-            </button>
-
-            {showRoleDropdown && (
-              <div className="absolute right-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border-2 border-slate-300 py-2 z-50 animate-in fade-in zoom-in-95">
-                <div className="px-3 py-1.5 border-b border-slate-100 text-[10px] font-extrabold text-slate-500 uppercase tracking-wider">
-                  Select Staff Role / Persona
-                </div>
-                {roles.map((r) => (
-                  <button
-                    key={r.role}
-                    onClick={() => {
-                      onRoleChange(r.role);
-                      setShowRoleDropdown(false);
-                    }}
-                    className={`w-full text-left px-3 py-2 flex items-start gap-2.5 hover:bg-slate-50 transition-colors ${
-                      currentRole === r.role ? 'bg-blue-50 font-bold text-blue-700' : 'text-slate-800'
-                    }`}
-                  >
-                    <UserCheck className={`w-4 h-4 mt-0.5 shrink-0 ${currentRole === r.role ? 'text-blue-600' : 'text-slate-400'}`} />
-                    <div>
-                      <div className="text-xs flex items-center justify-between font-bold">
-                        <span>{r.label}</span>
-                        {currentRole === r.role && <CheckCircle2 className="w-4 h-4 text-blue-600" />}
-                      </div>
-                      <div className="text-[10px] text-slate-500 mt-0.5 leading-tight font-normal">
-                        {r.desc}
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            )}
+          {/* Current Role Display */}
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold shadow-2xs">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            <span>{currentRole}</span>
           </div>
 
         </div>

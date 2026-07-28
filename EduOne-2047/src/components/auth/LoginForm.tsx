@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
 import { Role } from '../../types';
-import { ShieldCheck, User, Lock, LogIn, ArrowRight } from 'lucide-react';
+import { ShieldCheck, User, Lock, LogIn } from 'lucide-react';
+import { ref, get, child } from 'firebase/database';
+import { db } from '../../lib/firebase';
 
 interface LoginFormProps {
   onLogin: (role: Role, staffId: string) => void;
 }
 
-const AVAILABLE_ROLES: Role[] = ['Admin', 'Vice Principal', 'Accountant', 'Registrar', 'Operations Lead'];
-
 export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
-  const [role, setRole] = useState<Role>('Admin');
   const [staffId, setStaffId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -28,23 +27,41 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
       return;
     }
 
-    // Mock validation - accept any password for demo purposes, 
-    // but simulate network delay for premium feel
     setIsAuthenticating(true);
-    setTimeout(() => {
+
+    try {
+      // Manual Authentication against Realtime Database
+      const dbRef = ref(db);
+      const snapshot = await get(child(dbRef, `users/${staffId.trim()}`));
+      
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        
+        if (userData.password === password) {
+          // Password matches!
+          onLogin(userData.role as Role, userData.id);
+        } else {
+          setError('Invalid credentials.');
+        }
+      } else {
+        setError('User not found.');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Database connection error.');
+    } finally {
       setIsAuthenticating(false);
-      onLogin(role, staffId);
-    }, 1200);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans selection:bg-blue-600 selection:text-white">
       {/* Background Gradients */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Main Login Card */}
-      <div className="w-full max-w-md bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl shadow-2xl p-8 relative z-10">
+      <div className="w-full max-w-md bg-white/80 backdrop-blur-xl border border-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-8 relative z-10">
         
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-10">
@@ -52,8 +69,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
             <ShieldCheck className="w-8 h-8 text-white" />
             <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-slate-900" />
           </div>
-          <h1 className="text-2xl font-black text-white tracking-tight mb-2">EduOne2047</h1>
-          <p className="text-sm text-slate-400">Secure Staff Authentication</p>
+          <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-600 tracking-tight mb-2">EduOne2047</h1>
+          <p className="text-sm text-slate-500 font-medium">Secure Staff Authentication</p>
         </div>
 
         {/* Form */}
@@ -64,29 +81,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
             </div>
           )}
 
-          {/* Role Selection */}
-          <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">Designated Role</label>
-            <div className="relative">
-              <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-              <select
-                value={role}
-                onChange={(e) => setRole(e.target.value as Role)}
-                className="w-full bg-slate-950/50 border border-slate-800 rounded-xl py-3.5 pl-11 pr-4 text-sm font-medium text-white appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all cursor-pointer"
-              >
-                {AVAILABLE_ROLES.map(r => (
-                  <option key={r} value={r} className="bg-slate-900">{r}</option>
-                ))}
-              </select>
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                <ArrowRight className="w-4 h-4 text-slate-500 rotate-90" />
-              </div>
-            </div>
-          </div>
+
 
           {/* Staff ID */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">Staff ID</label>
+            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Staff ID</label>
             <div className="relative">
               <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <input
@@ -94,14 +93,14 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
                 placeholder="e.g. TCH-101"
                 value={staffId}
                 onChange={(e) => setStaffId(e.target.value)}
-                className="w-full bg-slate-950/50 border border-slate-800 rounded-xl py-3.5 pl-11 pr-4 text-sm font-medium text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+                className="w-full bg-white border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all shadow-sm"
               />
             </div>
           </div>
 
           {/* Password */}
           <div className="space-y-2">
-            <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider ml-1">Password</label>
+            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Password</label>
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <input
@@ -109,7 +108,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-slate-950/50 border border-slate-800 rounded-xl py-3.5 pl-11 pr-4 text-sm font-medium text-white placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all"
+                className="w-full bg-white border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all shadow-sm"
               />
             </div>
           </div>
@@ -120,8 +119,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
             disabled={isAuthenticating}
             className={`w-full mt-6 py-4 rounded-xl flex items-center justify-center gap-2 text-sm font-bold text-white shadow-xl transition-all ${
               isAuthenticating 
-                ? 'bg-slate-800 border-slate-700 cursor-not-allowed shadow-none' 
-                : 'bg-blue-600 hover:bg-blue-500 shadow-blue-600/25 active:scale-[0.98]'
+                ? 'bg-slate-200 text-slate-500 border-slate-300 cursor-not-allowed shadow-none' 
+                : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-blue-600/25 active:scale-[0.98]'
             }`}
           >
             {isAuthenticating ? (
@@ -139,7 +138,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
         </form>
 
         {/* Footer info */}
-        <div className="mt-8 text-center text-xs font-medium text-slate-500">
+        <div className="mt-8 text-center text-xs font-medium text-slate-400">
           <p>Protected by AI Surveillance Matrix</p>
           <p className="mt-1">Unauthorized access will be logged</p>
         </div>

@@ -21,13 +21,15 @@ interface SidebarProps {
   onSelectModule: (moduleId: string) => void;
   unresolvedEscalationsCount: number;
   onOpenHelpGuide?: () => void;
+  currentRole: string;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   activeModule,
   onSelectModule,
   unresolvedEscalationsCount,
-  onOpenHelpGuide
+  onOpenHelpGuide,
+  currentRole
 }) => {
   const primaryOps = [
     { id: 'dashboard', label: 'Operations Dashboard', icon: LayoutDashboard },
@@ -46,6 +48,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'reports', label: 'Reports & Analytics', icon: BarChart3 },
     { id: 'tasks', label: 'Staff Task Board', icon: CheckSquare },
   ];
+
+  if (currentRole === 'Admin') {
+    commsAndDocs.push({ id: 'admin-panel', label: 'Super Admin Panel', icon: Users });
+  }
 
   return (
     <aside className="w-64 bg-white border-r-2 border-slate-200 p-4 flex flex-col justify-between shrink-0 hidden md:flex min-h-[calc(100vh-61px)] shadow-2xs">
