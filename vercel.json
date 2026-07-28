@@ -1,0 +1,10 @@
+{
+  "buildCommand": "cd EduOne-2047 && npm install && npm run build",
+  "outputDirectory": "EduOne-2047/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
