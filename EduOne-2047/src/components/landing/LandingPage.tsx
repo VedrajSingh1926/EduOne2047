@@ -298,10 +298,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
 
               <button
                 onClick={onOpenLogin}
-                className="mt-6 w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-xl border border-slate-700 transition flex items-center justify-center gap-2"
+                className="mt-6 w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl border border-slate-200 transition flex items-center justify-center gap-2"
               >
                 <span>Login to {rh.role} View</span>
-                <ArrowRight className="w-3.5 h-3.5 text-blue-400" />
+                <ArrowRight className="w-3.5 h-3.5 text-blue-600" />
               </button>
             </div>
           ))}
@@ -310,32 +310,32 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
 
       {/* Staff ID Administrator Spotlight Banner */}
       <section className="py-10 px-4 sm:px-8 max-w-7xl mx-auto w-full">
-        <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 border border-blue-800/40 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-blue-50 via-white to-indigo-50 border border-blue-100 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
           <div className="relative z-10 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold mb-3">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100/50 border border-blue-200 text-blue-700 text-xs font-bold mb-3">
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
               Designated Staff Manager Spotlight
             </div>
-            <h3 className="text-xl sm:text-2xl font-bold text-white">Centralized User ID Administration</h3>
-            <p className="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
-              <strong>Sarah Connor</strong> serves as the designated Chief User ID Administrator. She oversees staff onboarding, generates new official school User IDs, resets forgotten credentials, and maintains system security logs across all departments.
+            <h3 className="text-xl sm:text-2xl font-black text-slate-900">Centralized User ID Administration</h3>
+            <p className="text-sm text-slate-600 mt-3 leading-relaxed">
+              <strong>Super Admin</strong> serves as the designated Chief Platform Manager. They oversee staff onboarding, generate new official school User IDs, assign roles, reset forgotten credentials, and maintain system security logs across all departments.
             </p>
           </div>
 
           <div className="relative z-10 shrink-0 flex flex-col sm:flex-row items-center gap-3">
             <button
-              onClick={() => onQuickRoleLogin && onQuickRoleLogin('User ID Administrator', 'IDADM-2047', 'Sarah Connor')}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center gap-2"
+              onClick={onOpenLogin}
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center gap-2"
             >
               <KeyRound className="w-4 h-4" />
-              <span>Login as Sarah Connor (ID Admin)</span>
+              <span>Login as Super Admin</span>
             </button>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="mt-auto border-t border-slate-800/80 bg-slate-950 px-4 sm:px-8 py-6 text-center text-xs text-slate-500">
+      <footer className="mt-auto border-t border-slate-200 bg-white px-4 sm:px-8 py-6 text-center text-xs text-slate-500 font-medium">
         <p>© 2026 EduOne2047 AI Autonomous School Operations Platform. Fully Integrated with Firebase Firestore & Gemini AI.</p>
       </footer>
     </div>
