@@ -32,7 +32,7 @@ import {
   INITIAL_ATTENDANCE_RECORDS
 } from './data/mockDatabase';
 
-import { Role, Student, Teacher, FeeRecord, DocumentItem, TimetableSlot, EscalationItem, AIActionLog, SupplyItem, CollaborativeTask, AttendanceRecord } from './types';
+import { Role, CurrentUser, Student, Teacher, FeeRecord, DocumentItem, TimetableSlot, EscalationItem, AIActionLog, SupplyItem, CollaborativeTask, AttendanceRecord } from './types';
 import { initializeDatabase } from './lib/db-init';
 
 function InitDBRoute() {
@@ -56,6 +56,7 @@ function CoreApplication() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(hasRoleParam);
   
   const [currentRole, setCurrentRole] = useState<Role>(initialRole);
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [initialCommandPrompt, setInitialCommandPrompt] = useState<string | undefined>(undefined);
 
   // Staff Accessibility States
@@ -330,14 +331,11 @@ function CoreApplication() {
   };
 
   if (!isAuthenticated) {
-    return (
-      <LoginForm 
-        onLogin={(role, staffId) => {
-          setCurrentRole(role);
-          setIsAuthenticated(true);
-        }} 
-      />
-    );
+    return <LoginForm onLogin={(user) => {
+      setIsAuthenticated(true);
+      setCurrentRole(user.role);
+      setCurrentUser(user);
+    }} />;
   }
 
   return (
@@ -377,6 +375,7 @@ function CoreApplication() {
 
           {activeModule === 'dashboard' && (
             <OperationsDashboard
+              currentUser={currentUser}
               onNavigate={setActiveModule}
               onOpenCommandCenter={handleOpenCommandCenter}
               escalations={escalations}

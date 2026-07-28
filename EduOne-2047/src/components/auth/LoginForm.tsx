@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Role } from '../../types';
+import React, { useState, useEffect } from 'react';
+import { Role, CurrentUser } from '../../types';
 import { ShieldCheck, User, Lock, LogIn } from 'lucide-react';
 import { ref, get, child } from 'firebase/database';
 import { db } from '../../lib/firebase';
 
 interface LoginFormProps {
-  onLogin: (role: Role, staffId: string) => void;
+  onLogin: (user: CurrentUser) => void;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
@@ -13,6 +13,42 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [detectedUser, setDetectedUser] = useState<CurrentUser | null>(null);
+  const [isDetecting, setIsDetecting] = useState(false);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const id = staffId.trim();
+      if (id.length < 4) {
+        setDetectedUser(null);
+        return;
+      }
+
+      setIsDetecting(true);
+      try {
+        const dbRef = ref(db);
+        const snapshot = await get(child(dbRef, `users/${id}`));
+        
+        if (snapshot.exists()) {
+          const userData = snapshot.val();
+          setDetectedUser({
+            id: userData.id,
+            name: userData.name,
+            role: userData.role as Role
+          });
+        } else {
+          setDetectedUser(null);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsDetecting(false);
+      }
+    };
+
+    const debounceTimer = setTimeout(checkUser, 500);
+    return () => clearTimeout(debounceTimer);
+  }, [staffId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +75,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
         
         if (userData.password === password) {
           // Password matches!
-          onLogin(userData.role as Role, userData.id);
+          onLogin({
+            id: userData.id,
+            name: userData.name,
+            role: userData.role as Role
+          });
         } else {
           setError('Invalid credentials.');
         }
@@ -97,6 +137,19 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
               />
             </div>
           </div>
+
+          {/* Detected User Profile */}
+          {detectedUser && (
+            <div className="p-4 rounded-xl bg-blue-50/50 border border-blue-100 flex items-center gap-4 animate-in fade-in slide-in-from-top-2">
+              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg shrink-0 shadow-inner">
+                {detectedUser.name.charAt(0)}
+              </div>
+              <div className="flex-1 truncate">
+                <div className="text-sm font-bold text-slate-900 truncate">{detectedUser.name}</div>
+                <div className="text-xs font-semibold text-blue-600 uppercase tracking-wider truncate">{detectedUser.role}</div>
+              </div>
+            </div>
+          )}
 
           {/* Password */}
           <div className="space-y-2">

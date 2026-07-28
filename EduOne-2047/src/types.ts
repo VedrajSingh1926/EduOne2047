@@ -1,6 +1,10 @@
-export type Role = 'Admin' | 'Vice Principal' | 'Accountant' | 'Registrar' | 'Operations Lead';
+export type Role = 'Admin' | 'Vice Principal' | 'Accountant' | 'Registrar' | 'Operations Lead' | 'Teacher' | 'User ID Administrator';
 
-export type Severity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+export interface CurrentUser {
+  id: string;
+  name: string;
+  role: Role;
+}export type Severity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 
 export interface Student {
   id: string;

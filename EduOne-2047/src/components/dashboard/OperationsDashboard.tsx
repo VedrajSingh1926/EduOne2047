@@ -25,7 +25,7 @@ import {
   Pie,
   Cell
 } from 'recharts';
-import { AIActionLog, EscalationItem } from '../../types';
+import { AIActionLog, EscalationItem, CurrentUser } from '../../types';
 
 interface OperationsDashboardProps {
   onNavigate: (moduleId: string) => void;
@@ -34,6 +34,7 @@ interface OperationsDashboardProps {
   aiLogs: AIActionLog[];
   onOpenAddStudent: () => void;
   onOpenDocUpload: () => void;
+  currentUser: CurrentUser | null;
 }
 
 export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
@@ -41,7 +42,8 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
   onOpenCommandCenter,
   aiLogs,
   onOpenAddStudent,
-  onOpenDocUpload
+  onOpenDocUpload,
+  currentUser
 }) => {
   // Chart Mock Data
   const attendanceData = [
@@ -74,11 +76,18 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
-            School Operations Dashboard
+            {currentUser ? `Welcome back, ${currentUser.name}` : 'School Operations Dashboard'}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Monitor students, teachers, attendance, finances and AI-powered workflows from one unified platform.
-          </p>
+          <div className="flex items-center gap-2 mt-2">
+            {currentUser && (
+              <span className="px-2 py-0.5 text-[10px] font-semibold bg-blue-50 text-blue-600 border border-blue-100 rounded-md uppercase tracking-wider">
+                {currentUser.role}
+              </span>
+            )}
+            <p className="text-xs sm:text-sm text-slate-500">
+              Here is your daily snapshot and quick actions.
+            </p>
+          </div>
         </div>
 
         <button
@@ -146,6 +155,60 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
           <p className="text-[11px] text-slate-400 mt-1">₹88k pending reconciliation</p>
         </div>
       </div>
+
+      {/* Personalized Workspace Snapshot */}
+      {currentUser && (
+        <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 shadow-sm space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-blue-600" />
+              My Daily Snapshot ({currentUser.role})
+            </h2>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Timetable Snapshot */}
+            <div className="bg-white rounded-xl p-4 border border-slate-200">
+              <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">Today's Schedule</h3>
+              {currentUser.role === 'Teacher' ? (
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-sm p-2 bg-slate-50 rounded-lg">
+                    <span className="font-semibold text-slate-800">08:00 AM - Physics</span>
+                    <span className="text-xs text-slate-500">Grade 10-A</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm p-2 bg-blue-50 border border-blue-100 rounded-lg">
+                    <span className="font-semibold text-blue-800">09:00 AM - Math (Substitute)</span>
+                    <span className="text-xs text-blue-600">Grade 9-B</span>
+                  </div>
+                </div>
+              ) : currentUser.role === 'Admin' || currentUser.role === 'User ID Administrator' ? (
+                <div className="text-sm text-slate-600 py-2">
+                  No classes scheduled. Administrative duties ongoing.
+                </div>
+              ) : (
+                <div className="text-sm text-slate-600 py-2">
+                  Morning Assembly Operations & Supervision
+                </div>
+              )}
+            </div>
+
+            {/* Pending Tasks */}
+            <div className="bg-white rounded-xl p-4 border border-slate-200">
+              <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">Priority Tasks</h3>
+              <div className="space-y-2">
+                <div className="flex items-start gap-2 text-sm p-2">
+                  <input type="checkbox" className="mt-1 rounded text-blue-600 border-slate-300" />
+                  <span className="text-slate-700">Review {currentUser.role === 'Teacher' ? 'student assignments' : 'pending staff access requests'}</span>
+                </div>
+                <div className="flex items-start gap-2 text-sm p-2">
+                  <input type="checkbox" className="mt-1 rounded text-blue-600 border-slate-300" />
+                  <span className="text-slate-700">Submit weekly activity report</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* High Contrast Staff Shortcuts Launcher */}
       <div className="p-6 rounded-2xl bg-white border-2 border-slate-300 shadow-2xs space-y-3">
