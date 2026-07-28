@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { LandingPage } from './components/landing/LandingPage';
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
 import { StaffHelpModal } from './components/layout/StaffHelpModal';
@@ -32,7 +34,7 @@ import {
 
 import { Role, Student, Teacher, FeeRecord, DocumentItem, TimetableSlot, EscalationItem, AIActionLog, SupplyItem, CollaborativeTask, AttendanceRecord } from './types';
 
-export default function App() {
+function CoreApplication() {
   const [activeModule, setActiveModule] = useState<string>('dashboard');
   
   // Authentication State
@@ -499,5 +501,15 @@ export default function App() {
         }}
       />
     </div>
+  );
+}
+
+export default function App() {
+  const navigate = useNavigate();
+  return (
+    <Routes>
+      <Route path="/" element={<LandingPage onOpenLogin={() => navigate('/app')} />} />
+      <Route path="/app" element={<CoreApplication />} />
+    </Routes>
   );
 }
