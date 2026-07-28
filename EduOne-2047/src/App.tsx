@@ -15,6 +15,7 @@ import { NeedsAttention } from './components/escalations/NeedsAttention';
 import { ReportsAnalytics } from './components/analytics/ReportsAnalytics';
 import { CollaborativeTaskManager } from './components/tasks/CollaborativeTaskManager';
 import { GmailCommsCenter } from './components/gmail/GmailCommsCenter';
+import { LoginForm } from './components/auth/LoginForm';
 
 import {
   INITIAL_STUDENTS,
@@ -34,8 +35,13 @@ import { Role, Student, Teacher, FeeRecord, DocumentItem, TimetableSlot, Escalat
 export default function App() {
   const [activeModule, setActiveModule] = useState<string>('dashboard');
   
-  // Parse role from URL query parameters (e.g., ?role=Principal)
+  // Authentication State
   const initialRole = (new URLSearchParams(window.location.search).get('role') as Role) || 'Admin';
+  // If there's a role parameter, assume they bypassed login (e.g. from local testing). 
+  // Otherwise, default to unauthenticated.
+  const hasRoleParam = !!new URLSearchParams(window.location.search).get('role');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(hasRoleParam);
+  
   const [currentRole, setCurrentRole] = useState<Role>(initialRole);
   const [initialCommandPrompt, setInitialCommandPrompt] = useState<string | undefined>(undefined);
 
@@ -309,6 +315,17 @@ export default function App() {
       handleSendFeeReminder('Rohan Gupta');
     }
   };
+
+  if (!isAuthenticated) {
+    return (
+      <LoginForm 
+        onLogin={(role, staffId) => {
+          setCurrentRole(role);
+          setIsAuthenticated(true);
+        }} 
+      />
+    );
+  }
 
   return (
     <div className={`min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans antialiased selection:bg-blue-500 selection:text-white ${
