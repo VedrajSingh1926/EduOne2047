@@ -6,10 +6,10 @@ interface LoginFormProps {
   onLogin: (role: Role, staffId: string) => void;
 }
 
-const AVAILABLE_ROLES: Role[] = ['Admin', 'Principal', 'Vice Principal', 'Teacher', 'ID Administrator'];
+const AVAILABLE_ROLES: Role[] = ['Admin', 'Vice Principal', 'Accountant', 'Registrar', 'Operations Lead'];
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
-  const [role, setRole] = useState<Role>('Teacher');
+  const [role, setRole] = useState<Role>('Admin');
   const [staffId, setStaffId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
