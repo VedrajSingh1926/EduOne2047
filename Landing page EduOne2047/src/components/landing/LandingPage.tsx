@@ -122,13 +122,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
         <div className="flex items-center gap-3">
           <button
             onClick={onOpenLogin}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-xl transition border border-slate-700 flex items-center gap-2"
-          >
-            <KeyRound className="w-3.5 h-3.5 text-blue-400" />
-            <span>Staff Login</span>
-          </button>
-          <button
-            onClick={onOpenLogin}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center gap-1.5"
           >
             <span>Access Platform</span>

@@ -4,7 +4,7 @@ import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 
 const app = express();
-const PORT = process.env.PORT || 5173;
+const PORT = Number(process.env.PORT) || 5173;
 
 app.use(express.json({ limit: "10mb" }));
 

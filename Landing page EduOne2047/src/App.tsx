@@ -10,7 +10,7 @@ const redirectToCoreApp = (user: UserAccount) => {
   // Store user info in localStorage or cookie if needed for cross-origin auth, 
   // but for this demo we'll just redirect to the core app's URL.
   // Assuming the core app will run on port 5174 during dev.
-  const coreAppUrl = import.meta.env.VITE_CORE_APP_URL || 'http://localhost:5174';
+  const coreAppUrl = (import.meta as any).env?.VITE_CORE_APP_URL || 'https://eduone-2047-core.vercel.app';
   
   // You could pass the role as a query param for the demo, e.g., ?role=Admin
   window.location.href = `${coreAppUrl}?role=${encodeURIComponent(user.role)}`;
