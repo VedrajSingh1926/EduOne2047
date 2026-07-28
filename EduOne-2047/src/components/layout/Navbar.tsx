@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { Role, CurrentUser } from '../../types';
+import { ref, update } from 'firebase/database';
+import { db } from '../../lib/firebase';
 import {
   Bell,
   Search,
@@ -19,13 +22,13 @@ import {
 import { Role } from '../../types';
 
 interface NavbarProps {
-  currentRole: Role;
+  currentUser: CurrentUser;
+  onLogout: () => void;
   onRoleChange: (role: Role) => void;
   unresolvedEscalationsCount: number;
   onNavigateToModule: (moduleId: string) => void;
   onOpenCommandCenter: (initialPrompt?: string) => void;
-  textSize: 'normal' | 'large' | 'xlarge';
-  onChangeTextSize: (size: 'normal' | 'large' | 'xlarge') => void;
+  onOpenCommandCenter: (initialPrompt?: string) => void;
   easyMode: boolean;
   onToggleEasyMode: () => void;
   onOpenHelpGuide: () => void;
@@ -33,13 +36,12 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
-  currentRole,
+  currentUser,
+  onLogout,
   onRoleChange,
   unresolvedEscalationsCount,
   onNavigateToModule,
   onOpenCommandCenter,
-  textSize,
-  onChangeTextSize,
   easyMode,
   onToggleEasyMode,
   onOpenHelpGuide,
@@ -96,10 +98,25 @@ export const Navbar: React.FC<NavbarProps> = ({
   const handleReadAloud = () => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
-      const text = `Remix EduOne School Operations. Active role is ${currentRole}. You can search student files, mark attendance, or ask the AI Command Center for assistance. Click Staff Guide for step-by-step help.`;
+      const text = `Remix EduOne School Operations. Active role is ${currentUser.role}. You can search student files, mark attendance, or ask the AI Command Center for assistance. Click Staff Guide for step-by-step help.`;
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.95;
       window.speechSynthesis.speak(utterance);
+    }
+  };
+
+  const handleEditName = async () => {
+    const newName = window.prompt('Enter your new display name:', currentUser.name);
+    if (newName && newName.trim() !== '' && newName.trim() !== currentUser.name) {
+      try {
+        await update(ref(db, `users/${currentUser.id}`), {
+          name: newName.trim()
+        });
+        window.location.reload();
+      } catch (e) {
+        console.error('Failed to update name', e);
+        alert('Failed to update name. Check console.');
+      }
     }
   };
 
@@ -166,34 +183,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Accessibility & Quick Staff Controls */}
         <div className="flex items-center flex-wrap justify-end gap-1.5 sm:gap-2 w-full md:w-auto">
           
-          {/* Text Size Accessibility Scaling */}
-          <div className="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-300" title="Adjust Text Size Across App">
-            <span className="px-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider hidden lg:inline">Text Size</span>
-            <button
-              onClick={() => onChangeTextSize('normal')}
-              className={`px-2 py-1 text-xs font-bold rounded-lg transition-all ${
-                textSize === 'normal' ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              A
-            </button>
-            <button
-              onClick={() => onChangeTextSize('large')}
-              className={`px-2 py-1 text-xs font-extrabold rounded-lg transition-all ${
-                textSize === 'large' ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              A⁺
-            </button>
-            <button
-              onClick={() => onChangeTextSize('xlarge')}
-              className={`px-2 py-1 text-sm font-black rounded-lg transition-all ${
-                textSize === 'xlarge' ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              A⁺⁺
-            </button>
-          </div>
+          {/* Text Size Accessibility Scaling - REMOVED */}
 
           {/* Easy High Contrast Mode Toggle */}
           <button
@@ -271,10 +261,24 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </button>
 
-          {/* Current Role Display */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold shadow-2xs">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>{currentRole}</span>
+          {/* Current User Display & Logout */}
+          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100 border border-slate-200">
+            <button
+              onClick={handleEditName}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition-colors"
+              title="Click to change your display name"
+            >
+              <div className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-bold">
+                {currentUser.name.charAt(0)}
+              </div>
+              <span className="text-xs font-bold text-slate-800">{currentUser.name}</span>
+            </button>
+            <button
+              onClick={onLogout}
+              className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors shadow-2xs"
+            >
+              Logout
+            </button>
           </div>
 
         </div>

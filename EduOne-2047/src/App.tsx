@@ -338,19 +338,24 @@ function CoreApplication() {
     }} />;
   }
 
+  // Fallback for direct role URL testing
+  const activeUser = currentUser || { id: 'TEST-000', name: 'Test User', role: currentRole };
+
   return (
     <div className={`min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans antialiased selection:bg-blue-500 selection:text-white ${
       textSize === 'large' ? 'text-scale-large' : textSize === 'xlarge' ? 'text-scale-xlarge' : ''
     } ${easyMode ? 'easy-mode' : ''}`}>
       {/* Top Navbar */}
       <Navbar
-        currentRole={currentRole}
+        currentUser={activeUser}
+        onLogout={() => {
+          setIsAuthenticated(false);
+          setCurrentUser(null);
+        }}
         onRoleChange={setCurrentRole}
         unresolvedEscalationsCount={unresolvedEscalationsCount}
         onNavigateToModule={setActiveModule}
         onOpenCommandCenter={handleOpenCommandCenter}
-        textSize={textSize}
-        onChangeTextSize={setTextSize}
         easyMode={easyMode}
         onToggleEasyMode={() => setEasyMode(!easyMode)}
         onOpenHelpGuide={() => setIsHelpModalOpen(true)}
