@@ -56,8 +56,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.08 }
+      transition: { staggerChildren: 0.15 }
     }
+  };
+
+  const scaleUpVariant = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
   const roleHighlights = [
@@ -137,22 +142,28 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
             EduOne2047 automates fee reconciliation, timetable substitutions, and document processing — while keeping principals and admin staff in full control of every decision involving money, discipline, or student safety.
           </p>
 
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
-            <button
+          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+            <motion.button
+              variants={fadeUpVariant}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={onOpenLogin}
-              className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-2xl shadow-xl shadow-blue-600/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-2xl shadow-xl shadow-blue-600/30 transition-all flex items-center justify-center gap-2"
             >
               <Bot className="w-4 h-4" />
               <span>Launch Portal & Sign In</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
-            <a
+            </motion.button>
+            <motion.a
+              variants={fadeUpVariant}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               href="#sandbox"
-              className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-2xl border border-slate-200 shadow-sm transition-all hover:-translate-y-1 text-center"
+              className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-2xl border border-slate-200 shadow-sm transition-all text-center"
             >
               Try Live Demo
-            </a>
-          </div>
+            </motion.a>
+          </motion.div>
 
           {/* Looping Hero Animation */}
           <div className="mt-16 w-full max-w-lg mx-auto bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden relative h-28 flex items-center justify-center p-6">
@@ -254,7 +265,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
             How Autonomous Operations Work
           </motion.h2>
 
-          <div className="space-y-6">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={staggerContainer} className="space-y-6">
             {[
               { title: 'Upload a Document', icon: FileText, desc: 'Receipts, applications, or certificates.' },
               { title: 'AI Extracts Fields', icon: Sparkles, desc: 'Contextual understanding of unstructured text.' },
@@ -263,11 +274,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
             ].map((step, i) => (
               <motion.div 
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5, delay: i * 0.15 }}
-                className="flex items-center gap-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:-translate-y-1 hover:shadow-md transition-all duration-200"
+                variants={scaleUpVariant}
+                className="flex items-center gap-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300"
               >
                 <div className="w-12 h-12 shrink-0 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
                   <step.icon className="w-6 h-6" />
@@ -278,7 +286,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -416,43 +424,43 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
             <p className="mt-4 text-slate-600 max-w-2xl mx-auto">Engineered specifically for the realities of Indian education ecosystems.</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="grid md:grid-cols-3 gap-6">
+            <motion.div variants={scaleUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
               <Building2 className="w-8 h-8 text-blue-600 mb-4" />
               <h3 className="font-bold text-slate-900 mb-2">Multi-Board Support</h3>
               <p className="text-sm text-slate-600">Native structures mapping exactly to CBSE, ICSE, and State Board academic formatting requirements.</p>
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+            <motion.div variants={scaleUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
               <CreditCard className="w-8 h-8 text-emerald-600 mb-4" />
               <h3 className="font-bold text-slate-900 mb-2">Indian Fee Structures</h3>
               <p className="text-sm text-slate-600">Complex handling built-in: tuition + transport + sibling discounts + late fines modeled in a real ledger format.</p>
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+            <motion.div variants={scaleUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
               <MessageCircle className="w-8 h-8 text-green-500 mb-4" />
               <h3 className="font-bold text-slate-900 mb-2">WhatsApp-First Comm</h3>
               <p className="text-sm text-slate-600">Parent notifications default to WhatsApp, ensuring read-receipts and immediate visibility over standard email.</p>
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+            <motion.div variants={scaleUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
               <Users className="w-8 h-8 text-indigo-600 mb-4" />
               <h3 className="font-bold text-slate-900 mb-2">RTE Quota Tracking</h3>
               <p className="text-sm text-slate-600">Automated flagging for RTE students and scholarship-eligibility to ensure compliance without manual spreadsheets.</p>
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+            <motion.div variants={scaleUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
               <Globe className="w-8 h-8 text-orange-500 mb-4" />
               <h3 className="font-bold text-slate-900 mb-2">Vernacular Support</h3>
               <p className="text-sm text-slate-600">Core communication templates support Hindi and regional vernacular languages for parent inclusion.</p>
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+            <motion.div variants={scaleUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
               <Wifi className="w-8 h-8 text-slate-600 mb-4" />
               <h3 className="font-bold text-slate-900 mb-2">Tier 2/3 Connectivity</h3>
               <p className="text-sm text-slate-600">Lightweight payloads and optimistic UI updates ensure the app remains responsive on patchy 4G connections.</p>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -502,22 +510,22 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
             <h2 className="text-3xl font-bold mb-12">Trust & Security by Design</h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}>
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="grid md:grid-cols-3 gap-8">
+            <motion.div variants={scaleUpVariant}>
               <h3 className="text-xl font-bold text-slate-200 mb-3">Human-in-the-Loop</h3>
               <p className="text-slate-400 text-sm">Every AI decision touching money, discipline, or student safety requires explicit human review. The AI proposes; your staff decides.</p>
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}>
+            <motion.div variants={scaleUpVariant}>
               <h3 className="text-xl font-bold text-slate-200 mb-3">DPDP Act Conscious</h3>
               <p className="text-slate-400 text-sm">Data handling architecture designed with modern privacy regulations in mind, ensuring student data remains fiercely protected.</p>
             </motion.div>
 
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}>
+            <motion.div variants={scaleUpVariant}>
               <h3 className="text-xl font-bold text-slate-200 mb-3">Strictly Siloed Data</h3>
               <p className="text-slate-400 text-sm">Zero cross-school data pooling without explicit consent. Your school's data trains only your school's operational engine.</p>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
