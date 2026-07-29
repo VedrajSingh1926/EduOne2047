@@ -19,7 +19,6 @@ import {
   Eye,
   Keyboard
 } from 'lucide-react';
-import { Role } from '../../types';
 
 interface NavbarProps {
   currentUser: CurrentUser;
@@ -27,7 +26,6 @@ interface NavbarProps {
   onRoleChange: (role: Role) => void;
   unresolvedEscalationsCount: number;
   onNavigateToModule: (moduleId: string) => void;
-  onOpenCommandCenter: (initialPrompt?: string) => void;
   onOpenCommandCenter: (initialPrompt?: string) => void;
   easyMode: boolean;
   onToggleEasyMode: () => void;
