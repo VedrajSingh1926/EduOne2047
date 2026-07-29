@@ -29,14 +29,28 @@ export const initializeDatabase = async () => {
     const tasksObj = INITIAL_TASKS.reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {});
     const attendanceObj = INITIAL_ATTENDANCE_RECORDS.reduce((acc, curr) => ({ ...acc, [curr.id]: curr }), {});
 
-    // Create a Super Admin account
-    const superAdminObj = {
+    // Create Demo Accounts for Landing Page
+    const usersObj = {
       "ADMIN-001": {
         id: "ADMIN-001",
-        password: "admin", // simple password for manual auth
-        role: "Admin",
+        password: "admin",
+        role: "Super Admin",
         name: "Super Admin",
-        email: "vedraj@eduone.com"
+        email: "admin@eduone.com"
+      },
+      "TCH-101": {
+        id: "TCH-101",
+        password: "password",
+        role: "Class Teacher",
+        name: "Elena Rostova",
+        email: "elena@eduone.com"
+      },
+      "IDADM-2047": {
+        id: "IDADM-2047",
+        password: "password",
+        role: "IT Support",
+        name: "Sarah Connor",
+        email: "sarah@eduone.com"
       }
     };
 
@@ -52,7 +66,7 @@ export const initializeDatabase = async () => {
       set(ref(db, 'supplies'), suppliesObj),
       set(ref(db, 'tasks'), tasksObj),
       set(ref(db, 'attendance'), attendanceObj),
-      set(ref(db, 'users'), superAdminObj) // The manual auth users table
+      set(ref(db, 'users'), usersObj) // The manual auth users table
     ]);
 
     console.log("Database successfully populated!");
