@@ -151,7 +151,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
       </header>
 
       {/* SECTION 1 — HERO */}
-      <section className="relative pt-16 pb-12 px-4 sm:px-8 max-w-7xl mx-auto w-full text-center">
+      <section className="relative pt-24 pb-16 px-4 sm:px-8 max-w-7xl mx-auto w-full text-center z-10">
+        
+        {/* Animated Background Orbs */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[400px] pointer-events-none -z-10">
+          <div className="absolute top-0 left-0 sm:left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-blue-400 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-[pulse_6s_ease-in-out_infinite]"></div>
+          <div className="absolute top-10 right-0 sm:right-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-indigo-400 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-[pulse_7s_ease-in-out_infinite]" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-64 sm:w-96 h-64 sm:h-96 bg-cyan-400 rounded-full mix-blend-multiply filter blur-[80px] opacity-40 animate-[pulse_8s_ease-in-out_infinite]" style={{ animationDelay: '4s' }}></div>
+        </div>
+
         <motion.div initial="hidden" animate="visible" variants={fadeUpVariant} className="flex flex-col items-center">
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-tight max-w-4xl mx-auto">
