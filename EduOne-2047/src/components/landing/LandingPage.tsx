@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   ShieldCheck,
   Zap,
@@ -19,7 +20,14 @@ import {
   Sliders,
   ChevronRight,
   Globe,
-  KeyRound
+  KeyRound,
+  FileCheck,
+  MessageCircle,
+  Wifi,
+  Database,
+  ArrowRightLeft,
+  Clock,
+  Smartphone
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -28,80 +36,65 @@ interface LandingPageProps {
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRoleLogin }) => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'roles' | 'security' | 'features'>('overview');
+  const [activeTab, setActiveTab] = useState<'documents' | 'finance' | 'timetable' | 'attendance'>('documents');
+  const [inboxStep, setInboxStep] = useState(0);
 
-  const features = [
-    {
-      icon: UserCheck,
-      title: 'Designated User ID Administration',
-      desc: 'Centralized staff ID credentials manager operated by a designated staff member (Sarah Connor - Chief ID Administrator). Complete ID issuance, password resets, and account security audit trails.',
-      tag: 'Security & Access'
-    },
-    {
-      icon: Zap,
-      title: 'Smart Attendance Matrix',
-      desc: 'Automated attendance tracking with instant risk detection for consecutive absences and automated parent alerts via WhatsApp/SMS.',
-      tag: 'Daily Operations'
-    },
-    {
-      icon: Calendar,
-      title: 'AI Timetable & Instant Substitution',
-      desc: 'Dynamic schedule generation that automatically solves teacher absences by matching qualified substitute teachers in seconds.',
-      tag: 'Academic Planning'
-    },
-    {
-      icon: CreditCard,
-      title: 'Reconciled Fee Management',
-      desc: 'Automated receipt verification with OCR document reading, payment status ledger, and instant mismatch reconciliation.',
-      tag: 'Finance & Ledger'
-    },
-    {
-      icon: AlertTriangle,
-      title: 'Needs Attention Escalation Engine',
-      desc: 'Autonomous AI engine that catches policy exceptions, document errors, and critical teacher absences, routing them directly to Vice Principal and Principal queues.',
-      tag: 'Governance'
-    },
-    {
-      icon: Mail,
-      title: 'Integrated Gmail Comms & Tasks',
-      desc: 'Direct integration with Google Workspace for parent inquiry processing, automated email draft generation, and task synchronization.',
-      tag: 'Workspace Sync'
+  // Cycle inbox demo tasks
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setInboxStep(prev => (prev + 1) % 3);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const fadeUpVariant = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.08 }
     }
-  ];
+  };
 
   const roleHighlights = [
     {
       role: 'Principal',
       user: 'Dr. Evelyn Vance (PRIN-2047)',
       badge: 'Executive Leadership',
-      focus: 'High-level institutional efficiency metrics, strategic policy decisions, faculty workload health, financial status, and executive directive broadcasts.',
-      capabilities: ['Executive KPI Command', 'Policy Escalations Approval', 'Budget & Fee Overview', 'Faculty Utilization Charts']
+      focus: 'High-level institutional efficiency metrics, strategic policy decisions, faculty workload health, financial status, and executive directive broadcasts.'
     },
     {
       role: 'Vice Principal',
       user: 'Marcus Sterling (VP-2047)',
       badge: 'Academic & Discipline',
-      focus: 'Real-time morning operations, teacher absence alerts, substitute assignment approvals, daily attendance oversight, and conduct escalations.',
-      capabilities: ['Live Morning Matrix', 'Instant Substitute Solver', 'Student Discipline Queue', 'Daily Inspection Checklist']
+      focus: 'Real-time morning operations, teacher absence alerts, substitute assignment approvals, daily attendance oversight, and conduct escalations.'
     },
     {
       role: 'User ID Administrator',
       user: 'Sarah Connor (IDADM-2047)',
       badge: 'Designated Credentials Staff',
-      focus: 'Responsible for total staff user ID creation, password resetting, account locking, issuing official access slips, and credential audit logs.',
-      capabilities: ['Create New Staff IDs', 'One-Click Password Resets', 'Account Lock/Unlock', 'Credential Audit Logs']
+      focus: 'Responsible for total staff user ID creation, password resetting, account locking, issuing official access slips, and credential audit logs.'
     },
     {
       role: 'General Staff & Teachers',
       user: 'Elena Rostova (TCH-101) & Staff',
       badge: 'Faculty & Support Operations',
-      focus: 'Personal class schedules, quick attendance taking, student roster lookups, collaborative tasks management, and leave requests.',
-      capabilities: ['My Class Schedule', 'Quick Roll Call', 'Collaborative Task Manager', 'Student Lookup & Leave Notes']
+      focus: 'Personal class schedules, quick attendance taking, student roster lookups, collaborative tasks management, and leave requests.'
     }
   ];
 
+  const inboxTasks = [
+    { type: 'Attendance', title: 'Teacher Absent (Grade 10 Math)', action: 'Approve Substitute: Mr. Sharma', icon: AlertTriangle, color: 'text-amber-500', bg: 'bg-amber-100' },
+    { type: 'Finance', title: 'Fee Mismatch: Term 2 Tuition', action: 'Verify Payment Receipt', icon: CreditCard, color: 'text-rose-500', bg: 'bg-rose-100' },
+    { type: 'Documents', title: 'OCR Confidence Low: Transfer Cert', action: 'Review Highlighted Fields', icon: FileCheck, color: 'text-blue-500', bg: 'bg-blue-100' }
+  ];
+
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-blue-600 selection:text-white overflow-x-hidden">
       {/* Top Header Navbar */}
       <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -111,232 +104,445 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
           <div>
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-lg text-slate-900 tracking-tight">EduOne2047</span>
-              <span className="px-2 py-0.5 text-[10px] font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-md uppercase tracking-wider">
-                Autonomous
-              </span>
             </div>
-            <p className="text-[11px] text-slate-500 hidden sm:block">Next-Gen AI Autonomous School Operations Platform</p>
+            <p className="text-[11px] text-slate-500 hidden sm:block">Next-Gen Autonomous School Operations</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            onClick={onOpenLogin}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center gap-1.5"
-          >
-            <span>Login</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        </div>
+        <button
+          onClick={onOpenLogin}
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center gap-1.5 hover:-translate-y-0.5"
+        >
+          <span>Login</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </button>
       </header>
 
-      {/* Hero Banner Section */}
-      <section className="relative pt-12 pb-16 px-4 sm:px-8 max-w-7xl mx-auto w-full text-center">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-medium mb-6 animate-pulse">
-          <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-          <span>Fully Operational School Operating System Powered by Firebase & Gemini AI</span>
-        </div>
-
-        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-tight max-w-4xl mx-auto">
-          Autonomous School Operations <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-cyan-400">
-            Powered by Specialized AI & Role Control
-          </span>
-        </h1>
-
-        <p className="mt-5 text-sm sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          EduOne2047 automates attendance tracking, fee reconciliation, substitution scheduling, and policy escalations while keeping designated staff in full control of user access.
-        </p>
-
-        {/* Hero CTA & Quick Role Try Bar */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button
-            onClick={onOpenLogin}
-            className="w-full sm:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-2xl shadow-xl shadow-blue-600/30 transition-all flex items-center justify-center gap-2"
-          >
-            <Bot className="w-4 h-4" />
-            <span>Launch Portal & Sign In</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-          <a
-            href="#role-portals"
-            className="w-full sm:w-auto px-6 py-3.5 bg-white hover:bg-slate-100 text-slate-700 text-sm font-medium rounded-2xl border border-slate-200 shadow-sm transition text-center"
-          >
-            Explore Role Responsibilities
-          </a>
-        </div>
-
-        {/* Quick Credentials Bar */}
-        <div className="mt-10 p-4 rounded-2xl bg-white/90 border border-slate-200/80 shadow-sm max-w-4xl mx-auto text-left">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-200 text-xs font-medium text-slate-500">
-            <span className="flex items-center gap-1.5 text-blue-400 font-semibold">
-              <KeyRound className="w-3.5 h-3.5" />
-              Quick One-Click Demo Staff Portals (Pre-Configured Accounts):
-            </span>
-            <span className="text-slate-500 text-[11px] hidden sm:inline">Click any account to jump directly in</span>
+      {/* SECTION 1 — HERO */}
+      <section className="relative pt-16 pb-20 px-4 sm:px-8 max-w-7xl mx-auto w-full text-center">
+        <motion.div initial="hidden" animate="visible" variants={fadeUpVariant} className="flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 text-xs font-medium mb-6">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Built for Modern Educational Institutions</span>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-3">
-            <button
-              onClick={() => onQuickRoleLogin && onQuickRoleLogin('User ID Administrator', 'IDADM-2047', 'Sarah Connor')}
-              className="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 text-left transition group"
-            >
-              <div className="text-[11px] font-bold text-slate-800 group-hover:text-blue-700">Sarah Connor</div>
-              <div className="text-[10px] text-amber-400 font-medium">User ID Administrator</div>
-              <div className="text-[10px] text-slate-500 font-mono mt-0.5">ID: IDADM-2047</div>
-            </button>
 
-            <button
-              onClick={() => onQuickRoleLogin && onQuickRoleLogin('Principal', 'PRIN-2047', 'Dr. Evelyn Vance')}
-              className="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 text-left transition group"
-            >
-              <div className="text-[11px] font-bold text-slate-800 group-hover:text-blue-700">Dr. Evelyn Vance</div>
-              <div className="text-[10px] text-indigo-400 font-medium">Principal</div>
-              <div className="text-[10px] text-slate-500 font-mono mt-0.5">ID: PRIN-2047</div>
-            </button>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-tight max-w-4xl mx-auto">
+            Autonomous School Operations <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-500">
+              Powered by Specialized AI & Role Control
+            </span>
+          </h1>
 
-            <button
-              onClick={() => onQuickRoleLogin && onQuickRoleLogin('Vice Principal', 'VP-2047', 'Marcus Sterling')}
-              className="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 text-left transition group"
-            >
-              <div className="text-[11px] font-bold text-slate-800 group-hover:text-blue-700">Marcus Sterling</div>
-              <div className="text-[10px] text-cyan-400 font-medium">Vice Principal</div>
-              <div className="text-[10px] text-slate-500 font-mono mt-0.5">ID: VP-2047</div>
-            </button>
+          <p className="mt-6 text-base sm:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
+            EduOne2047 automates fee reconciliation, timetable substitutions, and document processing — while keeping principals and admin staff in full control of every decision involving money, discipline, or student safety.
+          </p>
 
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
             <button
-              onClick={() => onQuickRoleLogin && onQuickRoleLogin('Teacher', 'TCH-101', 'Elena Rostova')}
-              className="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/50 border border-slate-200 hover:border-blue-300 text-left transition group"
+              onClick={onOpenLogin}
+              className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-2xl shadow-xl shadow-blue-600/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2"
             >
-              <div className="text-[11px] font-bold text-slate-800 group-hover:text-blue-700">Elena Rostova</div>
-              <div className="text-[10px] text-emerald-400 font-medium">General Staff / Teacher</div>
-              <div className="text-[10px] text-slate-500 font-mono mt-0.5">ID: TCH-101</div>
+              <Bot className="w-4 h-4" />
+              <span>Launch Portal & Sign In</span>
+              <ArrowRight className="w-4 h-4" />
             </button>
+            <a
+              href="#sandbox"
+              className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-2xl border border-slate-200 shadow-sm transition-all hover:-translate-y-1 text-center"
+            >
+              Try Live Demo
+            </a>
+          </div>
+
+          {/* Looping Hero Animation */}
+          <div className="mt-16 w-full max-w-lg mx-auto bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden relative h-28 flex items-center justify-center p-6">
+            <AnimatePresence mode="wait">
+              {inboxStep % 2 === 0 ? (
+                <motion.div
+                  key="task"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  className="flex items-center gap-4 bg-amber-50 p-4 rounded-xl border border-amber-100 w-full"
+                >
+                  <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600">
+                    <AlertTriangle className="w-5 h-5" />
+                  </div>
+                  <div className="text-left flex-1">
+                    <div className="text-sm font-bold text-slate-900">Teacher Absent</div>
+                    <div className="text-xs text-slate-500">Grade 10 Math — Mr. Davis</div>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="resolved"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.05 }}
+                  className="flex items-center gap-4 bg-emerald-50 p-4 rounded-xl border border-emerald-100 w-full"
+                >
+                  <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                    <CheckCircle2 className="w-5 h-5" />
+                  </div>
+                  <div className="text-left flex-1">
+                    <div className="text-sm font-bold text-slate-900">Substitute Assigned ✓</div>
+                    <div className="text-xs text-emerald-600 font-medium">Mrs. Sharma notified via App</div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* SECTION 2 — COMPARISON */}
+      <section className="py-20 bg-white border-y border-slate-200 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+          <motion.div 
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+            variants={fadeUpVariant}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl font-bold text-slate-900">The Operations Evolution</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <motion.div 
+              initial="hidden" whileInView="visible" viewport={{ once: true }}
+              variants={fadeUpVariant}
+              className="bg-slate-50 rounded-3xl p-8 border border-slate-200"
+            >
+              <div className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-6">Traditional ERP</div>
+              <div className="flex items-center gap-4 text-xl font-medium text-slate-400">
+                <Database className="w-6 h-6" />
+                Store Data
+              </div>
+            </motion.div>
+
+            <motion.div 
+              initial="hidden" whileInView="visible" viewport={{ once: true }}
+              variants={fadeUpVariant}
+              className="bg-blue-600 rounded-3xl p-8 shadow-xl shadow-blue-600/20 text-white"
+            >
+              <div className="text-sm font-bold text-blue-200 uppercase tracking-wider mb-6">EduOne2047</div>
+              <motion.div variants={staggerContainer} className="flex flex-wrap items-center gap-2 text-xl font-bold">
+                {['Read', '→', 'Understand', '→', 'Decide', '→', 'Automate', '→', 'Notify'].map((word, i) => (
+                  <motion.span 
+                    key={i}
+                    variants={{
+                      hidden: { opacity: 0, x: -10 },
+                      visible: { opacity: 1, x: 0, transition: { duration: 0.4 } }
+                    }}
+                    className={word === '→' ? 'text-blue-300 mx-1' : ''}
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Scope of Operations Section */}
-      <section className="py-12 bg-white border-y border-slate-100 px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-10">
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Comprehensive Operational Features</h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-2">
-              Every administrative layer is seamlessly wired together: from ID credential issuance to attendance alerts, timetables, and fee processing.
-            </p>
-          </div>
+      {/* SECTION 3 — HOW IT WORKS */}
+      <section className="py-24 bg-slate-50">
+        <div className="max-w-4xl mx-auto px-4 sm:px-8">
+          <motion.h2 
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}
+            className="text-3xl font-bold text-center text-slate-900 mb-16"
+          >
+            How Autonomous Operations Work
+          </motion.h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feat, idx) => (
-              <div
-                key={idx}
-                className="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm hover:border-blue-300 transition-colors text-left flex flex-col justify-between group"
+          <div className="space-y-6">
+            {[
+              { title: 'Upload a Document', icon: FileText, desc: 'Receipts, applications, or certificates.' },
+              { title: 'AI Extracts Fields', icon: Sparkles, desc: 'Contextual understanding of unstructured text.' },
+              { title: 'Confidence Checked', icon: ShieldCheck, desc: 'Flags anything ambiguous for human review.' },
+              { title: 'Human Confirms, Data Syncs Everywhere', icon: UserCheck, desc: 'No blind automated actions on sensitive data.' }
+            ].map((step, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: i * 0.15 }}
+                className="flex items-center gap-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:-translate-y-1 hover:shadow-md transition-all duration-200"
               >
+                <div className="w-12 h-12 shrink-0 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                  <step.icon className="w-6 h-6" />
+                </div>
                 <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
-                      <feat.icon className="w-5 h-5" />
-                    </div>
-                    <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">
-                      {feat.tag}
-                    </span>
-                  </div>
-                  <h3 className="font-bold text-slate-900">{feat.title}</h3>
-                  <p className="text-sm text-slate-600 mt-3 leading-relaxed">{feat.desc}</p>
+                  <h3 className="text-lg font-bold text-slate-900">{step.title}</h3>
+                  <p className="text-slate-500">{step.desc}</p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center text-xs font-semibold text-blue-600">
-                  <span>Fully operational module</span>
-                  <ChevronRight className="w-3.5 h-3.5 ml-1" />
-                </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Role-Tailored Views Section */}
-      <section id="role-portals" className="py-14 px-4 sm:px-8 max-w-7xl mx-auto w-full">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-slate-200">
-          <div>
-            <div className="text-xs font-semibold text-blue-600 uppercase tracking-wider mb-1">Tailored Portals</div>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Secure Role-Based Portals</h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Every staff member gets a customized view focused strictly on their domain duties.
+      {/* SECTION 4 — LIVE DEMO PREVIEW */}
+      <section className="py-24 bg-white border-y border-slate-200 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 grid lg:grid-cols-2 gap-16 items-center">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}>
+            <h2 className="text-3xl font-bold text-slate-900 mb-6">The "Needs Attention" Inbox</h2>
+            <p className="text-lg text-slate-600 leading-relaxed">
+              Instead of digging through dashboards to find problems, EduOne2047 brings the problems to you. The platform autonomously identifies fee mismatches, absent teachers, and low-confidence OCR scans, presenting them as actionable cards.
             </p>
-          </div>
-          <div className="mt-4 md:mt-0 flex items-center gap-2">
-            <span className="text-xs text-slate-500">Database Engine:</span>
-            <span className="px-2.5 py-1 rounded-md bg-amber-50 text-amber-700 border border-amber-200 text-xs font-semibold flex items-center gap-1.5">
-              <Globe className="w-3.5 h-3.5" />
-              Firebase Firestore Active
-            </span>
-          </div>
-        </div>
+          </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {roleHighlights.map((rh, idx) => (
-            <div key={idx} className="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-100">
-                    {rh.badge}
-                  </span>
-                  <span className="text-xs font-mono text-slate-500">{rh.user}</span>
-                </div>
-                <h3 className="text-lg font-black text-slate-900">{rh.role} Workspace</h3>
-                <p className="text-sm text-slate-600 mt-3 leading-relaxed">{rh.focus}</p>
-
-                <div className="mt-6 space-y-2">
-                  <div className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">Portal Capabilities:</div>
-                  {rh.capabilities.map((cap, cIdx) => (
-                    <div key={cIdx} className="flex items-center gap-2 text-sm text-slate-600 font-medium">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                      <span>{cap}</span>
+          <motion.div 
+            initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}
+            className="bg-slate-50 p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-inner"
+          >
+            <div className="space-y-4">
+              {inboxTasks.map((task, i) => (
+                <div 
+                  key={i} 
+                  className={`bg-white p-5 rounded-2xl border ${i === inboxStep ? 'border-blue-300 shadow-lg scale-[1.02]' : 'border-slate-200 shadow-sm opacity-60'} transition-all duration-300 flex items-start gap-4 hover:-translate-y-1 hover:shadow-md cursor-default`}
+                >
+                  <div className={`w-10 h-10 shrink-0 rounded-full ${task.bg} ${task.color} flex items-center justify-center`}>
+                    <task.icon className="w-5 h-5" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">{task.type}</div>
+                    <div className="font-bold text-slate-900 text-base">{task.title}</div>
+                    <div className="mt-3 flex items-center gap-2">
+                      <button className="px-4 py-1.5 bg-blue-50 text-blue-600 font-semibold text-sm rounded-lg hover:bg-blue-100 transition-colors">
+                        {task.action}
+                      </button>
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </div>
-
-              <button
-                onClick={onOpenLogin}
-                className="mt-6 w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold rounded-xl border border-slate-200 transition flex items-center justify-center gap-2"
-              >
-                <span>Login to {rh.role} View</span>
-                <ArrowRight className="w-3.5 h-3.5 text-blue-600" />
-              </button>
+              ))}
             </div>
-          ))}
+          </motion.div>
         </div>
       </section>
 
-      {/* Staff ID Administrator Spotlight Banner */}
-      <section className="py-10 px-4 sm:px-8 max-w-7xl mx-auto w-full">
-        <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-blue-50 via-white to-indigo-50 border border-blue-100 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
-          <div className="relative z-10 max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100/50 border border-blue-200 text-blue-700 text-xs font-bold mb-3">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-              Designated Staff Manager Spotlight
-            </div>
-            <h3 className="text-xl sm:text-2xl font-black text-slate-900">Centralized User ID Administration</h3>
-            <p className="text-sm text-slate-600 mt-3 leading-relaxed">
-              <strong>Super Admin</strong> serves as the designated Chief Platform Manager. They oversee staff onboarding, generate new official school User IDs, assign roles, reset forgotten credentials, and maintain system security logs across all departments.
-            </p>
-          </div>
-
-          <div className="relative z-10 shrink-0 flex flex-col sm:flex-row items-center gap-3">
-            <button
-              onClick={onOpenLogin}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center gap-2"
+      {/* SECTION 5 — FEE RECONCILIATION SPOTLIGHT */}
+      <section className="py-32 bg-slate-900 text-white relative overflow-hidden text-center">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-400 via-slate-900 to-slate-900"></div>
+        <div className="max-w-4xl mx-auto px-4 relative z-10">
+          <h2 className="text-2xl sm:text-3xl font-medium text-slate-300 mb-8">Manual Fee Reconciliation Time</h2>
+          <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+              className="text-center"
             >
-              <KeyRound className="w-4 h-4" />
-              <span>Login as Super Admin</span>
-            </button>
+              <div className="text-5xl font-black text-rose-400 line-through decoration-rose-500/50 mb-2">3-4 days/month</div>
+              <div className="text-slate-400 flex items-center justify-center gap-2">
+                <FileText className="w-5 h-5" /> Spreadsheets & Chasing Slips
+              </div>
+            </motion.div>
+
+            <ArrowRightLeft className="w-8 h-8 text-slate-600 hidden md:block" />
+
+            <motion.div 
+              initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+              className="text-center"
+            >
+              <div className="text-6xl font-black text-emerald-400 mb-2">Instant</div>
+              <div className="text-slate-400 flex items-center justify-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-500" /> Automated Ledger Matching
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="mt-auto border-t border-slate-200 bg-white px-4 sm:px-8 py-6 text-center text-xs text-slate-500 font-medium">
-        <p>© 2026 EduOne2047 AI Autonomous School Operations Platform. Fully Integrated with Firebase Firestore & Gemini AI.</p>
+      {/* SECTION 6 — FEATURE DEEP-DIVE */}
+      <section className="py-24 bg-white border-b border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-900">Core Capabilities</h2>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-2 mb-12">
+            {['documents', 'finance', 'timetable', 'attendance'].map(tab => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab as any)}
+                className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all ${
+                  activeTab === tab ? 'bg-blue-600 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                }`}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </button>
+            ))}
+          </div>
+
+          <div className="max-w-3xl mx-auto bg-slate-50 rounded-3xl p-8 border border-slate-200 min-h-[250px] relative shadow-sm">
+            <AnimatePresence mode="wait">
+              {activeTab === 'documents' && (
+                <motion.div key="docs" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6"><FileText className="w-8 h-8" /></div>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4">Intelligent Document Processing</h3>
+                  <p className="text-slate-600 text-lg">Upload physical forms, certificates, or receipts. The system extracts exact data points automatically, routing low-confidence reads to human staff for final verification.</p>
+                </motion.div>
+              )}
+              {activeTab === 'finance' && (
+                <motion.div key="fin" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-6"><CreditCard className="w-8 h-8" /></div>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4">Automated Fee Ledger</h3>
+                  <p className="text-slate-600 text-lg">Every transaction is logged and mapped to the student's unique ledger. Mismatches in expected vs. received amounts are instantly flagged for accountant review.</p>
+                </motion.div>
+              )}
+              {activeTab === 'timetable' && (
+                <motion.div key="time" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mb-6"><Calendar className="w-8 h-8" /></div>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4">Dynamic Timetable & Substitutions</h3>
+                  <p className="text-slate-600 text-lg">Create robust class schedules without conflicts. When a teacher marks absent, the AI substitute recommendation engine immediately finds the best available replacement staff.</p>
+                </motion.div>
+              )}
+              {activeTab === 'attendance' && (
+                <motion.div key="att" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-6"><Users className="w-8 h-8" /></div>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4">Smart Attendance Matrix</h3>
+                  <p className="text-slate-600 text-lg">One-tap morning roll call for teachers. The system automatically identifies chronic absenteeism patterns and prepares parent communication drafts.</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 7 — BUILT FOR INDIAN SCHOOLS */}
+      <section className="py-24 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-slate-900">Built for Indian Schools</h2>
+            <p className="mt-4 text-slate-600 max-w-2xl mx-auto">Engineered specifically for the realities of Indian education ecosystems.</p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+              <Building2 className="w-8 h-8 text-blue-600 mb-4" />
+              <h3 className="font-bold text-slate-900 mb-2">Multi-Board Support</h3>
+              <p className="text-sm text-slate-600">Native structures mapping exactly to CBSE, ICSE, and State Board academic formatting requirements.</p>
+            </motion.div>
+
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+              <CreditCard className="w-8 h-8 text-emerald-600 mb-4" />
+              <h3 className="font-bold text-slate-900 mb-2">Indian Fee Structures</h3>
+              <p className="text-sm text-slate-600">Complex handling built-in: tuition + transport + sibling discounts + late fines modeled in a real ledger format.</p>
+            </motion.div>
+
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+              <MessageCircle className="w-8 h-8 text-green-500 mb-4" />
+              <h3 className="font-bold text-slate-900 mb-2">WhatsApp-First Comm</h3>
+              <p className="text-sm text-slate-600">Parent notifications default to WhatsApp, ensuring read-receipts and immediate visibility over standard email.</p>
+            </motion.div>
+
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+              <Users className="w-8 h-8 text-indigo-600 mb-4" />
+              <h3 className="font-bold text-slate-900 mb-2">RTE Quota Tracking</h3>
+              <p className="text-sm text-slate-600">Automated flagging for RTE students and scholarship-eligibility to ensure compliance without manual spreadsheets.</p>
+            </motion.div>
+
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+              <Globe className="w-8 h-8 text-orange-500 mb-4" />
+              <h3 className="font-bold text-slate-900 mb-2">Vernacular Support</h3>
+              <p className="text-sm text-slate-600">Core communication templates support Hindi and regional vernacular languages for parent inclusion.</p>
+            </motion.div>
+
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+              <Wifi className="w-8 h-8 text-slate-600 mb-4" />
+              <h3 className="font-bold text-slate-900 mb-2">Tier 2/3 Connectivity</h3>
+              <p className="text-sm text-slate-600">Lightweight payloads and optimistic UI updates ensure the app remains responsive on patchy 4G connections.</p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 8 — ROLE-BASED PORTALS (SANDBOX) */}
+      <section id="sandbox" className="py-24 bg-white border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-900">Try the Live Demo (Sandbox Data)</h2>
+            <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-amber-50 text-amber-600 border border-amber-200 rounded-full text-xs font-bold uppercase tracking-wider">
+              <AlertTriangle className="w-3.5 h-3.5" /> Demo accounts — not a real school's data
+            </div>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {roleHighlights.map((role, i) => (
+              <motion.div 
+                key={i} 
+                initial="hidden" whileInView="visible" viewport={{ once: true }} 
+                variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { delay: i * 0.1 } } }}
+                className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex flex-col hover:-translate-y-1.5 hover:shadow-xl transition-all duration-200 group"
+              >
+                <div className="mb-4">
+                  <span className="px-2.5 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold rounded uppercase tracking-wider">
+                    {role.badge}
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-1">{role.role}</h3>
+                <div className="text-sm text-slate-500 font-mono mb-4">{role.user}</div>
+                <p className="text-sm text-slate-600 mb-6 flex-1">{role.focus}</p>
+                <button 
+                  onClick={() => onQuickRoleLogin && onQuickRoleLogin(role.role, role.user.split('(')[1].replace(')',''), role.user.split(' (')[0])}
+                  className="w-full py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-semibold text-slate-700 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-colors"
+                >
+                  Login as {role.role}
+                </button>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 9 — TRUST & SECURITY */}
+      <section className="py-24 bg-slate-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 text-center">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}>
+            <ShieldCheck className="w-12 h-12 text-blue-400 mx-auto mb-6" />
+            <h2 className="text-3xl font-bold mb-12">Trust & Security by Design</h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}>
+              <h3 className="text-xl font-bold text-slate-200 mb-3">Human-in-the-Loop</h3>
+              <p className="text-slate-400 text-sm">Every AI decision touching money, discipline, or student safety requires explicit human review. The AI proposes; your staff decides.</p>
+            </motion.div>
+
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}>
+              <h3 className="text-xl font-bold text-slate-200 mb-3">DPDP Act Conscious</h3>
+              <p className="text-slate-400 text-sm">Data handling architecture designed with modern privacy regulations in mind, ensuring student data remains fiercely protected.</p>
+            </motion.div>
+
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}>
+              <h3 className="text-xl font-bold text-slate-200 mb-3">Strictly Siloed Data</h3>
+              <p className="text-slate-400 text-sm">Zero cross-school data pooling without explicit consent. Your school's data trains only your school's operational engine.</p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 10 — FINAL CTA & FOOTER */}
+      <footer className="py-24 bg-slate-50 border-t border-slate-200 text-center">
+        <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="max-w-2xl mx-auto px-4">
+          <h2 className="text-3xl font-black text-slate-900 mb-6">Ready to Automate Your School?</h2>
+          <button
+            onClick={onOpenLogin}
+            className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-2xl shadow-xl shadow-blue-600/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2 mx-auto mb-16"
+          >
+            <Bot className="w-4 h-4" />
+            <span>Launch Staff Portal</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+
+          <div className="flex flex-wrap justify-center items-center gap-6 pt-12 border-t border-slate-200">
+            <div className="flex items-center gap-2 text-slate-500 text-sm font-medium">
+              <Database className="w-4 h-4" /> Powered by Firebase Firestore
+            </div>
+            <div className="flex items-center gap-2 text-slate-500 text-sm font-medium">
+              <Sparkles className="w-4 h-4" /> Intelligence by Gemini AI
+            </div>
+          </div>
+        </motion.div>
       </footer>
     </div>
   );
