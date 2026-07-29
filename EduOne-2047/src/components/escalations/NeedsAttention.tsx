@@ -79,7 +79,7 @@ export const NeedsAttention: React.FC<NeedsAttentionProps> = ({
 
         <button
           onClick={() => onOpenCommandCenter("Build Needs Attention summary")}
-          className="px-3.5 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs self-start sm:self-auto"
+          className="px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-medium flex items-center gap-1.5 shadow-2xs self-start sm:self-auto interaction-btn-secondary"
         >
           <Sparkles className="w-3.5 h-3.5 text-blue-600" />
           <span>AI Prioritize</span>
@@ -115,7 +115,7 @@ export const NeedsAttention: React.FC<NeedsAttentionProps> = ({
           unresolvedEscalations.map((item) => (
             <div
               key={item.id}
-              className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:border-slate-300 transition-all space-y-4"
+              className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-4 interaction-card"
             >
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
                 <div className="flex items-center gap-3">
@@ -170,13 +170,13 @@ export const NeedsAttention: React.FC<NeedsAttentionProps> = ({
               <div className="flex items-center justify-end gap-2 pt-1">
                 <button
                   onClick={() => onResolveEscalation(item.id)}
-                  className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium transition-all"
+                  className="px-3 py-1.5 rounded-lg bg-slate-100 text-slate-700 text-xs font-medium interaction-btn-secondary border border-transparent"
                 >
                   Dismiss
                 </button>
                 <button
                   onClick={() => onResolveEscalation(item.id)}
-                  className="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs transition-all flex items-center gap-1.5 shadow-2xs"
+                  className="px-4 py-1.5 rounded-lg bg-blue-600 text-white font-medium text-xs flex items-center gap-1.5 shadow-2xs interaction-btn-primary"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   <span>Approve Action</span>

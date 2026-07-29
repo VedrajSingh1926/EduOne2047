@@ -61,7 +61,7 @@ export const AIDocumentCenter: React.FC<AIDocumentCenterProps> = ({
           </p>
         </div>
 
-        <label className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer self-start sm:self-auto">
+        <label className="px-4 py-2 rounded-xl bg-blue-600 interaction-btn-primary text-white text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer self-start sm:self-auto">
           <Upload className="w-3.5 h-3.5" />
           <span>Upload Document</span>
           <input type="file" className="hidden" onChange={handleFileUpload} />
@@ -76,7 +76,7 @@ export const AIDocumentCenter: React.FC<AIDocumentCenterProps> = ({
       )}
 
       {/* Search & Filters */}
-      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs interaction-card flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="relative flex-1 w-full">
           <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
           <input
@@ -106,7 +106,7 @@ export const AIDocumentCenter: React.FC<AIDocumentCenterProps> = ({
         {filteredDocs.map((doc) => (
           <div
             key={doc.id}
-            className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:border-slate-300 transition-all flex flex-col justify-between space-y-3"
+            className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs interaction-card hover:border-slate-300 transition-all flex flex-col justify-between space-y-3"
           >
             <div>
               <div className="flex items-start justify-between gap-2 mb-2">
@@ -166,7 +166,7 @@ export const AIDocumentCenter: React.FC<AIDocumentCenterProps> = ({
                   </button>
                   <button
                     onClick={() => onApproveDocument(doc.id)}
-                    className="px-3 py-1 rounded-md bg-blue-600 text-white font-medium text-xs hover:bg-blue-700 transition-colors flex items-center gap-1 shadow-2xs"
+                    className="px-3 py-1 rounded-md bg-blue-600 text-white font-medium text-xs interaction-btn-primary transition-colors flex items-center gap-1 shadow-2xs"
                   >
                     <Check className="w-3.5 h-3.5" />
                     <span>Approve</span>
@@ -234,7 +234,7 @@ export const AIDocumentCenter: React.FC<AIDocumentCenterProps> = ({
                     onApproveDocument(selectedDoc.id);
                     setSelectedDoc(null);
                   }}
-                  className="px-4 py-1.5 rounded-lg bg-blue-600 text-white font-medium text-xs hover:bg-blue-700"
+                  className="px-4 py-1.5 rounded-lg bg-blue-600 text-white font-medium text-xs interaction-btn-primary"
                 >
                   Approve Data
                 </button>

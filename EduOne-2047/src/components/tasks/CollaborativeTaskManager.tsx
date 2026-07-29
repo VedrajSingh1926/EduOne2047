@@ -163,7 +163,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
           <button
             onClick={loadGoogleTasks}
             disabled={isSyncing}
-            className="px-3.5 py-2 text-xs font-medium text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition-all flex items-center gap-1.5 shadow-2xs"
+            className="px-3.5 py-2 text-xs font-medium text-slate-700 bg-white interaction-row border border-slate-200 rounded-xl transition-all flex items-center gap-1.5 shadow-2xs"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
             Sync Tasks
@@ -171,7 +171,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
 
           <button
             onClick={() => setShowModal(true)}
-            className="px-4 py-2 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-2xs transition-all flex items-center gap-1.5"
+            className="px-4 py-2 text-xs font-medium text-white bg-blue-600 interaction-btn-primary rounded-xl shadow-2xs transition-all flex items-center gap-1.5"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Create Task</span>
@@ -270,7 +270,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
                 {colTasks.map((t) => (
                   <div
                     key={t.id}
-                    className="p-4 rounded-xl bg-white border border-slate-200/90 shadow-2xs space-y-2.5"
+                    className="p-4 rounded-xl bg-white border border-slate-200/90 shadow-2xs interaction-card space-y-2.5"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
@@ -314,7 +314,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
       </div>
 
       {/* Role-Based Access Control Matrix */}
-      <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs space-y-4">
+      <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs interaction-card space-y-4">
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-indigo-600" />
           <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
@@ -417,7 +417,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700"
+                  className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold interaction-btn-primary"
                 >
                   Save Task
                 </button>

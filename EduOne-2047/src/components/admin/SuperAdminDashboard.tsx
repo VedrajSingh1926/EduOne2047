@@ -4,6 +4,7 @@ import { ref, get, set, child } from 'firebase/database';
 import { db } from '../../lib/firebase';
 import { Role } from '../../types';
 import { ROLE_PERMISSIONS } from '../../config/rbac';
+import toast from 'react-hot-toast';
 
 export const SuperAdminDashboard: React.FC = () => {
   const [users, setUsers] = useState<any[]>([]);
@@ -40,6 +41,7 @@ export const SuperAdminDashboard: React.FC = () => {
     setFeedback({ type: '', message: '' });
 
     if (!newStaffId || !newName || !newPassword) {
+      toast.error('Please fill in all fields.');
       setFeedback({ type: 'error', message: 'Please fill in all fields.' });
       return;
     }
@@ -51,6 +53,7 @@ export const SuperAdminDashboard: React.FC = () => {
         role: newRole,
         password: newPassword
       });
+      toast.success('User registered successfully!');
       setFeedback({ type: 'success', message: 'User registered successfully!' });
       // Reset form
       setNewStaffId('');
@@ -60,6 +63,7 @@ export const SuperAdminDashboard: React.FC = () => {
       fetchUsers();
     } catch (err) {
       console.error(err);
+      toast.error('Failed to register user.');
       setFeedback({ type: 'error', message: 'Failed to register user.' });
     }
   };
@@ -79,7 +83,7 @@ export const SuperAdminDashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Registration Form */}
-        <div className="lg:col-span-1 bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+        <div className="lg:col-span-1 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 interaction-card">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 mb-6">
             <UserPlus className="w-5 h-5 text-blue-600" />
             Register New Staff
@@ -117,14 +121,14 @@ export const SuperAdminDashboard: React.FC = () => {
               <input type="text" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="e.g. temp123" className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
             </div>
 
-            <button type="submit" className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2.5 rounded-xl transition-colors mt-2 shadow-md">
+            <button type="submit" className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2.5 rounded-xl mt-2 shadow-md interaction-btn-primary">
               Create Account
             </button>
           </form>
         </div>
 
         {/* User List */}
-        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden interaction-card">
           <div className="p-6 border-b border-slate-100 flex items-center justify-between">
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
               <Users className="w-5 h-5 text-blue-600" />
@@ -150,7 +154,7 @@ export const SuperAdminDashboard: React.FC = () => {
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {users.map((u) => (
-                    <tr key={u.id} className="hover:bg-slate-50">
+                    <tr key={u.id} className="interaction-row">
                       <td className="px-6 py-4 font-mono font-bold text-slate-900">{u.id}</td>
                       <td className="px-6 py-4 font-medium">{u.name}</td>
                       <td className="px-6 py-4">
@@ -175,7 +179,7 @@ export const SuperAdminDashboard: React.FC = () => {
       </div>
 
       {/* Roles & Permissions Matrix */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mt-6">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mt-6 interaction-card">
         <div className="p-6 border-b border-slate-100">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-blue-600" />

@@ -73,7 +73,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
             onClick={() => {
               lowAttendanceStudents.forEach((s) => handleAlert(s, 'Continuous low attendance alert'));
             }}
-            className="px-3 py-1.5 rounded-xl bg-blue-600 text-white text-xs font-medium hover:bg-blue-700 transition-all flex items-center gap-1.5 shrink-0 shadow-2xs self-start sm:self-auto"
+            className="px-3 py-1.5 rounded-xl bg-blue-600 text-white text-xs font-medium flex items-center gap-1.5 shrink-0 shadow-2xs self-start sm:self-auto interaction-btn-primary"
           >
             <BellRing className="w-3.5 h-3.5" />
             <span>Notify At-Risk Parents</span>
@@ -82,7 +82,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
       )}
 
       {/* Controls Bar */}
-      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3 interaction-card">
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <label className="text-xs font-semibold text-slate-700 whitespace-nowrap">Class:</label>
           <select
@@ -112,7 +112,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
       </div>
 
       {/* Attendance Roster Table */}
-      <div className="rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden">
+      <div className="rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden interaction-card">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
@@ -133,7 +133,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
                 return (
                   <tr
                     key={s.id}
-                    className="hover:bg-slate-50/70 transition-colors"
+                    className="interaction-row"
                   >
                     <td className="p-3.5 pl-4">
                       <div className="font-semibold text-slate-900">{s.name}</div>
@@ -167,19 +167,19 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
                       <div className="flex items-center gap-1">
                         <button
                           onClick={() => onMarkAttendance(s.id, 'PRESENT')}
-                          className="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-medium transition-colors"
+                          className="px-2 py-1 rounded bg-slate-100 text-slate-800 text-xs font-medium interaction-btn-secondary border border-transparent"
                         >
                           Present
                         </button>
                         <button
                           onClick={() => onMarkAttendance(s.id, 'ABSENT')}
-                          className="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-medium transition-colors"
+                          className="px-2 py-1 rounded bg-slate-100 text-slate-800 text-xs font-medium interaction-btn-secondary border border-transparent"
                         >
                           Absent
                         </button>
                         <button
                           onClick={() => onMarkAttendance(s.id, 'LATE')}
-                          className="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-medium transition-colors"
+                          className="px-2 py-1 rounded bg-slate-100 text-slate-800 text-xs font-medium interaction-btn-secondary border border-transparent"
                         >
                           Late
                         </button>
@@ -190,10 +190,10 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
                       <button
                         onClick={() => handleAlert(s, s.riskFlag || 'Absence alert')}
                         disabled={isAlertSent}
-                        className={`px-3 py-1 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ml-auto ${
+                        className={`px-3 py-1 rounded-xl text-xs font-medium flex items-center gap-1.5 ml-auto ${
                           isAlertSent
                             ? 'bg-slate-100 text-slate-400'
-                            : 'bg-blue-600 text-white hover:bg-blue-700 shadow-2xs'
+                            : 'bg-blue-600 text-white shadow-2xs interaction-btn-primary'
                         }`}
                       >
                         <Send className="w-3 h-3" />

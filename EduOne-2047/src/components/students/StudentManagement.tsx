@@ -102,7 +102,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white text-xs font-medium hover:bg-blue-700 transition-all flex items-center gap-1.5 rounded-xl shadow-2xs self-start sm:self-auto"
+          className="px-4 py-2 bg-blue-600 text-white text-xs font-medium interaction-btn-primary flex items-center gap-1.5 rounded-xl shadow-2xs self-start sm:self-auto"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Add Student</span>
@@ -110,7 +110,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
       </div>
 
       {/* Search & Filter Controls */}
-      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs interaction-card flex flex-col md:flex-row items-center justify-between gap-3">
         <div className="relative flex-1 w-full">
           <Search className="w-3.5 h-3.5 absolute left-3 top-3 text-slate-400" />
           <input
@@ -150,7 +150,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
       </div>
 
       {/* Clean Table */}
-      <div className="rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden">
+      <div className="rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden interaction-card">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
@@ -168,7 +168,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
               {filteredStudents.map((s) => (
                 <tr
                   key={s.id}
-                  className="hover:bg-slate-50/70 transition-colors"
+                  className="interaction-row"
                 >
                   <td className="p-3.5 pl-4">
                     <div className="flex items-center gap-3">
@@ -322,7 +322,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                   onOpenDocOCR(selectedStudent.name);
                   setSelectedStudent(null);
                 }}
-                className="px-4 py-2 rounded-xl bg-blue-600 text-white font-medium text-xs hover:bg-blue-700 transition-all"
+                className="px-4 py-2 rounded-xl bg-blue-600 text-white font-medium text-xs interaction-btn-primary"
               >
                 Scan Admission Documents
               </button>
@@ -428,7 +428,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700"
+                  className="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium interaction-btn-primary"
                 >
                   Save Record
                 </button>

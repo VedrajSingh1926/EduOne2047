@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { LandingPage } from './components/landing/LandingPage';
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar } from './components/layout/Sidebar';
@@ -31,6 +32,10 @@ import {
   INITIAL_TASKS,
   INITIAL_ATTENDANCE_RECORDS
 } from './data/mockDatabase';
+import { useFirebaseState } from './hooks/useFirebaseState';
+import { ref, set, update, push, get } from 'firebase/database';
+import { db } from './lib/firebase';
+import toast from 'react-hot-toast';
 
 import { Student, Teacher, FeeRecord, DocumentItem, TimetableSlot, EscalationItem, AIActionLog, SupplyItem, CollaborativeTask, AttendanceRecord, CurrentUser, Role } from './types';
 import { canAccess, getDefaultDashboard, hasPermission } from './hooks/usePermissions';
@@ -142,16 +147,16 @@ function CoreApplication() {
   }, []);
 
   // App State Store
-  const [students, setStudents] = useState<Student[]>(INITIAL_STUDENTS);
-  const [teachers, setTeachers] = useState<Teacher[]>(INITIAL_TEACHERS);
-  const [fees, setFees] = useState<FeeRecord[]>(INITIAL_FEES);
-  const [documents, setDocuments] = useState<DocumentItem[]>(INITIAL_DOCUMENTS);
-  const [timetable, setTimetable] = useState<TimetableSlot[]>(INITIAL_TIMETABLE);
-  const [escalations, setEscalations] = useState<EscalationItem[]>(INITIAL_ESCALATIONS);
-  const [aiLogs, setAiLogs] = useState<AIActionLog[]>(INITIAL_AI_LOGS);
-  const [supplyItems, setSupplyItems] = useState<SupplyItem[]>(INITIAL_SUPPLY_ITEMS);
-  const [tasks, setTasks] = useState<CollaborativeTask[]>(INITIAL_TASKS);
-  const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>(INITIAL_ATTENDANCE_RECORDS);
+  const students = useFirebaseState<Student>('students', INITIAL_STUDENTS);
+  const teachers = useFirebaseState<Teacher>('teachers', INITIAL_TEACHERS);
+  const fees = useFirebaseState<FeeRecord>('fees', INITIAL_FEES);
+  const documents = useFirebaseState<DocumentItem>('documents', INITIAL_DOCUMENTS);
+  const timetable = useFirebaseState<TimetableSlot>('timetable', INITIAL_TIMETABLE);
+  const escalations = useFirebaseState<EscalationItem>('escalations', INITIAL_ESCALATIONS);
+  const aiLogs = useFirebaseState<AIActionLog>('ai_logs', INITIAL_AI_LOGS);
+  const supplyItems = useFirebaseState<SupplyItem>('supplies', INITIAL_SUPPLY_ITEMS);
+  const tasks = useFirebaseState<CollaborativeTask>('tasks', INITIAL_TASKS);
+  const attendanceRecords = useFirebaseState<AttendanceRecord>('attendance', INITIAL_ATTENDANCE_RECORDS);
 
   const unresolvedEscalationsCount = escalations.filter((e) => e.status === 'UNRESOLVED').length;
 
@@ -163,206 +168,265 @@ function CoreApplication() {
   };
 
   // State Updates
-  const handleAddStudent = (newStudent: Student) => {
-    setStudents((prev) => [newStudent, ...prev]);
+  const handleAddStudent = async (newStudent: Student) => {
+    try {
+      await set(ref(db, `students/${newStudent.id}`), newStudent);
+      toast.success('Student added successfully!');
+    } catch (e) {
+      toast.error('Failed to add student.');
+    }
   };
 
-  const handleAssignSubstitute = (teacherOrSlotId: string, substituteTeacherName: string) => {
+  const handleAssignSubstitute = async (teacherOrSlotId: string, substituteTeacherName: string) => {
     if (!hasPermission(activeUser, PERMISSIONS.TIMETABLE_MANAGE)) {
-      alert("UNAUTHORIZED: You do not have permission to manage timetables.");
+      toast.error("UNAUTHORIZED: You do not have permission to manage timetables.");
       return;
     }
-    setTimetable((prev) =>
-      prev.map((slot) => {
-        if (slot.id === teacherOrSlotId || slot.teacherId === teacherOrSlotId) {
-          return {
-            ...slot,
-            teacherName: substituteTeacherName,
-            isSubstitute: true,
-            originalTeacherName: `${slot.teacherName} (On Leave)`
-          };
-        }
-        return slot;
-      })
-    );
-
-    // Add log
-    const newLog: AIActionLog = {
-      id: `LOG-${Date.now()}`,
-      agentName: 'Timetable Agent',
-      actionTitle: 'Substitute Assigned',
-      details: `Assigned ${substituteTeacherName} for class coverage.`,
-      confidenceScore: 98,
-      reason: 'Matched subject qualification & free slot schedule.',
-      source: 'Teacher Schedule Graph',
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      status: 'SUCCESS'
-    };
-    setAiLogs((prev) => [newLog, ...prev]);
+    try {
+      const slot = timetable.find(s => s.id === teacherOrSlotId || s.teacherId === teacherOrSlotId);
+      if (slot) {
+        await update(ref(db, `timetable/${slot.id}`), {
+          teacherName: substituteTeacherName,
+          isSubstitute: true,
+          originalTeacherName: `${slot.teacherName} (On Leave)`
+        });
+        
+        const newLog: AIActionLog = {
+          id: `LOG-${Date.now()}`,
+          agentName: 'Timetable Agent',
+          actionTitle: 'Substitute Assigned',
+          details: `Assigned ${substituteTeacherName} for class coverage.`,
+          confidenceScore: 98,
+          reason: 'Matched subject qualification & free slot schedule.',
+          source: 'Teacher Schedule Graph',
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          status: 'SUCCESS'
+        };
+        await set(ref(db, `ai_logs/${newLog.id}`), newLog);
+        toast.success('Substitute assigned successfully.');
+      } else {
+        toast.error('Timetable slot not found.');
+      }
+    } catch(e) {
+      toast.error('Failed to assign substitute.');
+    }
   };
 
-  const handleUpdateTeacherStatus = (teacherId: string, newStatus: 'PRESENT' | 'ABSENT' | 'ON_LEAVE') => {
+  const handleUpdateTeacherStatus = async (teacherId: string, newStatus: 'PRESENT' | 'ABSENT' | 'ON_LEAVE') => {
     if (!hasPermission(activeUser, PERMISSIONS.TEACHERS_MANAGE)) {
-      alert("UNAUTHORIZED: You do not have permission to manage teachers.");
+      toast.error("UNAUTHORIZED: You do not have permission to manage teachers.");
       return;
     }
-    setTeachers((prev) =>
-      prev.map((t) => (t.id === teacherId ? { ...t, status: newStatus } : t))
-    );
+    try {
+      await update(ref(db, `teachers/${teacherId}`), { status: newStatus });
+      toast.success('Teacher status updated.');
+    } catch(e) {
+      toast.error('Failed to update status.');
+    }
   };
 
-  const handleMarkAttendance = (studentId: string, status: 'PRESENT' | 'ABSENT' | 'LATE' | 'EXCUSED') => {
+  const handleMarkAttendance = async (studentId: string, status: 'PRESENT' | 'ABSENT' | 'LATE' | 'EXCUSED') => {
     if (!hasPermission(activeUser, PERMISSIONS.ATTENDANCE_MARK_HOMEROOM)) {
-      alert("UNAUTHORIZED: You do not have permission to mark attendance.");
+      toast.error("UNAUTHORIZED: You do not have permission to mark attendance.");
       return;
     }
-    setStudents((prev) =>
-      prev.map((s) => {
-        if (s.id === studentId) {
-          const newPct = status === 'ABSENT' ? Math.max(50, s.attendancePct - 1.5) : Math.min(100, s.attendancePct + 0.5);
-          return { ...s, attendancePct: Number(newPct.toFixed(1)) };
-        }
-        return s;
-      })
-    );
+    try {
+      const student = students.find(s => s.id === studentId);
+      if (student) {
+        const newPct = status === 'ABSENT' ? Math.max(50, student.attendancePct - 1.5) : Math.min(100, student.attendancePct + 0.5);
+        await update(ref(db, `students/${studentId}`), { attendancePct: Number(newPct.toFixed(1)) });
+        toast.success(`Attendance marked ${status}.`);
+      }
+    } catch(e) {
+      toast.error('Failed to mark attendance.');
+    }
   };
 
-  const handleSendParentAlert = (studentName: string, parentPhone: string, reason: string) => {
-    const newLog: AIActionLog = {
-      id: `LOG-${Date.now()}`,
-      agentName: 'Attendance Agent',
-      actionTitle: 'Parent Notified',
-      details: `Dispatched SMS/WhatsApp alert to ${parentPhone} for ${studentName} (${reason}).`,
-      confidenceScore: 99,
-      reason: 'Attendance dropped below threshold or consecutive absences detected.',
-      source: 'Smart Attendance Matrix',
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      status: 'SUCCESS'
-    };
-    setAiLogs((prev) => [newLog, ...prev]);
+
+  const handleSendParentAlert = async (studentName: string, parentPhone: string, reason: string) => {
+    try {
+      const newLog: AIActionLog = {
+        id: `LOG-${Date.now()}`,
+        agentName: 'Attendance Agent',
+        actionTitle: 'Parent Notified',
+        details: `Dispatched SMS/WhatsApp alert to ${parentPhone} for ${studentName} (${reason}).`,
+        confidenceScore: 99,
+        reason: 'Attendance dropped below threshold or consecutive absences detected.',
+        source: 'Smart Attendance Matrix',
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        status: 'SUCCESS'
+      };
+      await set(ref(db, `ai_logs/${newLog.id}`), newLog);
+      toast.success('Parent alert sent.');
+    } catch(e) {
+      toast.error('Failed to send parent alert.');
+    }
   };
 
-  const handleUploadReceipt = (fileName: string, studentName: string) => {
+  const handleUploadReceipt = async (fileName: string, studentName: string) => {
     if (!hasPermission(activeUser, PERMISSIONS.DOCUMENTS_UPLOAD_FEE)) {
-      alert("UNAUTHORIZED: You do not have permission to upload fee receipts.");
+      toast.error("UNAUTHORIZED: You do not have permission to upload fee receipts.");
       return;
     }
-    const newDoc: DocumentItem = {
-      id: `DOC-${Date.now()}`,
-      fileName,
-      type: 'FEE_RECEIPT',
-      uploadedAt: new Date().toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }),
-      studentOrTeacherName: studentName,
-      extractedFields: {
-        studentName,
-        utrCode: 'UPI/20260727/110099',
-        amountPaid: '₹15,000',
-        bankName: 'ICICI Bank'
-      },
-      confidenceScore: 96,
-      status: 'APPROVED',
-      fileSize: '620 KB'
-    };
-    setDocuments((prev) => [newDoc, ...prev]);
+    try {
+      const newDoc: DocumentItem = {
+        id: `DOC-${Date.now()}`,
+        fileName,
+        type: 'FEE_RECEIPT',
+        uploadedAt: new Date().toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }),
+        studentOrTeacherName: studentName,
+        extractedFields: {
+          studentName,
+          utrCode: 'UPI/20260727/110099',
+          amountPaid: '₹15,000',
+          bankName: 'ICICI Bank'
+        },
+        confidenceScore: 96,
+        status: 'APPROVED',
+        fileSize: '620 KB'
+      };
+      await set(ref(db, `documents/${newDoc.id}`), newDoc);
+      toast.success('Fee receipt uploaded.');
+    } catch(e) {
+      toast.error('Failed to upload receipt.');
+    }
   };
 
-  const handleResolveMismatch = (feeId: string) => {
+  const handleResolveMismatch = async (feeId: string) => {
     if (!hasPermission(activeUser, PERMISSIONS.FEES_RECONCILE)) {
-      alert("UNAUTHORIZED: You do not have permission to reconcile fees.");
+      toast.error("UNAUTHORIZED: You do not have permission to reconcile fees.");
       return;
     }
-    setFees((prev) =>
-      prev.map((f) => (f.id === feeId ? { ...f, status: 'PAID', confidenceScore: 99 } : f))
-    );
-    setEscalations((prev) =>
-      prev.map((e) => (e.id === 'ESC-001' ? { ...e, status: 'RESOLVED' } : e))
-    );
+    try {
+      await update(ref(db, `fees/${feeId}`), { status: 'PAID', confidenceScore: 99 });
+      // Resolve the static escalation ESC-001
+      await update(ref(db, `escalations/ESC-001`), { status: 'RESOLVED' });
+      toast.success('Fee mismatch resolved.');
+    } catch(e) {
+      toast.error('Failed to resolve mismatch.');
+    }
   };
 
-  const handleSendFeeReminder = (studentName: string) => {
-    const newLog: AIActionLog = {
-      id: `LOG-${Date.now()}`,
-      agentName: 'Finance Agent',
-      actionTitle: 'Fee Reminder Sent',
-      details: `Sent payment reminder notice to parent of ${studentName}.`,
-      confidenceScore: 99,
-      reason: 'Pending ledger balance detected.',
-      source: 'Student Fee Ledger',
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      status: 'SUCCESS'
-    };
-    setAiLogs((prev) => [newLog, ...prev]);
+  const handleSendFeeReminder = async (studentName: string) => {
+    try {
+      const newLog: AIActionLog = {
+        id: `LOG-${Date.now()}`,
+        agentName: 'Finance Agent',
+        actionTitle: 'Fee Reminder Sent',
+        details: `Sent payment reminder notice to parent of ${studentName}.`,
+        confidenceScore: 99,
+        reason: 'Pending ledger balance detected.',
+        source: 'Student Fee Ledger',
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        status: 'SUCCESS'
+      };
+      await set(ref(db, `ai_logs/${newLog.id}`), newLog);
+      toast.success('Fee reminder sent.');
+    } catch(e) {
+      toast.error('Failed to send fee reminder.');
+    }
   };
 
-  const handleUploadDocument = (file: File) => {
+  const handleUploadDocument = async (file: File) => {
     if (!hasPermission(activeUser, PERMISSIONS.DOCUMENTS_UPLOAD_ALL)) {
-      alert("UNAUTHORIZED: You do not have permission to upload general documents.");
+      toast.error("UNAUTHORIZED: You do not have permission to upload general documents.");
       return;
     }
-    const newDoc: DocumentItem = {
-      id: `DOC-${Date.now()}`,
-      fileName: file.name,
-      type: 'ADMISSION_FORM',
-      uploadedAt: new Date().toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }),
-      studentOrTeacherName: file.name.split('.')[0],
-      extractedFields: {
-        candidateName: file.name.split('.')[0].replace(/_/g, ' '),
-        dateOfBirth: '2011-08-15',
-        parentName: 'Guardian Name',
-        status: 'Extracted via Gemini 2.5 Flash OCR'
-      },
-      confidenceScore: 95,
-      status: 'APPROVED',
-      fileSize: `${(file.size / 1024).toFixed(0)} KB`
-    };
-    setDocuments((prev) => [newDoc, ...prev]);
+    try {
+      const newDoc: DocumentItem = {
+        id: `DOC-${Date.now()}`,
+        fileName: file.name,
+        type: 'ADMISSION_FORM',
+        uploadedAt: new Date().toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }),
+        studentOrTeacherName: file.name.split('.')[0],
+        extractedFields: {
+          candidateName: file.name.split('.')[0].replace(/_/g, ' '),
+          dateOfBirth: '2011-08-15',
+          parentName: 'Guardian Name',
+          status: 'Extracted via Gemini 2.5 Flash OCR'
+        },
+        confidenceScore: 95,
+        status: 'APPROVED',
+        fileSize: `${(file.size / 1024).toFixed(0)} KB`
+      };
+      await set(ref(db, `documents/${newDoc.id}`), newDoc);
+      toast.success('Document uploaded successfully.');
+    } catch(e) {
+      toast.error('Failed to upload document.');
+    }
   };
 
-  const handleApproveDocument = (docId: string) => {
+  const handleApproveDocument = async (docId: string) => {
     if (!hasPermission(activeUser, PERMISSIONS.DOCUMENTS_MANAGE_ALL)) {
-      alert("UNAUTHORIZED: You do not have permission to approve documents.");
+      toast.error("UNAUTHORIZED: You do not have permission to approve documents.");
       return;
     }
-    setDocuments((prev) =>
-      prev.map((d) => (d.id === docId ? { ...d, status: 'APPROVED' } : d))
-    );
+    try {
+      await update(ref(db, `documents/${docId}`), { status: 'APPROVED' });
+      toast.success('Document approved.');
+    } catch(e) {
+      toast.error('Failed to approve document.');
+    }
   };
 
-  const handleRejectDocument = (docId: string) => {
-    setDocuments((prev) =>
-      prev.map((d) => (d.id === docId ? { ...d, status: 'REJECTED' } : d))
-    );
+  const handleRejectDocument = async (docId: string) => {
+    if (!hasPermission(activeUser, PERMISSIONS.DOCUMENTS_MANAGE_ALL)) {
+      toast.error("UNAUTHORIZED: You do not have permission to reject documents.");
+      return;
+    }
+    try {
+      await update(ref(db, `documents/${docId}`), { status: 'REJECTED' });
+      toast.success('Document rejected.');
+    } catch(e) {
+      toast.error('Failed to reject document.');
+    }
   };
 
-  const handleGenerateTimetable = () => {
-    const newLog: AIActionLog = {
-      id: `LOG-${Date.now()}`,
-      agentName: 'Timetable Agent',
-      actionTitle: 'Timetable Regenerated',
-      details: 'Conflict-free weekly schedule generated across 18 classrooms.',
-      confidenceScore: 99,
-      reason: 'Zero room collisions & faculty workload cap respected.',
-      source: 'Schedule Optimizer',
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      status: 'SUCCESS'
-    };
-    setAiLogs((prev) => [newLog, ...prev]);
+  const handleGenerateTimetable = async () => {
+    try {
+      const newLog: AIActionLog = {
+        id: `LOG-${Date.now()}`,
+        agentName: 'Timetable Agent',
+        actionTitle: 'Timetable Regenerated',
+        details: 'Conflict-free weekly schedule generated across 18 classrooms.',
+        confidenceScore: 99,
+        reason: 'Zero room collisions & faculty workload cap respected.',
+        source: 'Schedule Optimizer',
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        status: 'SUCCESS'
+      };
+      await set(ref(db, `ai_logs/${newLog.id}`), newLog);
+      toast.success('Timetable regenerated.');
+    } catch(e) {
+      toast.error('Failed to regenerate timetable.');
+    }
   };
 
-  const handleResolveEscalation = (id: string) => {
-    setEscalations((prev) =>
-      prev.map((e) => (e.id === id ? { ...e, status: 'RESOLVED' } : e))
-    );
+  const handleResolveEscalation = async (id: string) => {
+    try {
+      await update(ref(db, `escalations/${id}`), { status: 'RESOLVED' });
+      toast.success('Escalation resolved.');
+    } catch(e) {
+      toast.error('Failed to resolve escalation.');
+    }
   };
 
-  const handleAddTask = (newTask: CollaborativeTask) => {
-    setTasks((prev) => [newTask, ...prev]);
+  const handleAddTask = async (newTask: CollaborativeTask) => {
+    try {
+      await set(ref(db, `tasks/${newTask.id}`), newTask);
+      toast.success('Task added.');
+    } catch(e) {
+      toast.error('Failed to add task.');
+    }
   };
 
-  const handleUpdateTaskStatus = (taskId: string, status: CollaborativeTask['status']) => {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === taskId ? { ...t, status } : t))
-    );
+  const handleUpdateTaskStatus = async (taskId: string, status: CollaborativeTask['status']) => {
+    try {
+      await update(ref(db, `tasks/${taskId}`), { status });
+      // omit toast for silent checkbox updates to reduce noise, or keep it subtle
+    } catch(e) {
+      toast.error('Failed to update task.');
+    }
   };
 
   const handleExecuteSystemAction = (actionType: string, actionData?: any) => {
@@ -570,10 +634,19 @@ function CoreApplication() {
 export default function App() {
   const navigate = useNavigate();
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage onOpenLogin={() => navigate('/app')} />} />
-      <Route path="/app" element={<CoreApplication />} />
-      <Route path="/init-db" element={<InitDBRoute />} />
-    </Routes>
+    <>
+      <Toaster 
+        position="top-right" 
+        toastOptions={{ 
+          className: 'text-sm font-bold',
+          duration: 3000,
+        }} 
+      />
+      <Routes>
+        <Route path="/" element={<LandingPage onOpenLogin={() => navigate('/app')} />} />
+        <Route path="/app" element={<CoreApplication />} />
+        <Route path="/init-db" element={<InitDBRoute />} />
+      </Routes>
+    </>
   );
 }

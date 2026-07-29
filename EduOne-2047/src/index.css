@@ -46,3 +46,30 @@
   }
 }
 
+@layer components {
+  @media (prefers-reduced-motion: no-preference) {
+    .interaction-card {
+      @apply transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-lg hover:shadow-slate-200/50;
+    }
+    
+    .interaction-btn-primary {
+      @apply transition-all duration-150 ease-in-out hover:brightness-110 active:scale-95;
+    }
+    
+    .interaction-btn-secondary {
+      @apply transition-colors duration-150 ease-in-out hover:bg-slate-50 hover:border-slate-300;
+    }
+    
+    .interaction-row {
+      @apply transition-colors duration-150 ease-in-out hover:bg-slate-50 cursor-pointer;
+    }
+    
+    .interaction-icon-btn {
+      @apply transition-colors duration-150 ease-in-out hover:bg-slate-100 rounded-full flex items-center justify-center;
+    }
+    
+    .interaction-nav-item {
+      @apply transition-all duration-200 ease-in-out hover:bg-slate-800/50;
+    }
+  }
+}

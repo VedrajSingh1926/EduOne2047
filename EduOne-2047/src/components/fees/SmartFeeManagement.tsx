@@ -84,7 +84,7 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
         <div className="flex gap-2 self-start sm:self-auto">
           <button
             onClick={() => setShowBankReconModal(true)}
-            className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs"
+            className="px-4 py-2 rounded-xl bg-slate-800 text-white text-xs font-medium flex items-center gap-1.5 shadow-2xs interaction-btn-primary"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             <span>Bank CSV Recon</span>
@@ -92,7 +92,7 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
           
           <button
             onClick={() => setShowReceiptModal(true)}
-            className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs"
+            className="px-4 py-2 rounded-xl bg-blue-600 text-white text-xs font-medium flex items-center gap-1.5 shadow-2xs interaction-btn-primary"
           >
             <Upload className="w-3.5 h-3.5" />
             <span>Upload Receipt OCR</span>
@@ -102,7 +102,7 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
 
       {/* Summary KPI Stripe */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+        <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs interaction-card">
           <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider block">Total Collected</span>
           <div className="text-2xl font-bold text-slate-900 mt-1 tracking-tight">
             ₹{totalCollected.toLocaleString()}
@@ -110,7 +110,7 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
           <p className="text-xs text-slate-400 mt-1">Verified against bank records</p>
         </div>
 
-        <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+        <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs interaction-card">
           <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider block">Pending Outstanding</span>
           <div className="text-2xl font-bold text-amber-600 mt-1 tracking-tight">
             ₹{totalPending.toLocaleString()}
@@ -118,7 +118,7 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
           <p className="text-xs text-slate-400 mt-1">Automated reminders active</p>
         </div>
 
-        <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+        <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs interaction-card">
           <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider block">Flagged Mismatches</span>
           <div className="text-2xl font-bold text-red-600 mt-1 tracking-tight">
             {mismatches.length} Item
@@ -144,7 +144,7 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
 
           <button
             onClick={() => setSelectedFeeForReview(mismatches[0])}
-            className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium transition-all shrink-0 self-start sm:self-auto shadow-2xs"
+            className="px-3 py-1.5 rounded-xl bg-blue-600 text-white text-xs font-medium shrink-0 self-start sm:self-auto shadow-2xs interaction-btn-primary"
           >
             Review Discrepancy
           </button>
@@ -152,7 +152,7 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
       )}
 
       {/* Filter & Search Bar */}
-      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3 interaction-card">
         <div className="relative flex-1 w-full">
           <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-slate-400" />
           <input
@@ -178,7 +178,7 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
       </div>
 
       {/* Ledger Table */}
-      <div className="rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden">
+      <div className="rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden interaction-card">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
@@ -196,7 +196,7 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
                 const isReminded = remindedMap[fee.id];
 
                 return (
-                  <tr key={fee.id} className="hover:bg-slate-50/70 transition-colors">
+                  <tr key={fee.id} className="interaction-row">
                     <td className="p-3.5 pl-4">
                       <div className="font-semibold text-slate-900">{fee.studentName}</div>
                       <div className="text-[10px] text-slate-400">{fee.invoiceNo} • {fee.gradeClass}</div>
@@ -235,7 +235,7 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
                       {fee.status === 'MISMATCH' ? (
                         <button
                           onClick={() => setSelectedFeeForReview(fee)}
-                          className="px-3 py-1 rounded bg-red-600 text-white font-medium text-xs hover:bg-red-700"
+                          className="px-3 py-1 rounded bg-red-600 text-white font-medium text-xs interaction-btn-primary"
                         >
                           Resolve
                         </button>
@@ -243,10 +243,10 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
                         <button
                           onClick={() => handleReminder(fee)}
                           disabled={fee.status === 'PAID' || isReminded}
-                          className={`px-3 py-1 rounded-xl text-xs font-medium transition-all flex items-center gap-1 ml-auto ${
+                          className={`px-3 py-1 rounded-xl text-xs font-medium flex items-center gap-1 ml-auto ${
                             fee.status === 'PAID' || isReminded
                               ? 'bg-slate-100 text-slate-400'
-                              : 'bg-blue-600 text-white hover:bg-blue-700 shadow-2xs'
+                              : 'bg-blue-600 text-white shadow-2xs interaction-btn-primary'
                           }`}
                         >
                           <Send className="w-3 h-3" />
