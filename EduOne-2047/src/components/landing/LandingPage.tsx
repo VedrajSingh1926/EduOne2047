@@ -97,7 +97,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
       focus: 'Real-time morning operations, teacher absence alerts, substitute assignment approvals, daily attendance oversight, and conduct escalations.'
     },
     {
-      role: 'User ID Administrator',
+      role: 'IT Support',
       user: 'Sarah Connor (IDADM-2047)',
       badge: 'Designated Credentials Staff',
       focus: 'Responsible for total staff user ID creation, password resetting, account locking, issuing official access slips, and credential audit logs.'

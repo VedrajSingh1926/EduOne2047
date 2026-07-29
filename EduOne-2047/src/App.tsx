@@ -33,8 +33,9 @@ import {
 } from './data/mockDatabase';
 
 import { Student, Teacher, FeeRecord, DocumentItem, TimetableSlot, EscalationItem, AIActionLog, SupplyItem, CollaborativeTask, AttendanceRecord, CurrentUser, Role } from './types';
-import { canAccess, getDefaultDashboard } from './hooks/usePermissions';
+import { canAccess, getDefaultDashboard, hasPermission } from './hooks/usePermissions';
 import { APP_ROUTES } from './config/routes';
+import { PERMISSIONS } from './config/rbac';
 import { initializeDatabase } from './lib/db-init';
 
 function InitDBRoute() {
@@ -167,6 +168,10 @@ function CoreApplication() {
   };
 
   const handleAssignSubstitute = (teacherOrSlotId: string, substituteTeacherName: string) => {
+    if (!hasPermission(activeUser, PERMISSIONS.TIMETABLE_MANAGE)) {
+      alert("UNAUTHORIZED: You do not have permission to manage timetables.");
+      return;
+    }
     setTimetable((prev) =>
       prev.map((slot) => {
         if (slot.id === teacherOrSlotId || slot.teacherId === teacherOrSlotId) {
@@ -197,12 +202,20 @@ function CoreApplication() {
   };
 
   const handleUpdateTeacherStatus = (teacherId: string, newStatus: 'PRESENT' | 'ABSENT' | 'ON_LEAVE') => {
+    if (!hasPermission(activeUser, PERMISSIONS.TEACHERS_MANAGE)) {
+      alert("UNAUTHORIZED: You do not have permission to manage teachers.");
+      return;
+    }
     setTeachers((prev) =>
       prev.map((t) => (t.id === teacherId ? { ...t, status: newStatus } : t))
     );
   };
 
   const handleMarkAttendance = (studentId: string, status: 'PRESENT' | 'ABSENT' | 'LATE' | 'EXCUSED') => {
+    if (!hasPermission(activeUser, PERMISSIONS.ATTENDANCE_MARK_HOMEROOM)) {
+      alert("UNAUTHORIZED: You do not have permission to mark attendance.");
+      return;
+    }
     setStudents((prev) =>
       prev.map((s) => {
         if (s.id === studentId) {
@@ -230,6 +243,10 @@ function CoreApplication() {
   };
 
   const handleUploadReceipt = (fileName: string, studentName: string) => {
+    if (!hasPermission(activeUser, PERMISSIONS.DOCUMENTS_UPLOAD_FEE)) {
+      alert("UNAUTHORIZED: You do not have permission to upload fee receipts.");
+      return;
+    }
     const newDoc: DocumentItem = {
       id: `DOC-${Date.now()}`,
       fileName,
@@ -250,6 +267,10 @@ function CoreApplication() {
   };
 
   const handleResolveMismatch = (feeId: string) => {
+    if (!hasPermission(activeUser, PERMISSIONS.FEES_RECONCILE)) {
+      alert("UNAUTHORIZED: You do not have permission to reconcile fees.");
+      return;
+    }
     setFees((prev) =>
       prev.map((f) => (f.id === feeId ? { ...f, status: 'PAID', confidenceScore: 99 } : f))
     );
@@ -274,6 +295,10 @@ function CoreApplication() {
   };
 
   const handleUploadDocument = (file: File) => {
+    if (!hasPermission(activeUser, PERMISSIONS.DOCUMENTS_UPLOAD_ALL)) {
+      alert("UNAUTHORIZED: You do not have permission to upload general documents.");
+      return;
+    }
     const newDoc: DocumentItem = {
       id: `DOC-${Date.now()}`,
       fileName: file.name,
@@ -294,6 +319,10 @@ function CoreApplication() {
   };
 
   const handleApproveDocument = (docId: string) => {
+    if (!hasPermission(activeUser, PERMISSIONS.DOCUMENTS_MANAGE_ALL)) {
+      alert("UNAUTHORIZED: You do not have permission to approve documents.");
+      return;
+    }
     setDocuments((prev) =>
       prev.map((d) => (d.id === docId ? { ...d, status: 'APPROVED' } : d))
     );

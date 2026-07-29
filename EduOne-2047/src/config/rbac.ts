@@ -1,148 +1,90 @@
-import { Role } from '../types';
+export const PERMISSIONS = {
+  DASHBOARD_VIEW_FULL: 'dashboard.view.full',
+  DASHBOARD_VIEW_SCOPED: 'dashboard.view.scoped',
+  OPERATIONS_VIEW_ALL: 'operations.view.all',
+  OPERATIONS_VIEW_CLASS: 'operations.view.class',
+  OPERATIONS_VIEW_FINANCE: 'operations.view.finance',
+  OPERATIONS_VIEW_DOCUMENTS: 'operations.view.documents',
+  STUDENTS_VIEW_ALL: 'students.view.all',
+  STUDENTS_EDIT_ALL: 'students.edit.all',
+  STUDENTS_VIEW_HOMEROOM: 'students.view.homeroom',
+  STUDENTS_EDIT_HOMEROOM: 'students.edit.homeroom',
+  STUDENTS_VIEW_FEE_STATUS: 'students.view.fee_status',
+  STUDENTS_VIEW_BASIC: 'students.view.basic',
+  TEACHERS_VIEW_FULL: 'teachers.view.full',
+  TEACHERS_MANAGE: 'teachers.manage',
+  DOCUMENTS_MANAGE_ALL: 'documents.manage.all',
+  DOCUMENTS_VIEW: 'documents.view',
+  DOCUMENTS_UPLOAD_FEE: 'documents.upload.fee',
+  DOCUMENTS_UPLOAD_ALL: 'documents.upload.all',
+  FEES_MANAGE: 'fees.manage',
+  FEES_VIEW: 'fees.view',
+  FEES_RECONCILE: 'fees.reconcile',
+  TIMETABLE_MANAGE: 'timetable.manage',
+  TIMETABLE_VIEW: 'timetable.view',
+  ATTENDANCE_VIEW_ALL: 'attendance.view.all',
+  ATTENDANCE_MARK_HOMEROOM: 'attendance.mark.homeroom',
+  AI_COMMAND_CENTER: 'ai.command_center',
+  USERS_MANAGE_ALL: 'users.manage.all',
+  SYSTEM_SETTINGS: 'system.settings',
+} as const;
 
-export type Permission = 
-  | 'students.view' | 'students.manage'
-  | 'attendance.view' | 'attendance.mark'
-  | 'fees.view' | 'fees.manage'
-  | 'teachers.view' | 'teachers.manage'
-  | 'library.manage'
-  | 'transport.manage'
-  | 'reports.view'
-  | 'settings.manage'
-  | 'roles.manage'
-  | 'staff.manage'
-  | 'dashboard.view'
-  | 'timetable.view' | 'timetable.manage'
-  | 'exams.manage'
-  | 'documents.manage'
-  | 'tasks.manage'
-  | 'comms.manage'
-  | 'ai.manage';
+export type Permission = typeof PERMISSIONS[keyof typeof PERMISSIONS];
 
-export const STAFF_ROLES: Role[] = [
-  'Principal',
-  'Vice Principal',
-  'Class Teacher',
-  'Subject Teacher',
-  'Exam Coordinator',
-  'Accountant',
-  'Receptionist',
-  'Librarian',
-  'Counselor',
-  'Transport Manager',
-  'IT Support',
-  'Security Guard'
-];
+export const ROLE_PERMISSIONS: Record<string, string[]> = {
+  'Super Admin': Object.values(PERMISSIONS),
 
-type RoleConfig = {
-  permissions: Permission[];
-  defaultDashboard: string;
-};
+  'Principal': [
+    PERMISSIONS.DASHBOARD_VIEW_FULL,
+    PERMISSIONS.OPERATIONS_VIEW_ALL,
+    PERMISSIONS.STUDENTS_VIEW_ALL,
+    PERMISSIONS.STUDENTS_EDIT_ALL,
+    PERMISSIONS.TEACHERS_VIEW_FULL,
+    PERMISSIONS.TEACHERS_MANAGE,
+    PERMISSIONS.DOCUMENTS_VIEW,
+    PERMISSIONS.FEES_VIEW,
+    PERMISSIONS.TIMETABLE_MANAGE,
+    PERMISSIONS.TIMETABLE_VIEW,
+    PERMISSIONS.ATTENDANCE_VIEW_ALL,
+    PERMISSIONS.AI_COMMAND_CENTER,
+  ],
 
-export const ROLE_CONFIGS: Record<Role, RoleConfig> = {
-  'Super Admin': {
-    permissions: [
-      'students.view', 'students.manage',
-      'attendance.view', 'attendance.mark',
-      'fees.view', 'fees.manage',
-      'teachers.view', 'teachers.manage',
-      'library.manage', 'transport.manage',
-      'reports.view', 'settings.manage',
-      'roles.manage', 'staff.manage',
-      'dashboard.view', 'timetable.view', 'timetable.manage',
-      'exams.manage', 'documents.manage', 'tasks.manage',
-      'comms.manage', 'ai.manage'
-    ],
-    defaultDashboard: 'admin-panel'
-  },
-  'Principal': {
-    permissions: [
-      'students.view', 'attendance.view', 'teachers.view', 'teachers.manage',
-      'reports.view', 'dashboard.view', 'timetable.view', 'timetable.manage',
-      'tasks.manage', 'comms.manage', 'ai.manage'
-    ],
-    defaultDashboard: 'dashboard'
-  },
-  'Vice Principal': {
-    permissions: [
-      'students.view', 'attendance.view', 'teachers.view',
-      'reports.view', 'dashboard.view', 'timetable.view',
-      'tasks.manage', 'comms.manage'
-    ],
-    defaultDashboard: 'dashboard'
-  },
-  'Class Teacher': {
-    permissions: [
-      'students.view', 'attendance.view', 'attendance.mark',
-      'dashboard.view', 'timetable.view', 'tasks.manage', 'comms.manage'
-    ],
-    defaultDashboard: 'dashboard'
-  },
-  'Subject Teacher': {
-    permissions: [
-      'students.view', 'attendance.view', 'attendance.mark',
-      'dashboard.view', 'timetable.view', 'tasks.manage'
-    ],
-    defaultDashboard: 'dashboard'
-  },
-  'Exam Coordinator': {
-    permissions: [
-      'students.view', 'dashboard.view', 'timetable.view', 'exams.manage'
-    ],
-    defaultDashboard: 'dashboard'
-  },
-  'Accountant': {
-    permissions: [
-      'students.view', 'fees.view', 'fees.manage', 'dashboard.view', 'reports.view'
-    ],
-    defaultDashboard: 'fees'
-  },
-  'Receptionist': {
-    permissions: [
-      'students.view', 'dashboard.view', 'documents.manage', 'comms.manage'
-    ],
-    defaultDashboard: 'dashboard'
-  },
-  'Librarian': {
-    permissions: [
-      'students.view', 'dashboard.view', 'library.manage'
-    ],
-    defaultDashboard: 'dashboard'
-  },
-  'Counselor': {
-    permissions: [
-      'students.view', 'dashboard.view', 'comms.manage'
-    ],
-    defaultDashboard: 'dashboard'
-  },
-  'Transport Manager': {
-    permissions: [
-      'students.view', 'dashboard.view', 'transport.manage'
-    ],
-    defaultDashboard: 'dashboard'
-  },
-  'IT Support': {
-    permissions: [
-      'staff.manage', 'dashboard.view', 'settings.manage'
-    ],
-    defaultDashboard: 'dashboard'
-  },
-  'Security Guard': {
-    permissions: [
-      'dashboard.view'
-    ],
-    defaultDashboard: 'dashboard'
-  },
-  'Student': {
-    permissions: [
-      'dashboard.view', 'attendance.view', 'timetable.view', 'fees.view'
-    ],
-    defaultDashboard: 'dashboard'
-  },
-  'Parent': {
-    permissions: [
-      'dashboard.view', 'attendance.view', 'fees.view', 'comms.manage'
-    ],
-    defaultDashboard: 'dashboard'
-  }
+  'Class Teacher': [
+    PERMISSIONS.DASHBOARD_VIEW_SCOPED,
+    PERMISSIONS.OPERATIONS_VIEW_CLASS,
+    PERMISSIONS.STUDENTS_VIEW_HOMEROOM,
+    PERMISSIONS.STUDENTS_EDIT_HOMEROOM,
+    PERMISSIONS.TIMETABLE_VIEW,
+    PERMISSIONS.ATTENDANCE_MARK_HOMEROOM,
+    PERMISSIONS.ATTENDANCE_VIEW_ALL,
+  ],
+
+  'Accountant': [
+    PERMISSIONS.DASHBOARD_VIEW_SCOPED,
+    PERMISSIONS.OPERATIONS_VIEW_FINANCE,
+    PERMISSIONS.STUDENTS_VIEW_FEE_STATUS,
+    PERMISSIONS.DOCUMENTS_UPLOAD_FEE,
+    PERMISSIONS.FEES_MANAGE,
+    PERMISSIONS.FEES_RECONCILE,
+  ],
+
+  'Receptionist': [
+    PERMISSIONS.DASHBOARD_VIEW_SCOPED,
+    PERMISSIONS.OPERATIONS_VIEW_DOCUMENTS,
+    PERMISSIONS.STUDENTS_VIEW_BASIC,
+    PERMISSIONS.DOCUMENTS_UPLOAD_ALL,
+    PERMISSIONS.DOCUMENTS_VIEW,
+  ],
+
+  // PHASE 2 Placeholders
+  'Vice Principal': [],
+  'Subject Teacher': [],
+  'Exam Coordinator': [],
+  'IT Support': [],
+  'Librarian': [],
+  'Counselor': [],
+  'Transport Manager': [],
+  'Security Guard': [],
+  'Student': [],
+  'Parent': []
 };
