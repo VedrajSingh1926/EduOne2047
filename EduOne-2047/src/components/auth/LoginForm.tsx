@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Role, CurrentUser } from '../../types';
-import { ShieldCheck, User, Lock, LogIn } from 'lucide-react';
+import { ShieldCheck, User, Lock, LogIn, ArrowLeft } from 'lucide-react';
 import { ref, get, child } from 'firebase/database';
 import { db } from '../../lib/firebase';
+import { useNavigate } from 'react-router-dom';
 
 interface LoginFormProps {
   onLogin: (user: CurrentUser) => void;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
+  const navigate = useNavigate();
   const [staffId, setStaffId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -99,6 +101,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
       {/* Background Gradients */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-indigo-600/10 rounded-full blur-[100px] pointer-events-none" />
+
+      {/* Back to Home Button */}
+      <button 
+        onClick={() => navigate('/')}
+        className="absolute top-6 left-6 sm:top-8 sm:left-8 flex items-center gap-2 px-4 py-2 bg-white/60 hover:bg-white backdrop-blur-md rounded-xl text-slate-700 font-bold shadow-sm transition-all z-20 hover:scale-105 active:scale-95 border border-slate-200/50"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        <span>Home</span>
+      </button>
 
       {/* Main Login Card */}
       <div className="w-full max-w-md bg-white/80 backdrop-blur-xl border border-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-8 relative z-10">

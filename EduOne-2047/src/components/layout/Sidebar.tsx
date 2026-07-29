@@ -25,7 +25,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const commsAndDocs = permittedRoutes.filter(r => r.section === 'comms');
 
   return (
-    <aside className="w-64 bg-white border-r-2 border-slate-200 p-4 flex flex-col justify-between shrink-0 hidden md:flex min-h-[calc(100vh-61px)] shadow-2xs">
+    <aside className="w-64 bg-white border-r-2 border-slate-200 p-4 flex flex-col justify-between shrink-0 hidden md:flex h-[calc(100vh-61px)] sticky top-[61px] overflow-y-auto shadow-2xs">
       <div className="space-y-5">
         
         {/* Core Operations Section */}
