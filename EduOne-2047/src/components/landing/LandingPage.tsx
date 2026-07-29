@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useInView, useMotionValue, useTransform, animate } from 'motion/react';
 import {
   ShieldCheck,
   Zap,
@@ -27,13 +27,31 @@ import {
   Database,
   ArrowRightLeft,
   Clock,
-  Smartphone
+  Smartphone,
+  Briefcase,
+  GraduationCap
 } from 'lucide-react';
 
 interface LandingPageProps {
   onOpenLogin: () => void;
   onQuickRoleLogin?: (role: string, userId: string, name: string) => void;
 }
+
+// Simple CountUp Component
+const CountUp = ({ end, duration = 2, suffix = '' }: { end: number, duration?: number, suffix?: string }) => {
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, Math.round);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (isInView) {
+      animate(count, end, { duration });
+    }
+  }, [isInView, count, end, duration]);
+
+  return <motion.span ref={ref}>{rounded}</motion.span>;
+};
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRoleLogin }) => {
   const [activeTab, setActiveTab] = useState<'documents' | 'finance' | 'timetable' | 'attendance'>('documents');
@@ -98,6 +116,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
     { type: 'Documents', title: 'OCR Confidence Low: Transfer Cert', action: 'Review Highlighted Fields', icon: FileCheck, color: 'text-blue-500', bg: 'bg-blue-100' }
   ];
 
+  const complianceBadges = [
+    "CBSE-Ready", 
+    "ICSE-Ready", 
+    "State Board Compatible", 
+    "DPDP Act–Conscious"
+  ];
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-blue-600 selection:text-white overflow-x-hidden">
       {/* Top Header Navbar */}
@@ -124,7 +149,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
       </header>
 
       {/* SECTION 1 — HERO */}
-      <section className="relative pt-16 pb-20 px-4 sm:px-8 max-w-7xl mx-auto w-full text-center">
+      <section className="relative pt-16 pb-12 px-4 sm:px-8 max-w-7xl mx-auto w-full text-center">
         <motion.div initial="hidden" animate="visible" variants={fadeUpVariant} className="flex flex-col items-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 text-xs font-medium mb-6">
             <Sparkles className="w-3.5 h-3.5" />
@@ -206,8 +231,26 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
         </motion.div>
       </section>
 
+      {/* INFINITE SCROLLING BADGE STRIP */}
+      <div className="w-full bg-white border-y border-slate-200 overflow-hidden py-4 flex group">
+        <motion.div 
+          className="flex items-center whitespace-nowrap min-w-max shrink-0"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ repeat: Infinity, ease: "linear", duration: 30 }}
+        >
+          {/* Duplicate the array to create a seamless infinite scroll loop */}
+          {[...complianceBadges, ...complianceBadges, ...complianceBadges, ...complianceBadges].map((badge, i) => (
+            <div key={i} className="flex items-center gap-2 px-8">
+              <ShieldCheck className="w-4 h-4 text-emerald-500" />
+              <span className="text-sm font-bold text-slate-600 uppercase tracking-wider">{badge}</span>
+              <span className="text-slate-300 mx-6">•</span>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+
       {/* SECTION 2 — COMPARISON */}
-      <section className="py-20 bg-white border-y border-slate-200 overflow-hidden">
+      <section className="py-20 bg-white border-b border-slate-200 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-8">
           <motion.div 
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
@@ -295,9 +338,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
         <div className="max-w-7xl mx-auto px-4 sm:px-8 grid lg:grid-cols-2 gap-16 items-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}>
             <h2 className="text-3xl font-bold text-slate-900 mb-6">The "Needs Attention" Inbox</h2>
-            <p className="text-lg text-slate-600 leading-relaxed">
+            <p className="text-lg text-slate-600 leading-relaxed mb-6">
               Instead of digging through dashboards to find problems, EduOne2047 brings the problems to you. The platform autonomously identifies fee mismatches, absent teachers, and low-confidence OCR scans, presenting them as actionable cards.
             </p>
+            {/* // TODO: add once we have a real pilot - real product demo video loop replacing the right side */}
           </motion.div>
 
           <motion.div 
@@ -339,7 +383,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
               initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
               className="text-center"
             >
-              <div className="text-5xl font-black text-rose-400 line-through decoration-rose-500/50 mb-2">3-4 days/month</div>
+              <div className="text-5xl font-black text-rose-400 line-through decoration-rose-500/50 mb-2">
+                <CountUp end={3} duration={1.5} />-<CountUp end={4} duration={2} /> days/month
+              </div>
               <div className="text-slate-400 flex items-center justify-center gap-2">
                 <FileText className="w-5 h-5" /> Spreadsheets & Chasing Slips
               </div>
@@ -413,6 +459,72 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
               )}
             </AnimatePresence>
           </div>
+        </div>
+      </section>
+
+      {/* NEW SECTION 6.5 — ALTERNATING PERSONA PANELS */}
+      <section className="py-24 bg-white border-b border-slate-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-24">
+          
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-slate-900">What Changes for You</h2>
+          </div>
+
+          {[
+            {
+              role: 'For Principals',
+              headline: 'Total operational oversight without the spreadsheet fatigue.',
+              icon: Briefcase,
+              color: 'text-blue-600',
+              bg: 'bg-blue-50',
+              reverse: false
+            },
+            {
+              role: 'For Accounts Staff',
+              headline: 'End-of-day ledger reconciliation drops from hours to instant.',
+              icon: CreditCard,
+              color: 'text-emerald-600',
+              bg: 'bg-emerald-50',
+              reverse: true
+            },
+            {
+              role: 'For Teachers',
+              headline: 'Less time chasing attendance sheets, more time teaching.',
+              icon: GraduationCap,
+              color: 'text-indigo-600',
+              bg: 'bg-indigo-50',
+              reverse: false
+            },
+            {
+              role: 'For Parents',
+              headline: 'Immediate WhatsApp updates on fees and daily attendance.',
+              icon: Smartphone,
+              color: 'text-amber-600',
+              bg: 'bg-amber-50',
+              reverse: true
+            }
+          ].map((persona, idx) => (
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className={`flex flex-col md:flex-row items-center gap-12 ${persona.reverse ? 'md:flex-row-reverse' : ''}`}
+            >
+              <div className={`flex-1 w-full aspect-video rounded-3xl ${persona.bg} border border-slate-100 flex items-center justify-center shadow-inner`}>
+                <persona.icon className={`w-24 h-24 ${persona.color} opacity-80`} />
+              </div>
+              <div className="flex-1 space-y-4">
+                <div className={`text-sm font-bold uppercase tracking-widest ${persona.color}`}>
+                  {persona.role}
+                </div>
+                <h3 className="text-3xl font-black text-slate-900 leading-tight">
+                  {persona.headline}
+                </h3>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </section>
 
@@ -528,6 +640,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
           </motion.div>
         </div>
       </section>
+
+      {/* 
+        // DO NOT ADD TESTIMONIALS OR LOGO WALL YET
+        // add once we have a real pilot - real testimonials, real metrics, real logo walls
+      */}
 
       {/* SECTION 10 — FINAL CTA & FOOTER */}
       <footer className="py-24 bg-slate-50 border-t border-slate-200 text-center">
