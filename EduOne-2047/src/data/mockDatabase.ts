@@ -593,7 +593,7 @@ export const INITIAL_TASKS: CollaborativeTask[] = [
   {
     id: 'TSK-103',
     title: 'Approve Reorder PO-SUP-2026-44 for A4 Paper Stock',
-    assignedRole: 'Operations Lead',
+    assignedRole: 'IT Support',
     assignedTo: 'Ops Team',
     priority: 'HIGH',
     dueDate: '2026-07-28',
@@ -604,7 +604,7 @@ export const INITIAL_TASKS: CollaborativeTask[] = [
   {
     id: 'TSK-104',
     title: 'Review Medical Certificate for Kabir Mehta Attendance Waiver',
-    assignedRole: 'Registrar',
+    assignedRole: 'Receptionist',
     assignedTo: 'Student Records',
     priority: 'MEDIUM',
     dueDate: '2026-07-29',

@@ -417,7 +417,7 @@ function CoreApplication() {
 
         {/* Main Workspace Area */}
         <main className="flex-1 p-4 lg:p-8 overflow-y-auto">
-          {activeModule === 'admin-panel' && canAccess(activeUser, 'staff.manage') && (
+          {activeModule === 'admin-panel' && canAccess(activeUser, PERMISSIONS.USERS_MANAGE_ALL) && (
             <SuperAdminDashboard />
           )}
 

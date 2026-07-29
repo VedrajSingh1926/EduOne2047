@@ -44,11 +44,11 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
   const [syncNotice, setSyncNotice] = useState<string | null>(null);
 
   const rbacMatrix: { role: Role; permissions: string[] }[] = [
-    { role: 'Admin', permissions: ['Full System Override', 'Final Decision Sign-Off', 'Executive Reports', 'AI Agent Tuning'] },
+    { role: 'Super Admin', permissions: ['Full System Override', 'Final Decision Sign-Off', 'Executive Reports', 'AI Agent Tuning'] },
     { role: 'Vice Principal', permissions: ['Timetable Optimization', 'Teacher Substitutions', 'Leave Approvals', 'Class Attendance'] },
     { role: 'Accountant', permissions: ['Fee Ledger Control', 'Bank Reconciliation', 'Receipt OCR Approval', 'Reminders'] },
-    { role: 'Registrar', permissions: ['Student Admissions', 'Aadhaar Verification', 'Transfer Certificates'] },
-    { role: 'Operations Lead', permissions: ['Supply Orders', 'Inventory Thresholds', 'Lab Equipment', 'Facility Ops'] }
+    { role: 'Receptionist', permissions: ['Student Admissions', 'Aadhaar Verification', 'Transfer Certificates'] },
+    { role: 'IT Support', permissions: ['Supply Orders', 'Inventory Thresholds', 'Lab Equipment', 'Facility Ops'] }
   ];
 
   useEffect(() => {
