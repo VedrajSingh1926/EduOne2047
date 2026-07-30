@@ -151,34 +151,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
       {/* SECTION 1 — HERO */}
       <section className="relative pt-24 pb-20 px-4 sm:px-8 max-w-7xl mx-auto w-full text-center z-10">
         {/* Live Animated Background */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10 rounded-3xl mx-4 sm:mx-0 bg-gradient-to-b from-blue-50/50 to-slate-50/50">
-          <motion.div
-            animate={{
-              y: [0, -20, 0],
-              opacity: [0.3, 0.6, 0.3],
-            }}
-            transition={{ duration: 5, ease: "easeInOut", repeat: Infinity }}
-            className="absolute top-10 left-10 w-32 h-32 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30"
-          />
-          <motion.div
-            animate={{
-              y: [0, 30, 0],
-              x: [0, -20, 0],
-              opacity: [0.2, 0.5, 0.2],
-            }}
-            transition={{ duration: 7, ease: "easeInOut", repeat: Infinity }}
-            className="absolute top-20 right-20 w-48 h-48 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-30"
-          />
-          <motion.div
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.2, 0.4, 0.2],
-            }}
-            transition={{ duration: 8, ease: "easeInOut", repeat: Infinity }}
-            className="absolute bottom-10 left-1/3 w-64 h-64 bg-cyan-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20"
-          />
-          <div className="absolute inset-0 bg-white/40 backdrop-blur-[80px]"></div>
+        <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10 rounded-3xl mx-4 sm:mx-0">
+          <div className="absolute inset-0 opacity-40 animate-gradient-x bg-gradient-to-r from-blue-200 via-indigo-100 to-cyan-200"></div>
+          <div className="absolute inset-0 bg-white/30 backdrop-blur-3xl"></div>
         </div>
+
 
 
         <motion.div initial="hidden" animate="visible" variants={fadeUpVariant} className="flex flex-col items-center">
