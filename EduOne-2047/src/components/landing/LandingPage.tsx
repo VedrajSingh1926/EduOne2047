@@ -129,7 +129,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-blue-600 selection:text-white overflow-x-hidden relative pt-16">
       {/* Top Header Navbar */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-[14px] border-b border-slate-200 px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md shadow-blue-500/20">
             E1
@@ -157,7 +157,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
           
           <button
             onClick={() => onOpenLogin()}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center gap-1.5 hover:-translate-y-0.5"
+            className="px-4 py-2 text-xs rounded-xl flex items-center gap-1.5 hover:-translate-y-0.5 btn-primary"
           >
             <span className="hidden sm:inline">Login</span>
             <span className="sm:hidden">Log in</span>
@@ -167,11 +167,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
       </header>
 
       {/* SECTION 1 — HERO */}
-      <section className="relative pt-24 pb-20 px-4 sm:px-8 max-w-7xl mx-auto w-full text-center z-10">
+      <section className="relative pt-24 pb-20 px-4 sm:px-8 premium-container w-full text-center z-10">
         {/* Live Animated Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10 rounded-3xl mx-4 sm:mx-0">
-          <div className="absolute inset-0 opacity-40 animate-gradient-x bg-gradient-to-r from-blue-200 via-indigo-100 to-cyan-200"></div>
-          <div className="absolute inset-0 bg-white/30 backdrop-blur-[2px]"></div>
+          <div className="absolute inset-0 opacity-40 animate-gradient-x bg-[linear-gradient(180deg,#F7FAF9_0%,#F3F8F7_100%)]"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,97,87,0.08)_0%,transparent_70%)] backdrop-blur-[2px]"></div>
           
           {/* Floating Educational Icons */}
           <motion.div
@@ -211,9 +211,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
 
         <motion.div initial="hidden" animate="visible" variants={fadeUpVariant} className="flex flex-col items-center">
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-tight max-w-4xl mx-auto">
+          <h1 className="text-[clamp(2.5rem,5vw,5.5rem)] font-black tracking-tight text-slate-900 leading-tight max-w-[900px] mx-auto">
             Autonomous School Operations <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500">
               Powered by Specialized AI & Role Control
             </span>
           </h1>
@@ -228,7 +228,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => onOpenLogin()}
-              className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-2xl shadow-xl shadow-blue-600/30 transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-4 text-sm rounded-2xl flex items-center justify-center gap-2 btn-primary"
             >
               <Bot className="w-4 h-4" />
               <span>Launch Portal & Sign In</span>
@@ -239,7 +239,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               href="#features"
-              className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-2xl border border-slate-200 shadow-sm transition-all text-center"
+              className="w-full sm:w-auto px-8 py-4 text-sm rounded-2xl text-center btn-secondary"
             >
               Explore Features
             </motion.a>
@@ -306,7 +306,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
 
       {/* SECTION 2 — COMPARISON */}
       <section className="py-20 bg-white border-b border-slate-200 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+        <div className="premium-container">
           <motion.div 
             initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
             variants={fadeUpVariant}
@@ -355,7 +355,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
 
       {/* SECTION 3 — HOW IT WORKS */}
       <section className="py-24 bg-slate-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-8">
+        <div className="premium-container sm:px-8">
           <motion.h2 
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}
             className="text-3xl font-bold text-center text-slate-900 mb-16"
@@ -390,7 +390,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
 
       {/* SECTION 4 — LIVE DEMO PREVIEW */}
       <section className="py-24 bg-white border-y border-slate-200 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 grid lg:grid-cols-2 gap-16 items-center">
+        <div className="premium-container grid lg:grid-cols-2 gap-16 items-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}>
             <h2 className="text-3xl font-bold text-slate-900 mb-6">The "Needs Attention" Inbox</h2>
             <p className="text-lg text-slate-600 leading-relaxed mb-6">
@@ -407,7 +407,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               {inboxTasks.map((task, i) => (
                 <div 
                   key={i} 
-                  className={`bg-white p-5 rounded-2xl border ${i === inboxStep ? 'border-blue-300 shadow-lg scale-[1.02]' : 'border-slate-200 shadow-sm opacity-60'} transition-all duration-300 flex items-start gap-4 hover:-translate-y-1 hover:shadow-md cursor-default`}
+                  className={`p-5 card-enterprise border ${i === inboxStep ? 'border-blue-300 shadow-lg scale-[1.02]' : 'border-slate-200 shadow-sm opacity-60'} transition-all duration-300 flex items-start gap-4 hover:-translate-y-1 hover:shadow-md cursor-default`}
                 >
                   <div className={`w-10 h-10 shrink-0 rounded-full ${task.bg} ${task.color} flex items-center justify-center`}>
                     <task.icon className="w-5 h-5" />
@@ -431,7 +431,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
       {/* SECTION 5 — FEE RECONCILIATION SPOTLIGHT */}
       <section className="py-32 bg-slate-900 text-white relative overflow-hidden text-center">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-400 via-slate-900 to-slate-900"></div>
-        <div className="max-w-4xl mx-auto px-4 relative z-10">
+        <div className="premium-container relative z-10">
           <h2 className="text-2xl sm:text-3xl font-medium text-slate-300 mb-8">Manual Fee Reconciliation Time</h2>
           <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
             <motion.div 
@@ -463,7 +463,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
 
       {/* SECTION 6 — FEATURE DEEP-DIVE */}
       <section id="features" className="py-24 bg-white border-b border-slate-200 scroll-mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+        <div className="premium-container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900">Core Capabilities</h2>
           </div>
@@ -519,7 +519,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
 
       {/* NEW SECTION 6.5 — ALTERNATING PERSONA PANELS */}
       <section className="py-24 bg-white border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-8 space-y-24">
+        <div className="premium-container space-y-24">
           
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-slate-900">What Changes for You</h2>
@@ -585,44 +585,44 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
 
       {/* SECTION 7 — BUILT FOR INDIAN SCHOOLS */}
       <section className="py-24 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+        <div className="premium-container">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="text-center mb-16">
             <h2 className="text-3xl font-bold text-slate-900">Built for Indian Schools</h2>
             <p className="mt-4 text-slate-600 max-w-2xl mx-auto">Engineered specifically for the realities of Indian education ecosystems.</p>
           </motion.div>
 
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="grid md:grid-cols-3 gap-6">
-            <motion.div variants={scaleUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+            <motion.div variants={scaleUpVariant} className="p-6 card-enterprise hover:-translate-y-1 hover:shadow-md transition-all">
               <Building2 className="w-8 h-8 text-blue-600 mb-4" />
               <h3 className="font-bold text-slate-900 mb-2">Multi-Board Support</h3>
               <p className="text-sm text-slate-600">Native structures mapping exactly to CBSE, ICSE, and State Board academic formatting requirements.</p>
             </motion.div>
 
-            <motion.div variants={scaleUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+            <motion.div variants={scaleUpVariant} className="p-6 card-enterprise hover:-translate-y-1 hover:shadow-md transition-all">
               <CreditCard className="w-8 h-8 text-emerald-600 mb-4" />
               <h3 className="font-bold text-slate-900 mb-2">Indian Fee Structures</h3>
               <p className="text-sm text-slate-600">Complex handling built-in: tuition + transport + sibling discounts + late fines modeled in a real ledger format.</p>
             </motion.div>
 
-            <motion.div variants={scaleUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+            <motion.div variants={scaleUpVariant} className="p-6 card-enterprise hover:-translate-y-1 hover:shadow-md transition-all">
               <MessageCircle className="w-8 h-8 text-green-500 mb-4" />
               <h3 className="font-bold text-slate-900 mb-2">WhatsApp-First Comm</h3>
               <p className="text-sm text-slate-600">Parent notifications default to WhatsApp, ensuring read-receipts and immediate visibility over standard email.</p>
             </motion.div>
 
-            <motion.div variants={scaleUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+            <motion.div variants={scaleUpVariant} className="p-6 card-enterprise hover:-translate-y-1 hover:shadow-md transition-all">
               <Users className="w-8 h-8 text-indigo-600 mb-4" />
               <h3 className="font-bold text-slate-900 mb-2">RTE Quota Tracking</h3>
               <p className="text-sm text-slate-600">Automated flagging for RTE students and scholarship-eligibility to ensure compliance without manual spreadsheets.</p>
             </motion.div>
 
-            <motion.div variants={scaleUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+            <motion.div variants={scaleUpVariant} className="p-6 card-enterprise hover:-translate-y-1 hover:shadow-md transition-all">
               <Globe className="w-8 h-8 text-orange-500 mb-4" />
               <h3 className="font-bold text-slate-900 mb-2">Vernacular Support</h3>
               <p className="text-sm text-slate-600">Core communication templates support Hindi and regional vernacular languages for parent inclusion.</p>
             </motion.div>
 
-            <motion.div variants={scaleUpVariant} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:-translate-y-1 hover:shadow-md transition-all">
+            <motion.div variants={scaleUpVariant} className="p-6 card-enterprise hover:-translate-y-1 hover:shadow-md transition-all">
               <Wifi className="w-8 h-8 text-slate-600 mb-4" />
               <h3 className="font-bold text-slate-900 mb-2">Tier 2/3 Connectivity</h3>
               <p className="text-sm text-slate-600">Lightweight payloads and optimistic UI updates ensure the app remains responsive on patchy 4G connections.</p>
@@ -633,7 +633,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
 
       {/* SECTION 8 — ROLE-BASED PORTALS (SANDBOX) */}
       <section id="sandbox" className="py-24 bg-white border-t border-slate-200 scroll-mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+        <div className="premium-container">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900">Try the Live Demo (Sandbox Data)</h2>
           </motion.div>
@@ -644,7 +644,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
                 key={i} 
                 initial="hidden" whileInView="visible" viewport={{ once: true }} 
                 variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { delay: i * 0.1 } } }}
-                className="bg-slate-50 border border-slate-200 rounded-2xl p-6 flex flex-col hover:-translate-y-1.5 hover:shadow-xl transition-all duration-200 group"
+                className="bg-slate-50 border border-slate-200 rounded-[20px] p-6 flex flex-col hover:-translate-y-1.5 hover:shadow-xl transition-all duration-200 group"
               >
                 <div className="mb-4">
                   <span className="px-2.5 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold rounded uppercase tracking-wider">
@@ -668,7 +668,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
 
       {/* SECTION 9 — TRUST & SECURITY */}
       <section className="py-24 bg-slate-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 text-center">
+        <div className="premium-container text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}>
             <ShieldCheck className="w-12 h-12 text-blue-400 mx-auto mb-6" />
             <h2 className="text-3xl font-bold mb-12">Trust & Security by Design</h2>

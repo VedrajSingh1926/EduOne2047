@@ -512,7 +512,7 @@ function CoreApplication() {
         onOpenShortcuts={() => setIsShortcutsModalOpen(true)}
       />
 
-      <div className="flex h-[calc(100vh-61px)] overflow-hidden relative">
+      <div className="flex h-[calc(100vh-61px)] md:h-screen overflow-hidden relative">
         {/* Left Sidebar */}
         <Sidebar
           activeModule={activeModule}

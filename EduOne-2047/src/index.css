@@ -1,17 +1,97 @@
 @import "tailwindcss";
 
 @theme {
-  --color-blue-50: #edf7f6;
+  /* Primary Brand (#066157) overriding default blue */
+  --color-blue-50: #E6F4F2;
   --color-blue-100: #d2ebe7;
-  --color-blue-200: #a7d3cd;
+  --color-blue-200: #B7D9D4;
   --color-blue-300: #76b3ac;
   --color-blue-400: #4c9089;
   --color-blue-500: #31746e;
   --color-blue-600: #066157;
-  --color-blue-700: #204d45;
-  --color-blue-800: #1d3e38;
+  --color-blue-700: #055248;
+  --color-blue-800: #04443D;
   --color-blue-900: #1a342f;
   --color-blue-950: #0d1e1b;
+  
+  /* AI Accent Colors */
+  --color-emerald-500: #0B8A7A;
+  --color-teal-500: #159A8C;
+  --color-cyan-500: #3AA7C1;
+
+  /* Neutrals overriding slate */
+  --color-slate-50: #F7FAF9;
+  --color-slate-100: #F1F5F4;
+  --color-slate-200: #DCE5E3;
+  --color-slate-300: #B9C8C5;
+  --color-slate-500: #64748B;
+  --color-slate-600: #475569;
+  --color-slate-900: #0F172A;
+}
+
+@layer components {
+  /* Fluid Typography & Container Constraints */
+  .premium-container {
+    @apply w-full mx-auto;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  @media (min-width: 768px) {
+    .premium-container {
+      max-width: 960px;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .premium-container {
+      max-width: 1200px;
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+  }
+  @media (min-width: 1280px) {
+    .premium-container {
+      max-width: 1280px;
+    }
+  }
+  @media (min-width: 1536px) {
+    .premium-container {
+      max-width: 1440px;
+      padding-left: 64px;
+      padding-right: 64px;
+    }
+  }
+
+  /* Enterprise Card */
+  .card-enterprise {
+    @apply bg-white border border-slate-200 rounded-[20px] transition-all duration-300;
+  }
+  .card-enterprise:hover {
+    border-color: #B7D9D4;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  }
+
+  /* Enterprise Buttons */
+  .btn-primary {
+    @apply bg-blue-600 text-white font-semibold transition-all;
+    box-shadow: 0 12px 30px rgba(6, 97, 87, 0.18);
+  }
+  .btn-primary:hover {
+    @apply bg-blue-700;
+  }
+  .btn-secondary {
+    @apply bg-white border border-slate-200 text-slate-900 font-semibold transition-colors;
+  }
+  .btn-secondary:hover {
+    @apply bg-slate-100;
+  }
+  
+  /* Focus States for Accessibility */
+  *:focus-visible {
+    outline: 2px solid rgba(6, 97, 87, 0.25) !important;
+    outline-offset: 2px;
+  }
 }
 
 /* Accessibility & Easy Mode Scaling */

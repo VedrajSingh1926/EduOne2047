@@ -69,7 +69,7 @@ export const SuperAdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="p-6 max-w-6xl mx-auto space-y-6">
+    <div className="p-6 premium-container space-y-6">
       <div className="flex items-center gap-3 mb-8">
         <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg">
           <ShieldCheck className="w-6 h-6 text-white" />
@@ -83,7 +83,7 @@ export const SuperAdminDashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Registration Form */}
-        <div className="lg:col-span-1 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 interaction-card">
+        <div className="lg:col-span-1 card-enterprise p-6 interaction-card">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 mb-6">
             <UserPlus className="w-5 h-5 text-blue-600" />
             Register New Staff
@@ -128,7 +128,7 @@ export const SuperAdminDashboard: React.FC = () => {
         </div>
 
         {/* User List */}
-        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden interaction-card">
+        <div className="lg:col-span-2 card-enterprise overflow-hidden interaction-card">
           <div className="p-6 border-b border-slate-100 flex items-center justify-between">
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
               <Users className="w-5 h-5 text-blue-600" />
@@ -179,7 +179,7 @@ export const SuperAdminDashboard: React.FC = () => {
       </div>
 
       {/* Roles & Permissions Matrix */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mt-6 interaction-card">
+      <div className="card-enterprise overflow-hidden mt-6 interaction-card">
         <div className="p-6 border-b border-slate-100">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-blue-600" />
