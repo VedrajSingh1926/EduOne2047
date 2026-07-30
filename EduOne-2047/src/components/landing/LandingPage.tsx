@@ -130,77 +130,38 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-emerald-600 selection:text-white overflow-x-hidden relative pt-16">
       {/* Top Header Navbar */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-[14px] border-b border-slate-200 py-3.5 transition-all shadow-sm">
-        <div className="premium-container flex items-center justify-between">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-[14px] border-b border-[#DCE9E6] h-[72px] transition-all shadow-sm flex items-center">
+        <div className="w-full max-w-[1440px] mx-auto px-4 xl:px-[64px] flex items-center justify-between">
           
           {/* Brand */}
           <div className="flex items-center gap-3 cursor-pointer">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-emerald-400 flex items-center justify-center text-white font-extrabold shadow-md shadow-emerald-600/20">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#066157] to-[#0B8A7A] flex items-center justify-center text-white font-extrabold shadow-md shadow-emerald-600/20">
               E1
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-lg text-slate-900 tracking-tight">EduOne2047</span>
+                <span className="font-extrabold text-lg text-[#0F172A] tracking-tight">EduOne2047</span>
               </div>
+              <p className="text-[10px] text-slate-500 hidden sm:block font-medium">Autonomous School Operating System</p>
             </div>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-            
-            {/* Platform Dropdown */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 text-sm font-semibold text-slate-600 group-hover:text-emerald-600 transition-colors py-4">
-                Platform <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
-              </button>
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 translate-y-2 group-hover:translate-y-0 p-3">
-                <a href="#features" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Core Operations</a>
-                <a href="#compliance" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Government Compliance</a>
-              </div>
-            </div>
-
-            {/* Modules Dropdown */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 text-sm font-semibold text-slate-600 group-hover:text-emerald-600 transition-colors py-4">
-                Modules <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
-              </button>
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 translate-y-2 group-hover:translate-y-0 p-3">
-                <a href="#finance" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Fee Management</a>
-                <a href="#timetable" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Timetable & Attendance</a>
-              </div>
-            </div>
-
-            {/* AI Dropdown */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 text-sm font-semibold text-slate-600 group-hover:text-emerald-600 transition-colors py-4">
-                AI <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
-              </button>
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 translate-y-2 group-hover:translate-y-0 p-3">
-                <a href="#ocr" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Document OCR</a>
-                <a href="#copilot" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Staff Copilot</a>
-              </div>
-            </div>
-
-            {/* Security Dropdown */}
-            <div className="relative group">
-              <button className="flex items-center gap-1 text-sm font-semibold text-slate-600 group-hover:text-emerald-600 transition-colors py-4">
-                Security <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
-              </button>
-              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 translate-y-2 group-hover:translate-y-0 p-3">
-                <a href="#rbac" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Role-Based Access</a>
-                <a href="#audit" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Audit Logs</a>
-              </div>
-            </div>
-
-            <a href="#sandbox" className="text-sm font-semibold text-slate-600 hover:text-emerald-600 transition-colors py-4">Demo</a>
+          <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+            <a href="#how-it-works" className="text-sm font-semibold text-[#0F172A] hover:text-[#055248] transition-colors py-4">How It Works</a>
+            <a href="#capabilities" className="text-sm font-semibold text-[#0F172A] hover:text-[#055248] transition-colors py-4">Capabilities</a>
+            <a href="#for-schools" className="text-sm font-semibold text-[#0F172A] hover:text-[#055248] transition-colors py-4">For Schools</a>
+            <a href="#security" className="text-sm font-semibold text-[#0F172A] hover:text-[#055248] transition-colors py-4">Security</a>
+            <a href="#sandbox" className="text-sm font-semibold text-[#0F172A] hover:text-[#055248] transition-colors py-4">Demo</a>
           </nav>
 
           <div className="flex items-center gap-4">
             <button
               onClick={() => onOpenLogin()}
-              className="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-emerald-600 transition-colors"
+              className="px-6 py-2.5 text-sm font-semibold rounded-xl flex items-center gap-2 text-white bg-[#066157] hover:bg-[#055248] shadow-[0_12px_30px_rgba(6,97,87,0.18)] transition-all hover:-translate-y-0.5"
             >
-              Login
+              <span>Launch Portal</span>
+              <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -394,7 +355,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
       </section>
 
       {/* SECTION 3 — HOW IT WORKS */}
-      <section className="py-24 bg-slate-50">
+      <section id="how-it-works" className="py-24 bg-slate-50 scroll-mt-20">
         <div className="premium-container sm:px-8">
           <motion.h2 
             initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}
@@ -501,8 +462,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
         </div>
       </section>
 
-      {/* SECTION 6 — FEATURE DEEP-DIVE */}
-      <section id="features" className="py-24 bg-white border-b border-slate-200 scroll-mt-20">
+      {/* SECTION 6 — CAPABILITIES */}
+      <section id="capabilities" className="py-24 bg-white border-b border-slate-200 scroll-mt-20">
         <div className="premium-container">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900">Core Capabilities</h2>
@@ -624,7 +585,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
       </section>
 
       {/* SECTION 7 — BUILT FOR INDIAN SCHOOLS */}
-      <section className="py-24 bg-slate-50">
+      <section id="for-schools" className="py-24 bg-slate-50 scroll-mt-20">
         <div className="premium-container">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="text-center mb-16">
             <h2 className="text-3xl font-bold text-slate-900">Built for Indian Schools</h2>
@@ -671,8 +632,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
         </div>
       </section>
 
-      {/* SECTION 8 — ROLE-BASED PORTALS (SANDBOX) */}
-      <section id="sandbox" className="py-24 bg-white border-t border-slate-200 scroll-mt-20">
+      {/* SECTION 8 — SANDBOX CTA */}
+      <section id="demo" className="py-24 bg-white border-t border-slate-200 scroll-mt-20">
         <div className="premium-container">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900">Try the Live Demo (Sandbox Data)</h2>
@@ -707,7 +668,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
       </section>
 
       {/* SECTION 9 — TRUST & SECURITY */}
-      <section className="py-24 bg-slate-900 text-white">
+      <section id="security" className="py-24 bg-slate-900 text-white scroll-mt-20">
         <div className="premium-container text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}>
             <ShieldCheck className="w-12 h-12 text-emerald-400 mx-auto mb-6" />
