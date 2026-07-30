@@ -163,7 +163,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               onClick={() => onOpenLogin()}
               className="px-6 py-2.5 text-sm font-semibold rounded-xl flex items-center gap-2 text-white bg-[#066157] hover:bg-[#055248] shadow-[0_12px_30px_rgba(6,97,87,0.18)] transition-all hover:-translate-y-0.5"
             >
-              <span>Launch Portal</span>
+              <span>Login</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -235,7 +235,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               className="w-full sm:w-auto px-8 py-4 text-sm rounded-2xl flex items-center justify-center gap-2 btn-primary"
             >
               <Bot className="w-4 h-4" />
-              <span>Launch Portal & Sign In</span>
+              <span>Login</span>
               <ArrowRight className="w-4 h-4" />
             </motion.button>
             <motion.a
@@ -711,7 +711,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
             className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold rounded-2xl shadow-xl shadow-emerald-600/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2 mx-auto mb-16"
           >
             <Bot className="w-4 h-4" />
-            <span>Launch Staff Portal</span>
+            <span>Login</span>
             <ArrowRight className="w-4 h-4" />
           </button>
 
