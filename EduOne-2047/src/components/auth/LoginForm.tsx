@@ -37,7 +37,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
           setDetectedUser({
             id: userData.id,
             name: userData.name,
-            role: userData.role as Role
+            role: userData.role as Role,
+            class_id: userData.class_id
           });
         } else {
           setDetectedUser(null);
@@ -81,7 +82,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
           onLogin({
             id: userData.id,
             name: userData.name,
-            role: userData.role as Role
+            role: userData.role as Role,
+            class_id: userData.class_id
           });
         } else {
           setError('Invalid credentials.');
@@ -172,6 +174,10 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
             )}
           </div>
 
+
+
+
+
           {/* Detected User Profile */}
           {detectedUser && (
             <div className="p-4 rounded-xl bg-emerald-50/50 border border-emerald-100 flex items-center gap-4 animate-in fade-in slide-in-from-top-2">
@@ -184,8 +190,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
               </div>
             </div>
           )}
-
-
 
           {/* Submit Button */}
           <button

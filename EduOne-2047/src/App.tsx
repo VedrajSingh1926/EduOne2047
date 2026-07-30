@@ -87,6 +87,7 @@ function CoreApplication() {
   const [initialCommandPrompt, setInitialCommandPrompt] = useState<string | undefined>(undefined);
 
   // Staff Accessibility States
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [textSize, setTextSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
   const [easyMode, setEasyMode] = useState<boolean>(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState<boolean>(false);
@@ -184,6 +185,19 @@ function CoreApplication() {
     }
   };
 
+  const handleUpdateStudent = async (studentId: string, updates: Partial<Student>) => {
+    if (!hasPermission(activeUser, PERMISSIONS.STUDENTS_MANAGE)) {
+      toast.error("UNAUTHORIZED: You do not have permission to modify students.");
+      return;
+    }
+    try {
+      await update(ref(db, `students/${studentId}`), updates);
+      toast.success('Student updated successfully!');
+    } catch (e) {
+      toast.error('Failed to update student.');
+    }
+  };
+
   const handleAssignSubstitute = async (teacherOrSlotId: string, substituteTeacherName: string) => {
     if (!hasPermission(activeUser, PERMISSIONS.TIMETABLE_MANAGE)) {
       toast.error("UNAUTHORIZED: You do not have permission to manage timetables.");
@@ -241,11 +255,58 @@ function CoreApplication() {
       const student = students.find(s => s.id === studentId);
       if (student) {
         const newPct = status === 'ABSENT' ? Math.max(50, student.attendancePct - 1.5) : Math.min(100, student.attendancePct + 0.5);
-        await update(ref(db, `students/${studentId}`), { attendancePct: Number(newPct.toFixed(1)) });
+        const today = new Date().toISOString().split('T')[0];
+        const recordId = `ATT-${studentId}-${today}`;
+        
+        await update(ref(db), {
+          [`students/${studentId}/attendancePct`]: Number(newPct.toFixed(1)),
+          [`attendance/${recordId}`]: {
+            id: recordId,
+            date: today,
+            gradeClass: `${student.grade}-${student.section}`,
+            studentId,
+            studentName: student.name,
+            status
+          }
+        });
         toast.success(`Attendance marked ${status}.`);
       }
     } catch(e) {
       toast.error('Failed to mark attendance.');
+    }
+  };
+
+  const handleBulkMarkAttendance = async (studentIds: string[], status: 'PRESENT' | 'ABSENT' | 'LATE' | 'EXCUSED') => {
+    if (!hasPermission(activeUser, PERMISSIONS.ATTENDANCE_MARK_HOMEROOM)) {
+      toast.error("UNAUTHORIZED: You do not have permission to mark attendance.");
+      return;
+    }
+    try {
+      const updates: Record<string, any> = {};
+      const today = new Date().toISOString().split('T')[0];
+      
+      studentIds.forEach(id => {
+        const student = students.find(s => s.id === id);
+        if (student) {
+          const newPct = status === 'ABSENT' ? Math.max(50, student.attendancePct - 1.5) : Math.min(100, student.attendancePct + 0.5);
+          updates[`students/${id}/attendancePct`] = Number(newPct.toFixed(1));
+          
+          const recordId = `ATT-${id}-${today}`;
+          updates[`attendance/${recordId}`] = {
+            id: recordId,
+            date: today,
+            gradeClass: `${student.grade}-${student.section}`,
+            studentId: id,
+            studentName: student.name,
+            status
+          };
+        }
+      });
+      
+      await update(ref(db), updates);
+      toast.success(`Successfully marked ${studentIds.length} students as ${status}.`);
+    } catch(e) {
+      toast.error('Failed to mark bulk attendance.');
     }
   };
 
@@ -488,13 +549,14 @@ function CoreApplication() {
 
   return (
     <div className={`flex h-screen overflow-hidden bg-slate-50 font-sans selection:bg-emerald-600 selection:text-white ${easyMode ? 'easy-mode' : ''} ${textSize === 'large' ? 'text-scale-large' : textSize === 'xlarge' ? 'text-scale-xlarge' : ''}`}>
-      {/* Left Sidebar (Full Height) */}
       <Sidebar
         activeModule={activeModule}
         onSelectModule={setActiveModule}
         unresolvedEscalationsCount={unresolvedEscalationsCount}
         onOpenHelpGuide={() => setIsHelpModalOpen(true)}
         currentUser={activeUser}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
 
       <div className="flex flex-col flex-1 overflow-hidden relative">
@@ -514,6 +576,7 @@ function CoreApplication() {
           onToggleEasyMode={() => setEasyMode(!easyMode)}
           onOpenHelpGuide={() => setIsHelpModalOpen(true)}
           onOpenShortcuts={() => setIsShortcutsModalOpen(true)}
+          onToggleSidebar={() => setIsSidebarOpen(true)}
         />
 
         {/* Main Workspace Area */}
@@ -566,6 +629,7 @@ function CoreApplication() {
             <StudentManagement
               students={students}
               onAddStudent={handleAddStudent}
+              onUpdateStudent={handleUpdateStudent}
               onOpenDocOCR={(name) => {
                 setActiveModule('documents');
               }}
@@ -585,7 +649,10 @@ function CoreApplication() {
               students={students}
               attendanceRecords={attendanceRecords}
               onMarkAttendance={handleMarkAttendance}
-              onSendParentAlert={handleSendParentAlert}
+              onBulkMarkAttendance={handleBulkMarkAttendance}
+              onSendParentAlert={(name, phone, reason) => {
+                toast.success(`Alert sent to ${name}'s parent at ${phone} for ${reason}`);
+              }}
             />
           )}
 

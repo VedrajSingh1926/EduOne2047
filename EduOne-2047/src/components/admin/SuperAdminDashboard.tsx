@@ -51,10 +51,11 @@ export const SuperAdminDashboard: React.FC = () => {
         id: newStaffId,
         name: newName,
         role: newRole,
-        password: newPassword
+        password: newPassword,
+        email: `${newStaffId.toLowerCase()}@eduone.com`
       });
-      toast.success('User registered successfully!');
-      setFeedback({ type: 'success', message: 'User registered successfully!' });
+      toast.success(`User ${newName} added successfully`);
+      setFeedback({ type: 'success', message: 'User added successfully' });
       // Reset form
       setNewStaffId('');
       setNewName('');
@@ -121,9 +122,14 @@ export const SuperAdminDashboard: React.FC = () => {
               <input type="text" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="e.g. temp123" className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
             </div>
 
-            <button type="submit" className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl mt-2 shadow-md interaction-btn-primary">
-              Create Account
-            </button>
+            <div className="pt-2">
+              <button
+                type="submit"
+                className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg shadow-2xs transition-colors text-sm"
+              >
+                Add Staff Member
+              </button>
+            </div>
           </form>
         </div>
 
@@ -149,7 +155,8 @@ export const SuperAdminDashboard: React.FC = () => {
                     <th className="px-6 py-4 text-emerald-800">Staff ID</th>
                     <th className="px-6 py-4 text-emerald-800">Name</th>
                     <th className="px-6 py-4 text-emerald-800">Role</th>
-                    <th className="px-6 py-4 text-emerald-800">Security</th>
+                    <th className="px-6 py-4 text-emerald-800">Email</th>
+                    <th className="px-6 py-4 text-emerald-800">Temp Password</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -162,10 +169,10 @@ export const SuperAdminDashboard: React.FC = () => {
                           {u.role}
                         </span>
                       </td>
+                      <td className="px-6 py-4 text-slate-600">{u.email || '-'}</td>
                       <td className="px-6 py-4">
-                        <span className="flex items-center gap-1.5 text-emerald-600 font-bold text-xs bg-emerald-50 px-2 py-1 rounded w-fit border border-emerald-200">
-                          <Key className="w-3.5 h-3.5" />
-                          Active
+                        <span className="text-xs font-mono bg-slate-100 px-2 py-1 rounded text-slate-600">
+                          {u.password || '******'}
                         </span>
                       </td>
                     </tr>

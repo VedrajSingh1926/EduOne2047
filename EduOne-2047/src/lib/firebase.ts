@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getDatabase } from 'firebase/database';
+import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyCegG8Z6TjTccaIoLriN3Zzkd8vUJVyDxU",
@@ -9,13 +10,14 @@ const firebaseConfig = {
   messagingSenderId: "474140733733",
   appId: "1:474140733733:web:56528e018b51aa03f96acc",
   measurementId: "G-0BXWWQKV39",
-  databaseURL: "https://eduone-2047-default-rtdb.firebaseio.com" // Standard URL format for Firebase Realtime Database
+  databaseURL: "https://eduone-2047-default-rtdb.firebaseio.com"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Realtime Database
+// Initialize Realtime Database and Auth
 const db = getDatabase(app);
+const auth = getAuth(app);
 
-export { app, db };
+export { app, db, auth };

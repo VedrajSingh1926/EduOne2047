@@ -35,6 +35,7 @@ interface NavbarProps {
   onToggleEasyMode: () => void;
   onOpenHelpGuide: () => void;
   onOpenShortcuts?: () => void;
+  onToggleSidebar?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -48,7 +49,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   easyMode,
   onToggleEasyMode,
   onOpenHelpGuide,
-  onOpenShortcuts
+  onOpenShortcuts,
+  onToggleSidebar
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isListening, setIsListening] = useState(false);
@@ -130,10 +132,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Brand & Mobile Menu Toggle */}
         <div className="flex items-center justify-between w-full md:w-auto gap-3">
           <div className="flex items-center gap-2">
-            {/* Left side empty or just a subtle breadcrumb / title if needed, but we keep it clean */}
-            <div className="hidden md:flex items-center text-sm font-bold text-slate-400">
-              Workspace
-            </div>
+            {/* Mobile Sidebar Toggle */}
+            <button
+              onClick={onToggleSidebar}
+              className="md:hidden p-1.5 -ml-1.5 rounded-lg text-slate-500 hover:bg-slate-100 transition-colors"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
           </div>
 
           {/* Mobile Staff Help Trigger */}

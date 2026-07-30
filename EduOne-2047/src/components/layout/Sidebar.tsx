@@ -29,9 +29,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const commsAndDocs = permittedRoutes.filter(r => r.section === 'comms');
 
   return (
-    <aside 
-      className="bg-white border-r border-slate-200 p-4 flex flex-col justify-between shrink-0 shadow-sm z-50 overflow-hidden relative w-64 hidden md:flex"
-    >
+    <>
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 md:hidden" 
+          onClick={onClose}
+        />
+      )}
+      
+      <aside 
+        className={`bg-white border-r border-slate-200 p-4 flex flex-col justify-between shrink-0 shadow-sm z-50 overflow-y-auto relative w-64 transition-transform duration-300 ease-in-out fixed md:sticky top-0 h-screen ${
+          isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+        }`}
+      >
       <div className="space-y-6">
         
         {/* Brand Logo */}
@@ -66,7 +77,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
               return (
                 <button
                   key={item.id}
-                  onClick={() => onSelectModule(item.id)}
+                  onClick={() => {
+                    onSelectModule(item.id);
+                    if (onClose) onClose();
+                  }}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                     isActive
                       ? 'bg-emerald-50/80 text-emerald-700 shadow-sm border border-emerald-100'
@@ -103,7 +117,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 return (
                   <button
                     key={item.id}
-                    onClick={() => onSelectModule(item.id)}
+                    onClick={() => {
+                      onSelectModule(item.id);
+                      if (onClose) onClose();
+                    }}
                     className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                       isActive
                         ? 'bg-emerald-50/80 text-emerald-700 shadow-sm border border-emerald-100'
@@ -162,5 +179,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
     </aside>
+    </>
   );
 };

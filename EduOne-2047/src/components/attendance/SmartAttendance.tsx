@@ -12,6 +12,7 @@ interface SmartAttendanceProps {
   students: Student[];
   attendanceRecords: AttendanceRecord[];
   onMarkAttendance: (studentId: string, status: 'PRESENT' | 'ABSENT' | 'LATE' | 'EXCUSED') => void;
+  onBulkMarkAttendance?: (studentIds: string[], status: 'PRESENT' | 'ABSENT' | 'LATE' | 'EXCUSED') => void;
   onSendParentAlert: (studentName: string, parentPhone: string, reason: string) => void;
 }
 
@@ -19,6 +20,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
   students,
   attendanceRecords,
   onMarkAttendance,
+  onBulkMarkAttendance,
   onSendParentAlert
 }) => {
   const [selectedClass, setSelectedClass] = useState('Grade 10-A');
@@ -80,6 +82,26 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
           </button>
         </div>
       )}
+
+      {/* Bulk Action Bar */}
+      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center justify-between gap-3 mb-2">
+        <div className="text-xs font-semibold text-slate-700">
+          Bulk Actions ({filteredStudents.length} students selected)
+        </div>
+        <button
+          onClick={() => {
+            if (onBulkMarkAttendance) {
+              onBulkMarkAttendance(filteredStudents.map(s => s.id), 'PRESENT');
+            } else {
+              filteredStudents.forEach(s => onMarkAttendance(s.id, 'PRESENT'));
+            }
+          }}
+          className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-medium flex items-center gap-1.5 shadow-2xs hover:bg-emerald-700 transition-colors"
+        >
+          <CheckCircle2 className="w-3.5 h-3.5" />
+          <span>Mark All Present</span>
+        </button>
+      </div>
 
       {/* Controls Bar */}
       <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3 interaction-card">
