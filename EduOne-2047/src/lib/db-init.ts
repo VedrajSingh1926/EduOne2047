@@ -31,26 +31,40 @@ export const initializeDatabase = async () => {
 
     // Create Demo Accounts for Landing Page
     const usersObj = {
-      "ADMIN-001": {
-        id: "ADMIN-001",
-        password: "admin",
+      "EMP-739": {
+        id: "EMP-739",
+        password: "admin123",
         role: "Super Admin",
         name: "Super Admin",
-        email: "admin@eduone.com"
+        email: "emp-739@eduone.local"
       },
-      "TCH-101": {
-        id: "TCH-101",
-        password: "password",
+      "EMP-902": {
+        id: "EMP-902",
+        password: "admin123",
+        role: "Principal",
+        name: "Principal",
+        email: "emp-902@eduone.local"
+      },
+      "TCH-202": {
+        id: "TCH-202",
+        password: "admin123",
         role: "Class Teacher",
         name: "Elena Rostova",
-        email: "elena@eduone.com"
+        email: "tch-202@eduone.local"
       },
-      "IDADM-2047": {
-        id: "IDADM-2047",
-        password: "password",
-        role: "IT Support",
+      "ACT-511": {
+        id: "ACT-511",
+        password: "admin123",
+        role: "Accountant",
+        name: "Michael Chang",
+        email: "act-511@eduone.local"
+      },
+      "REC-114": {
+        id: "REC-114",
+        password: "admin123",
+        role: "Receptionist",
         name: "Sarah Connor",
-        email: "sarah@eduone.com"
+        email: "rec-114@eduone.local"
       }
     };
 

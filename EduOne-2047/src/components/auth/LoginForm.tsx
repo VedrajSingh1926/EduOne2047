@@ -144,7 +144,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
               <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <input
                 type="text"
-                placeholder="e.g. TCH-101"
+                placeholder="e.g. TCH-202"
                 value={staffId}
                 onChange={(e) => setStaffId(e.target.value)}
                 autoFocus={!prefillId}

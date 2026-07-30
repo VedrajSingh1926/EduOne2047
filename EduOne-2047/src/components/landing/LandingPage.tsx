@@ -90,25 +90,25 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
   const roleHighlights = [
     {
       role: 'Principal',
-      user: 'Dr. Evelyn Vance (PRIN-2047)',
+      user: 'Principal (EMP-902)',
       badge: 'Executive Leadership',
       focus: 'High-level institutional efficiency metrics, strategic policy decisions, faculty workload health, financial status, and executive directive broadcasts.'
     },
     {
-      role: 'Vice Principal',
-      user: 'Marcus Sterling (VP-2047)',
-      badge: 'Academic & Discipline',
-      focus: 'Real-time morning operations, teacher absence alerts, substitute assignment approvals, daily attendance oversight, and conduct escalations.'
+      role: 'Accountant',
+      user: 'Michael Chang (ACT-511)',
+      badge: 'Finance & Administration',
+      focus: 'Real-time fee collection status, OCR-powered receipt verification, revenue anomaly detection, and automated mismatch escalations.'
     },
     {
-      role: 'IT Support',
-      user: 'Sarah Connor (IDADM-2047)',
-      badge: 'Designated Credentials Staff',
-      focus: 'Responsible for total staff user ID creation, password resetting, account locking, issuing official access slips, and credential audit logs.'
+      role: 'Receptionist',
+      user: 'Sarah Connor (REC-114)',
+      badge: 'Front Desk Operations',
+      focus: 'Instant visitor logging, secure document uploads, quick student lookups, and basic inquiry routing.'
     },
     {
-      role: 'General Staff & Teachers',
-      user: 'Elena Rostova (TCH-101) & Staff',
+      role: 'Class Teacher',
+      user: 'Elena Rostova (TCH-202)',
       badge: 'Faculty & Support Operations',
       focus: 'Personal class schedules, quick attendance taking, student roster lookups, collaborative tasks management, and leave requests.'
     }
