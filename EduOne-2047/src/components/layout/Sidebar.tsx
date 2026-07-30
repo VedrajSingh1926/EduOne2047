@@ -69,14 +69,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   onClick={() => onSelectModule(item.id)}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                     isActive
-                      ? 'bg-emerald-600 text-white shadow-xs'
-                      : 'text-slate-700 hover:bg-slate-100/90 hover:text-slate-900 border border-transparent'
+                      ? 'bg-emerald-50/80 text-emerald-700 shadow-sm border border-emerald-100'
+                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 border border-transparent'
                   }`}
                 >
                   <div className="flex items-center gap-2.5 truncate">
                     <Icon
                       className={`w-4 h-4 shrink-0 ${
-                        isActive ? 'text-white' : 'text-slate-500'
+                        isActive ? 'text-emerald-600' : 'text-slate-400'
                       }`}
                     />
                     <span className="truncate">{item.title}</span>
@@ -106,14 +106,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     onClick={() => onSelectModule(item.id)}
                     className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                       isActive
-                        ? 'bg-emerald-600 text-white shadow-xs'
-                        : 'text-slate-700 hover:bg-slate-100/90 hover:text-slate-900 border border-transparent'
+                        ? 'bg-emerald-50/80 text-emerald-700 shadow-sm border border-emerald-100'
+                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 border border-transparent'
                     }`}
                   >
                     <div className="flex items-center gap-2.5 truncate">
                       <Icon
                         className={`w-4 h-4 shrink-0 ${
-                          isActive ? 'text-white' : 'text-slate-500'
+                          isActive ? 'text-emerald-600' : 'text-slate-400'
                         }`}
                       />
                       <span className="truncate">{item.title}</span>
@@ -144,12 +144,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {onOpenHelpGuide && (
           <button
             onClick={onOpenHelpGuide}
-            className="w-full p-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-300 text-slate-950 text-xs font-bold transition-all flex items-center gap-2 shadow-2xs"
+            className="w-full p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-800 text-xs font-bold transition-all flex items-center gap-2"
           >
-            <HelpCircle className="w-5 h-5 text-emerald-700 shrink-0" />
+            <HelpCircle className="w-5 h-5 text-slate-500 shrink-0" />
             <div className="text-left">
-              <div className="font-extrabold text-emerald-950">New Staff?</div>
-              <div className="text-[10px] text-emerald-800 font-medium">Click for Easy 1-Click Guide</div>
+              <div className="font-extrabold text-slate-800">New Staff?</div>
+              <div className="text-[10px] text-slate-500 font-medium">Click for Easy Guide</div>
             </div>
           </button>
         )}
