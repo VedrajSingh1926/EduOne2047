@@ -439,10 +439,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
               className="text-center"
             >
-              <div className="text-5xl font-black text-emerald-400 line-through decoration-rose-500/50 mb-2">
+              <div className="text-5xl font-black text-red-500 line-through decoration-red-600/50 mb-2">
                 <CountUp end={3} duration={1.5} />-<CountUp end={4} duration={2} /> days/month
               </div>
-              <div className="text-slate-400 flex items-center justify-center gap-2">
+              <div className="text-red-400 flex items-center justify-center gap-2">
                 <FileText className="w-5 h-5" /> Spreadsheets & Chasing Slips
               </div>
             </motion.div>
