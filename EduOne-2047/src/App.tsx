@@ -72,6 +72,16 @@ function CoreApplication() {
   // Global Layout State (also controls desktop sidebar)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(window.innerWidth >= 768);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsMobileMenuOpen(true);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Fallback for direct role URL testing
   const activeUser = currentUser || { id: 'TEST-000', name: 'Test User', role: currentRole };
 

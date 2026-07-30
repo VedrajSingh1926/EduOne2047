@@ -134,7 +134,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
         <div className="w-full max-w-[1440px] mx-auto px-4 xl:px-[64px] flex items-center justify-between">
           
           {/* Brand */}
-          <div className="flex items-center gap-3 cursor-pointer">
+          <div 
+            className="flex items-center gap-3 cursor-pointer" 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          >
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#066157] to-[#0B8A7A] flex items-center justify-center text-white font-extrabold shadow-md shadow-emerald-600/20">
               E1
             </div>
