@@ -17,33 +17,41 @@ import {
   Printer,
   Sparkles,
   Eye,
-  Keyboard
+  Keyboard,
+  Menu,
+  X
 } from 'lucide-react';
 
 interface NavbarProps {
   currentUser: CurrentUser;
   onLogout: () => void;
-  onRoleChange: (role: Role) => void;
+  activeModule?: string;
+  onSelectModule?: (moduleId: string) => void;
   unresolvedEscalationsCount: number;
-  onNavigateToModule: (moduleId: string) => void;
+  onNavigateToModule?: (moduleId: string) => void;
   onOpenCommandCenter: (initialPrompt?: string) => void;
   easyMode: boolean;
   onToggleEasyMode: () => void;
   onOpenHelpGuide: () => void;
   onOpenShortcuts?: () => void;
+  isMobileMenuOpen?: boolean;
+  onToggleMobileMenu?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   currentUser,
   onLogout,
-  onRoleChange,
+  activeModule,
+  onSelectModule,
   unresolvedEscalationsCount,
   onNavigateToModule,
   onOpenCommandCenter,
   easyMode,
   onToggleEasyMode,
   onOpenHelpGuide,
-  onOpenShortcuts
+  onOpenShortcuts,
+  isMobileMenuOpen,
+  onToggleMobileMenu
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isListening, setIsListening] = useState(false);
@@ -122,12 +130,22 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-40 bg-white border-b-2 border-slate-200/90 px-3 lg:px-6 py-2 transition-all shadow-2xs">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
         
-        {/* Brand & Easy Staff Mode Badge */}
+        {/* Brand & Mobile Menu Toggle */}
         <div className="flex items-center justify-between w-full md:w-auto gap-3">
-          <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => onNavigateToModule('dashboard')}>
-            <div className="w-9 h-9 rounded-xl bg-blue-700 flex items-center justify-center font-extrabold text-white text-base shadow-xs">
-              E
-            </div>
+          <div className="flex items-center gap-2">
+            {onToggleMobileMenu && (
+              <button 
+                onClick={onToggleMobileMenu}
+                className="md:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors"
+              >
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            )}
+            
+            <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => onSelectModule ? onSelectModule('dashboard') : onNavigateToModule?.('dashboard')}>
+              <div className="w-9 h-9 rounded-xl bg-blue-700 flex items-center justify-center font-extrabold text-white text-base shadow-xs">
+                E
+              </div>
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="font-bold text-base text-slate-900 tracking-tight">

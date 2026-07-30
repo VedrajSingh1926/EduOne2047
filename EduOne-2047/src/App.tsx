@@ -65,6 +65,12 @@ function CoreApplication() {
   
   const [currentRole, setCurrentRole] = useState<Role>(initialRole);
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
+  
+  // Login Prefill State
+  const [loginPrefillId, setLoginPrefillId] = useState<string | undefined>(undefined);
+
+  // Global Layout State
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Fallback for direct role URL testing
   const activeUser = currentUser || { id: 'TEST-000', name: 'Test User', role: currentRole };
@@ -145,6 +151,11 @@ function CoreApplication() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  // Close mobile menu on navigation
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [activeModule]);
 
   // App State Store
   const students = useFirebaseState<Student>('students', INITIAL_STUDENTS);
@@ -439,29 +450,61 @@ function CoreApplication() {
     }
   };
 
+  if (activeModule === 'landing') {
+    return (
+      <LandingPage 
+        onOpenLogin={(prefillId) => {
+          setLoginPrefillId(prefillId);
+          setActiveModule('login');
+        }}
+      />
+    );
+  }
+
+  if (activeModule === 'login') {
+    return (
+      <LoginForm 
+        prefillId={loginPrefillId}
+        onLogin={(user) => {
+          setIsAuthenticated(true);
+          setCurrentRole(user.role);
+          setCurrentUser(user);
+          setActiveModule(getDefaultDashboard(user.role));
+        }} 
+      />
+    );
+  }
+
+  // Catch-all route protection for any authenticated routes
   if (!isAuthenticated) {
-    return <LoginForm onLogin={(user) => {
-      setIsAuthenticated(true);
-      setCurrentRole(user.role);
-      setCurrentUser(user);
-      setActiveModule(getDefaultDashboard(user.role));
-    }} />;
+    return (
+      <LoginForm 
+        prefillId={loginPrefillId}
+        onLogin={(user) => {
+          setIsAuthenticated(true);
+          setCurrentRole(user.role);
+          setCurrentUser(user);
+          setActiveModule(getDefaultDashboard(user.role));
+        }} 
+      />
+    );
   }
 
   return (
-    <div className={`min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans antialiased selection:bg-blue-500 selection:text-white ${
-      textSize === 'large' ? 'text-scale-large' : textSize === 'xlarge' ? 'text-scale-xlarge' : ''
-    } ${easyMode ? 'easy-mode' : ''}`}>
+    <div className={`min-h-screen bg-slate-50 font-sans selection:bg-blue-600 selection:text-white ${easyMode ? 'easy-mode' : ''} ${textSize === 'large' ? 'text-scale-large' : textSize === 'xlarge' ? 'text-scale-xlarge' : ''}`}>
       {/* Top Navbar */}
       <Navbar
+        activeModule={activeModule}
+        onSelectModule={setActiveModule}
         currentUser={activeUser}
         onLogout={() => {
           setIsAuthenticated(false);
           setCurrentUser(null);
+          setActiveModule('landing');
         }}
-        onRoleChange={setCurrentRole}
+        isMobileMenuOpen={isMobileMenuOpen}
+        onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         unresolvedEscalationsCount={unresolvedEscalationsCount}
-        onNavigateToModule={setActiveModule}
         onOpenCommandCenter={handleOpenCommandCenter}
         easyMode={easyMode}
         onToggleEasyMode={() => setEasyMode(!easyMode)}
@@ -469,7 +512,7 @@ function CoreApplication() {
         onOpenShortcuts={() => setIsShortcutsModalOpen(true)}
       />
 
-      <div className="flex-1 flex max-w-7xl w-full mx-auto">
+      <div className="flex h-[calc(100vh-61px)] overflow-hidden relative">
         {/* Left Sidebar */}
         <Sidebar
           activeModule={activeModule}
@@ -477,10 +520,20 @@ function CoreApplication() {
           unresolvedEscalationsCount={unresolvedEscalationsCount}
           onOpenHelpGuide={() => setIsHelpModalOpen(true)}
           currentUser={activeUser}
+          isOpen={isMobileMenuOpen}
+          onClose={() => setIsMobileMenuOpen(false)}
         />
 
+        {/* Mobile Sidebar Overlay */}
+        {isMobileMenuOpen && (
+          <div 
+            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 md:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+        )}
+
         {/* Main Workspace Area */}
-        <main className="flex-1 p-4 lg:p-8">
+        <main className="flex-1 overflow-y-auto bg-slate-50/50 p-4 md:p-6 lg:p-8 relative">
           {activeModule === 'admin-panel' && canAccess(activeUser, PERMISSIONS.USERS_MANAGE_ALL) && (
             <SuperAdminDashboard />
           )}

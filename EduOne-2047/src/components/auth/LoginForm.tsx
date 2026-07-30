@@ -7,11 +7,12 @@ import { useNavigate } from 'react-router-dom';
 
 interface LoginFormProps {
   onLogin: (user: CurrentUser) => void;
+  prefillId?: string;
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
+export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
   const navigate = useNavigate();
-  const [staffId, setStaffId] = useState('');
+  const [staffId, setStaffId] = useState(prefillId || '');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -144,9 +145,31 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
                 placeholder="e.g. TCH-101"
                 value={staffId}
                 onChange={(e) => setStaffId(e.target.value)}
+                autoFocus={!prefillId}
                 className="w-full bg-white border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all shadow-sm"
               />
             </div>
+          </div>
+
+          {/* Password */}
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Password</label>
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+              <input
+                type="password"
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoFocus={!!prefillId}
+                className="w-full bg-white border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all shadow-sm"
+              />
+            </div>
+            {prefillId && (
+              <p className="text-xs text-slate-500 font-medium ml-1">
+                Demo Password: <span className="font-mono text-slate-700">password123</span>
+              </p>
+            )}
           </div>
 
           {/* Detected User Profile */}
@@ -162,20 +185,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
             </div>
           )}
 
-          {/* Password */}
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider ml-1">Password</label>
-            <div className="relative">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-              <input
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-white border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all shadow-sm"
-              />
-            </div>
-          </div>
+
 
           {/* Submit Button */}
           <button

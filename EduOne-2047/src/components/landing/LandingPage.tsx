@@ -37,8 +37,7 @@ import {
 
 
 interface LandingPageProps {
-  onOpenLogin: () => void;
-  onQuickRoleLogin?: (role: string, userId: string, name: string) => void;
+  onOpenLogin: (prefillId?: string) => void;
 }
 
 // Simple CountUp Component
@@ -57,7 +56,7 @@ const CountUp = ({ end, duration = 2, suffix = '' }: { end: number, duration?: n
   return <motion.span ref={ref}>{rounded}</motion.span>;
 };
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRoleLogin }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
   const [activeTab, setActiveTab] = useState<'documents' | 'finance' | 'timetable' | 'attendance'>('documents');
   const [inboxStep, setInboxStep] = useState(0);
 
@@ -144,7 +143,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
         </div>
 
         <button
-          onClick={onOpenLogin}
+          onClick={() => onOpenLogin()}
           className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center gap-1.5 hover:-translate-y-0.5"
         >
           <span>Login</span>
@@ -157,41 +156,40 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
         {/* Live Animated Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10 rounded-3xl mx-4 sm:mx-0">
           <div className="absolute inset-0 opacity-40 animate-gradient-x bg-gradient-to-r from-blue-200 via-indigo-100 to-cyan-200"></div>
+          <div className="absolute inset-0 bg-white/30 backdrop-blur-[2px]"></div>
           
           {/* Floating Educational Icons */}
           <motion.div
             animate={{ y: [0, -30, 0], rotate: [0, 10, -10, 0] }}
             transition={{ duration: 8, ease: "easeInOut", repeat: Infinity }}
-            className="absolute top-10 left-10 md:left-24 text-blue-500/20"
+            className="absolute top-10 left-10 md:left-24 text-blue-500/40"
           >
-            <BookOpen className="w-20 h-20 md:w-32 md:h-32" />
+            <BookOpen className="w-20 h-20 md:w-32 md:h-32 drop-shadow-md" />
           </motion.div>
           
           <motion.div
             animate={{ y: [0, 40, 0], rotate: [0, -15, 10, 0] }}
             transition={{ duration: 10, ease: "easeInOut", repeat: Infinity, delay: 1 }}
-            className="absolute bottom-10 right-10 md:right-24 text-indigo-500/20"
+            className="absolute bottom-10 right-10 md:right-24 text-indigo-500/40"
           >
-            <Monitor className="w-24 h-24 md:w-36 md:h-36" />
+            <Monitor className="w-24 h-24 md:w-36 md:h-36 drop-shadow-md" />
           </motion.div>
           
           <motion.div
             animate={{ y: [0, -25, 0], x: [0, 20, 0], rotate: [0, 20, -5, 0] }}
             transition={{ duration: 12, ease: "easeInOut", repeat: Infinity, delay: 2 }}
-            className="absolute top-20 right-1/4 text-cyan-500/20 hidden sm:block"
+            className="absolute top-20 right-1/4 text-cyan-500/40 hidden sm:block"
           >
-            <PenTool className="w-20 h-20" />
+            <PenTool className="w-20 h-20 drop-shadow-md" />
           </motion.div>
           
           <motion.div
             animate={{ y: [0, 35, 0], x: [0, -25, 0], rotate: [0, -20, 15, 0] }}
             transition={{ duration: 14, ease: "easeInOut", repeat: Infinity, delay: 0.5 }}
-            className="absolute bottom-20 left-1/4 text-emerald-500/15 hidden sm:block"
+            className="absolute bottom-20 left-1/4 text-emerald-500/30 hidden sm:block"
           >
-            <GraduationCap className="w-24 h-24" />
+            <GraduationCap className="w-24 h-24 drop-shadow-md" />
           </motion.div>
-
-          <div className="absolute inset-0 bg-white/40 backdrop-blur-xl"></div>
         </div>
 
 
@@ -214,7 +212,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
               variants={fadeUpVariant}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={onOpenLogin}
+              onClick={() => onOpenLogin()}
               className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-2xl shadow-xl shadow-blue-600/30 transition-all flex items-center justify-center gap-2"
             >
               <Bot className="w-4 h-4" />
@@ -228,7 +226,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
               href="#sandbox"
               className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-2xl border border-slate-200 shadow-sm transition-all text-center"
             >
-              Try Live Demo
+              Explore Features
             </motion.a>
           </motion.div>
 
@@ -642,7 +640,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
                 <div className="text-sm text-slate-500 font-mono mb-4">{role.user}</div>
                 <p className="text-sm text-slate-600 mb-6 flex-1">{role.focus}</p>
                 <button 
-                  onClick={() => onQuickRoleLogin && onQuickRoleLogin(role.role, role.user.split('(')[1].replace(')',''), role.user.split(' (')[0])}
+                  onClick={() => onOpenLogin(role.user.split('(')[1].replace(')',''))}
                   className="w-full py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-semibold text-slate-700 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-colors"
                 >
                   Login as {role.role}
@@ -690,7 +688,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="max-w-2xl mx-auto px-4">
           <h2 className="text-3xl font-black text-slate-900 mb-6">Ready to Automate Your School?</h2>
           <button
-            onClick={onOpenLogin}
+            onClick={() => onOpenLogin()}
             className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-2xl shadow-xl shadow-blue-600/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2 mx-auto mb-16"
           >
             <Bot className="w-4 h-4" />

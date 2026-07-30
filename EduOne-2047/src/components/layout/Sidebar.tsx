@@ -10,6 +10,8 @@ interface SidebarProps {
   unresolvedEscalationsCount: number;
   onOpenHelpGuide?: () => void;
   currentUser: CurrentUser;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -17,7 +19,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectModule,
   unresolvedEscalationsCount,
   onOpenHelpGuide,
-  currentUser
+  currentUser,
+  isOpen,
+  onClose
 }) => {
   const permittedRoutes = APP_ROUTES.filter(route => canAccess(currentUser, route.permission));
 
@@ -25,7 +29,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const commsAndDocs = permittedRoutes.filter(r => r.section === 'comms');
 
   return (
-    <aside className="w-64 bg-white border-r-2 border-slate-200 p-4 flex flex-col justify-between shrink-0 hidden md:flex h-[calc(100vh-61px)] sticky top-[61px] overflow-y-auto shadow-2xs">
+    <aside 
+      className={`
+        w-64 bg-white border-r-2 border-slate-200 p-4 flex flex-col justify-between shrink-0 shadow-2xs z-50
+        fixed inset-y-0 left-0 transform transition-transform duration-300 md:static md:translate-x-0
+        ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+      `}
+    >
       <div className="space-y-5">
         
         {/* Core Operations Section */}
