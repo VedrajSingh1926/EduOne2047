@@ -57,7 +57,7 @@ function CoreApplication() {
   const [activeModule, setActiveModule] = useState<string>('dashboard');
   
   // Authentication State
-  const initialRole = (new URLSearchParams(window.location.search).get('role') as Role) || 'Admin';
+  const initialRole = (new URLSearchParams(window.location.search).get('role') as Role) || 'Super Admin';
   // If there's a role parameter, assume they bypassed login (e.g. from local testing). 
   // Otherwise, default to unauthenticated.
   const hasRoleParam = !!new URLSearchParams(window.location.search).get('role');
@@ -69,18 +69,7 @@ function CoreApplication() {
   // Login Prefill State
   const [loginPrefillId, setLoginPrefillId] = useState<string | undefined>(undefined);
 
-  // Global Layout State (also controls desktop sidebar)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(window.innerWidth >= 768);
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setIsMobileMenuOpen(true);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   // Fallback for direct role URL testing
   const activeUser = currentUser || { id: 'TEST-000', name: 'Test User', role: currentRole };
@@ -162,10 +151,7 @@ function CoreApplication() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Close mobile menu on navigation
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [activeModule]);
+
 
   // App State Store
   const students = useFirebaseState<Student>('students', INITIAL_STUDENTS);
@@ -512,8 +498,6 @@ function CoreApplication() {
           setCurrentUser(null);
           setActiveModule('landing');
         }}
-        isMobileMenuOpen={isMobileMenuOpen}
-        onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         unresolvedEscalationsCount={unresolvedEscalationsCount}
         onOpenCommandCenter={handleOpenCommandCenter}
         easyMode={easyMode}
@@ -530,17 +514,7 @@ function CoreApplication() {
           unresolvedEscalationsCount={unresolvedEscalationsCount}
           onOpenHelpGuide={() => setIsHelpModalOpen(true)}
           currentUser={activeUser}
-          isOpen={isMobileMenuOpen}
-          onClose={() => setIsMobileMenuOpen(false)}
         />
-
-        {/* Mobile Sidebar Overlay */}
-        {isMobileMenuOpen && (
-          <div 
-            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-40 md:hidden"
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
-        )}
 
         {/* Main Workspace Area */}
         <main className="flex-1 overflow-y-auto bg-slate-50/50 p-4 md:p-6 lg:p-8 relative">

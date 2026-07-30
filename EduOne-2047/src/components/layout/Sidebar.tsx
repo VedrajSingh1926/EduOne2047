@@ -30,12 +30,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <aside 
-      className={`
-        bg-white border-r border-slate-200 p-4 flex flex-col justify-between shrink-0 shadow-sm z-50
-        transition-all duration-300 ease-in-out overflow-hidden
-        fixed top-[61px] bottom-0 left-0 md:relative md:top-0
-        ${isOpen ? 'translate-x-0 w-64 opacity-100' : '-translate-x-full md:translate-x-0 w-64 md:w-0 md:opacity-0 md:p-0 md:border-0'}
-      `}
+      className="bg-white border-r border-slate-200 p-4 flex flex-col justify-between shrink-0 shadow-sm z-50 overflow-hidden relative w-64 hidden md:flex"
     >
       <div className="space-y-5">
         

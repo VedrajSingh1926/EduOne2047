@@ -34,8 +34,6 @@ interface NavbarProps {
   onToggleEasyMode: () => void;
   onOpenHelpGuide: () => void;
   onOpenShortcuts?: () => void;
-  isMobileMenuOpen?: boolean;
-  onToggleMobileMenu?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -49,9 +47,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   easyMode,
   onToggleEasyMode,
   onOpenHelpGuide,
-  onOpenShortcuts,
-  isMobileMenuOpen,
-  onToggleMobileMenu
+  onOpenShortcuts
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isListening, setIsListening] = useState(false);
@@ -133,15 +129,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Brand & Mobile Menu Toggle */}
         <div className="flex items-center justify-between w-full md:w-auto gap-3">
           <div className="flex items-center gap-2">
-            {onToggleMobileMenu && (
-              <button 
-                onClick={onToggleMobileMenu}
-                className="p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors"
-                title="Toggle Sidebar"
-              >
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            )}
             
             <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => onSelectModule ? onSelectModule('dashboard') : onNavigateToModule?.('dashboard')}>
               <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-emerald-400 flex items-center justify-center font-extrabold text-white text-base shadow-xs">
