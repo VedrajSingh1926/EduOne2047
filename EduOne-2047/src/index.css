@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+@theme {
+  --color-blue-50: #edf7f6;
+  --color-blue-100: #d2ebe7;
+  --color-blue-200: #a7d3cd;
+  --color-blue-300: #76b3ac;
+  --color-blue-400: #4c9089;
+  --color-blue-500: #31746e;
+  --color-blue-600: #066157;
+  --color-blue-700: #204d45;
+  --color-blue-800: #1d3e38;
+  --color-blue-900: #1a342f;
+  --color-blue-950: #0d1e1b;
+}
+
 /* Accessibility & Easy Mode Scaling */
 .text-scale-large {
   font-size: 110%;
