@@ -69,8 +69,8 @@ function CoreApplication() {
   // Login Prefill State
   const [loginPrefillId, setLoginPrefillId] = useState<string | undefined>(undefined);
 
-  // Global Layout State
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  // Global Layout State (also controls desktop sidebar)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(window.innerWidth >= 768);
 
   // Fallback for direct role URL testing
   const activeUser = currentUser || { id: 'TEST-000', name: 'Test User', role: currentRole };
@@ -491,7 +491,7 @@ function CoreApplication() {
   }
 
   return (
-    <div className={`min-h-screen bg-slate-50 font-sans selection:bg-emerald-600 selection:text-white ${easyMode ? 'easy-mode' : ''} ${textSize === 'large' ? 'text-scale-large' : textSize === 'xlarge' ? 'text-scale-xlarge' : ''}`}>
+    <div className={`flex flex-col min-h-screen bg-slate-50 font-sans selection:bg-emerald-600 selection:text-white ${easyMode ? 'easy-mode' : ''} ${textSize === 'large' ? 'text-scale-large' : textSize === 'xlarge' ? 'text-scale-xlarge' : ''}`}>
       {/* Top Navbar */}
       <Navbar
         activeModule={activeModule}
@@ -512,7 +512,7 @@ function CoreApplication() {
         onOpenShortcuts={() => setIsShortcutsModalOpen(true)}
       />
 
-      <div className="flex h-[calc(100vh-61px)] md:h-screen overflow-hidden relative">
+      <div className="flex flex-1 overflow-hidden relative">
         {/* Left Sidebar */}
         <Sidebar
           activeModule={activeModule}

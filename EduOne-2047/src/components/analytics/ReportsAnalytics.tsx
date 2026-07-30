@@ -102,7 +102,7 @@ export const ReportsAnalytics: React.FC<ReportsAnalyticsProps> = ({ supplyItems 
                 <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748b' }} />
                 <Tooltip />
                 <Line type="monotone" dataKey="expected" stroke="#cbd5e1" strokeWidth={2} strokeDasharray="4 4" name="Expected" />
-                <Line type="monotone" dataKey="actual" stroke="#2563eb" strokeWidth={2.5} name="Actual Collected" />
+                <Line type="monotone" dataKey="actual" stroke="#066157" strokeWidth={2.5} name="Actual Collected" />
               </LineChart>
             </ResponsiveContainer>
           </div>

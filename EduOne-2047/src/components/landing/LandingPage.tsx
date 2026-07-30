@@ -198,15 +198,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
           <div className="flex items-center gap-4">
             <button
               onClick={() => onOpenLogin()}
-              className="hidden sm:flex px-4 py-2 text-sm font-bold text-emerald-700 hover:text-emerald-600 transition-colors"
-            >
-              Login
-            </button>
-            <button
-              onClick={() => onOpenLogin()}
               className="px-5 py-2.5 text-sm rounded-xl flex items-center gap-2 btn-primary"
             >
-              <span>Launch Portal</span>
+              <span>Login</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

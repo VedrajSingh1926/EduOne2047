@@ -136,7 +136,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             {onToggleMobileMenu && (
               <button 
                 onClick={onToggleMobileMenu}
-                className="md:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors"
+                className="p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors"
+                title="Toggle Sidebar"
               >
                 {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>

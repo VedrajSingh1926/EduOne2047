@@ -65,7 +65,7 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
   ];
 
   const feeStatusDistribution = [
-    { name: 'Paid in Full', value: 78, color: '#2563eb' },
+    { name: 'Paid in Full', value: 78, color: '#066157' },
     { name: 'Partial Paid', value: 14, color: '#A9D8D2' },
     { name: 'Overdue', value: 8, color: '#ef4444' }
   ];
@@ -294,8 +294,8 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
               <AreaChart data={attendanceData}>
                 <defs>
                   <linearGradient id="attendGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#2563eb" stopOpacity={0.15} />
-                    <stop offset="95%" stopColor="#2563eb" stopOpacity={0.0} />
+                    <stop offset="5%" stopColor="#066157" stopOpacity={0.15} />
+                    <stop offset="95%" stopColor="#066157" stopOpacity={0.0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
@@ -304,7 +304,7 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
                 <Tooltip
                   contentStyle={{ backgroundColor: '#1e293b', borderRadius: '8px', border: 'none', color: '#fff', fontSize: '11px' }}
                 />
-                <Area type="monotone" dataKey="attendance" stroke="#2563eb" strokeWidth={2} fillOpacity={1} fill="url(#attendGrad)" />
+                <Area type="monotone" dataKey="attendance" stroke="#066157" strokeWidth={2} fillOpacity={1} fill="url(#attendGrad)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -331,7 +331,7 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
                 <Tooltip
                   contentStyle={{ backgroundColor: '#1e293b', borderRadius: '8px', border: 'none', color: '#fff', fontSize: '11px' }}
                 />
-                <Bar dataKey="collected" fill="#2563eb" radius={[4, 4, 0, 0]} name="Collected" />
+                <Bar dataKey="collected" fill="#066157" radius={[4, 4, 0, 0]} name="Collected" />
                 <Bar dataKey="target" fill="#e2e8f0" radius={[4, 4, 0, 0]} name="Target" />
               </BarChart>
             </ResponsiveContainer>
