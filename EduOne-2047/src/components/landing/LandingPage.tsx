@@ -155,7 +155,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
             <a href="#capabilities" className="text-sm font-semibold text-[#0F172A] hover:text-[#055248] transition-colors py-4">Capabilities</a>
             <a href="#for-schools" className="text-sm font-semibold text-[#0F172A] hover:text-[#055248] transition-colors py-4">For Schools</a>
             <a href="#security" className="text-sm font-semibold text-[#0F172A] hover:text-[#055248] transition-colors py-4">Security</a>
-            <a href="#sandbox" className="text-sm font-semibold text-[#0F172A] hover:text-[#055248] transition-colors py-4">Demo</a>
+            <a href="#demo" className="text-sm font-semibold text-[#0F172A] hover:text-[#055248] transition-colors py-4">Demo</a>
           </nav>
 
           <div className="flex items-center gap-4">
@@ -242,7 +242,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               variants={fadeUpVariant}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              href="#features"
+              href="#capabilities"
               className="w-full sm:w-auto px-8 py-4 text-sm rounded-2xl text-center btn-secondary"
             >
               Explore Features
