@@ -4,7 +4,8 @@ import {
   Send,
   BellRing,
   ShieldAlert,
-  Search
+  Search,
+  CheckCircle2
 } from 'lucide-react';
 import { Student, AttendanceRecord } from '../../types';
 

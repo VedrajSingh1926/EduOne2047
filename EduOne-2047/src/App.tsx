@@ -186,7 +186,7 @@ function CoreApplication() {
   };
 
   const handleUpdateStudent = async (studentId: string, updates: Partial<Student>) => {
-    if (!hasPermission(activeUser, PERMISSIONS.STUDENTS_MANAGE)) {
+    if (!canAccess(activeUser, [PERMISSIONS.STUDENTS_EDIT_ALL, PERMISSIONS.STUDENTS_EDIT_HOMEROOM])) {
       toast.error("UNAUTHORIZED: You do not have permission to modify students.");
       return;
     }
