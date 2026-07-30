@@ -173,7 +173,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
 
           <button
             onClick={() => setIsComposing(true)}
-            className="px-4 py-2 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-2xs transition-all flex items-center gap-1.5"
+            className="px-4 py-2 text-xs font-medium text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-2xs transition-all flex items-center gap-1.5"
           >
             <Plus className="w-3.5 h-3.5" />
             Compose
@@ -182,9 +182,9 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
       </div>
 
       {statusMessage && (
-        <div className="p-3.5 bg-blue-50 border border-blue-200 rounded-xl text-xs text-blue-800 flex items-center justify-between animate-fade-in">
+        <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 flex items-center justify-between animate-fade-in">
           <div className="flex items-center gap-2 font-medium">
-            <Sparkles className="w-4 h-4 text-blue-600 shrink-0" />
+            <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
             <span>{statusMessage}</span>
           </div>
         </div>
@@ -203,7 +203,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                 placeholder="Search emails or parents..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-emerald-500 transition-all"
               />
             </div>
 
@@ -249,7 +249,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                     }}
                     className={`p-3.5 rounded-xl border transition-all cursor-pointer space-y-2 ${
                       isSelected
-                        ? 'bg-blue-50/70 border-blue-300 ring-1 ring-blue-300/50'
+                        ? 'bg-emerald-50/70 border-emerald-300 ring-1 ring-blue-300/50'
                         : thread.unread
                         ? 'bg-slate-50/80 border-slate-200 hover:border-slate-300'
                         : 'bg-white border-slate-200/70 hover:bg-slate-50/60'
@@ -258,7 +258,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2 min-w-0">
                         {thread.unread && (
-                          <span className="w-2 h-2 rounded-full bg-blue-600 shrink-0" />
+                          <span className="w-2 h-2 rounded-full bg-emerald-600 shrink-0" />
                         )}
                         <span className="text-xs font-bold text-slate-900 truncate">
                           {thread.from.split('<')[0].trim()}
@@ -331,7 +331,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
               {/* Action Toolbar */}
               <div className="p-4 bg-slate-100/60 border border-slate-200 rounded-xl space-y-3">
                 <div className="text-xs font-bold text-slate-800 flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-blue-600" />
+                  <Sparkles className="w-4 h-4 text-emerald-600" />
                   Smart Workspace Actions
                 </div>
 
@@ -353,7 +353,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                     }}
                     className="p-2.5 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 transition-all flex items-center justify-center gap-2 shadow-2xs"
                   >
-                    <Send className="w-4 h-4 text-blue-600" />
+                    <Send className="w-4 h-4 text-emerald-600" />
                     Quick Reply via Gmail
                   </button>
                 </div>
@@ -374,7 +374,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
           <div className="bg-white rounded-2xl max-w-lg w-full border border-slate-200 shadow-xl overflow-hidden animate-in fade-in zoom-in-95">
             <div className="p-4 bg-slate-900 text-white flex items-center justify-between">
               <div className="flex items-center gap-2 text-xs font-bold">
-                <Mail className="w-4 h-4 text-blue-400" />
+                <Mail className="w-4 h-4 text-emerald-400" />
                 Compose Gmail Message
               </div>
               <button
@@ -394,7 +394,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                   placeholder="parent@example.com"
                   value={recipient}
                   onChange={(e) => setRecipient(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-emerald-500"
                 />
               </div>
 
@@ -406,7 +406,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                   placeholder="School Fee Receipt Acknowledgment / Notice"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-emerald-500"
                 />
               </div>
 
@@ -420,7 +420,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                         setSubject('Fee Payment Ledger Confirmation');
                         setBody('Dear Parent,\n\nThis is to acknowledge the receipt of your fee payment. The ledger status for your ward has been verified and updated.\n\nThank you,\nSchool Finance Desk');
                       }}
-                      className="text-[10px] text-blue-600 hover:underline font-medium"
+                      className="text-[10px] text-emerald-600 hover:underline font-medium"
                     >
                       + Fee Template
                     </button>
@@ -430,7 +430,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                         setSubject('Leave Note Acknowledged');
                         setBody('Dear Parent,\n\nWe have received the leave request for your child. Attendance records have been adjusted with EXCUSED status.\n\nRegards,\nClass Teacher');
                       }}
-                      className="text-[10px] text-blue-600 hover:underline font-medium"
+                      className="text-[10px] text-emerald-600 hover:underline font-medium"
                     >
                       + Leave Template
                     </button>
@@ -441,7 +441,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                   required
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 leading-relaxed font-sans"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-emerald-500 leading-relaxed font-sans"
                 />
               </div>
 
@@ -456,7 +456,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                 <button
                   type="submit"
                   disabled={isSending}
-                  className="px-5 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-xs transition-all flex items-center gap-2"
+                  className="px-5 py-2 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-xs transition-all flex items-center gap-2"
                 >
                   <Send className="w-3.5 h-3.5" />
                   {isSending ? 'Sending via Gmail...' : 'Send Email'}

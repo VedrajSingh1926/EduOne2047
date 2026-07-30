@@ -51,7 +51,7 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({
         {/* Header */}
         <div className="bg-slate-900 text-white p-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-blue-600 rounded-lg">
+            <div className="p-2 bg-emerald-600 rounded-lg">
               <Keyboard className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -73,7 +73,7 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({
           {shortcutGroups.map((group, gIdx) => (
             <div key={gIdx} className="space-y-2">
               <div className="text-[10px] font-black text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                <Navigation className="w-3 h-3 text-blue-600" />
+                <Navigation className="w-3 h-3 text-emerald-600" />
                 <span>{group.category}</span>
               </div>
 
@@ -89,9 +89,9 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({
                         sc.action();
                       }
                     }}
-                    className="p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-blue-50 hover:border-blue-300 transition-all flex items-center justify-between cursor-pointer group"
+                    className="p-2.5 rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-emerald-50 hover:border-emerald-300 transition-all flex items-center justify-between cursor-pointer group"
                   >
-                    <span className="text-xs font-bold text-slate-800 group-hover:text-blue-900">
+                    <span className="text-xs font-bold text-slate-800 group-hover:text-emerald-900">
                       {sc.label}
                     </span>
 
@@ -99,7 +99,7 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({
                       {sc.keys.map((k, kIdx) => (
                         <kbd
                           key={kIdx}
-                          className="px-2 py-1 text-[10px] font-extrabold font-mono bg-white text-slate-700 border-2 border-slate-300 rounded-md shadow-2xs group-hover:border-blue-400 group-hover:text-blue-700"
+                          className="px-2 py-1 text-[10px] font-extrabold font-mono bg-white text-slate-700 border-2 border-slate-300 rounded-md shadow-2xs group-hover:border-emerald-400 group-hover:text-emerald-700"
                         >
                           {k}
                         </kbd>
@@ -117,7 +117,7 @@ export const KeyboardShortcutsModal: React.FC<KeyboardShortcutsModalProps> = ({
           <span>Press <kbd className="px-1.5 py-0.5 font-mono text-[10px] bg-white border rounded font-bold">Esc</kbd> anytime to close</span>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg text-xs transition-colors"
+            className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs transition-colors"
           >
             Got It
           </button>

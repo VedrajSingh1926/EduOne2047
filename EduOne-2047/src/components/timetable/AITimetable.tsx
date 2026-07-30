@@ -34,8 +34,8 @@ export const AITimetable: React.FC<AITimetableProps> = ({
   };
 
   const getSubjectColor = (subject: string) => {
-    if (subject.includes('Physics') || subject.includes('Science')) return 'bg-blue-50 text-blue-700 border-blue-200';
-    if (subject.includes('Math')) return 'bg-indigo-50 text-indigo-700 border-indigo-200';
+    if (subject.includes('Physics') || subject.includes('Science')) return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+    if (subject.includes('Math')) return 'bg-emerald-50 text-emerald-700 border-indigo-200';
     if (subject.includes('Chemistry')) return 'bg-emerald-50 text-emerald-700 border-emerald-200';
     if (subject.includes('English') || subject.includes('Literature')) return 'bg-purple-50 text-purple-700 border-purple-200';
     if (subject.includes('Computer') || subject.includes('Coding')) return 'bg-sky-50 text-sky-700 border-sky-200';
@@ -56,7 +56,7 @@ export const AITimetable: React.FC<AITimetableProps> = ({
         <button
           onClick={handleRunOptimizer}
           disabled={isGenerating}
-          className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs self-start sm:self-auto"
+          className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs self-start sm:self-auto"
         >
           {isGenerating ? (
             <>
@@ -160,7 +160,7 @@ export const AITimetable: React.FC<AITimetableProps> = ({
                     <td className="p-3.5 text-right pr-4">
                       <button
                         onClick={() => onAssignSubstitute(slot.id, 'Dr. Alok Nath')}
-                        className="text-xs font-medium text-blue-600 hover:text-blue-700 hover:underline"
+                        className="text-xs font-medium text-emerald-600 hover:text-emerald-700 hover:underline"
                       >
                         Reassign
                       </button>

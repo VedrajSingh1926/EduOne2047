@@ -42,7 +42,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div>
           <div className="px-2 pb-2 text-[10px] font-black text-slate-400 uppercase tracking-wider flex items-center justify-between">
             <span>Daily Operations</span>
-            <span className="w-2 h-2 rounded-full bg-blue-600" />
+            <span className="w-2 h-2 rounded-full bg-emerald-600" />
           </div>
 
           <nav className="space-y-1">
@@ -55,7 +55,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   onClick={() => onSelectModule(item.id)}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                     isActive
-                      ? 'bg-blue-600 text-white shadow-xs'
+                      ? 'bg-emerald-600 text-white shadow-xs'
                       : 'text-slate-700 hover:bg-slate-100/90 hover:text-slate-900 border border-transparent'
                   }`}
                 >
@@ -91,7 +91,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   onClick={() => onSelectModule(item.id)}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                     isActive
-                      ? 'bg-blue-600 text-white shadow-xs'
+                      ? 'bg-emerald-600 text-white shadow-xs'
                       : 'text-slate-700 hover:bg-slate-100/90 hover:text-slate-900 border border-transparent'
                   }`}
                 >
@@ -107,7 +107,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   {count !== undefined && count > 0 && (
                     <span
                       className={`px-1.5 py-0.5 text-[10px] font-black rounded-full shrink-0 ${
-                        isActive ? 'bg-white text-blue-700' : 'bg-red-600 text-white'
+                        isActive ? 'bg-white text-emerald-700' : 'bg-red-600 text-white'
                       }`}
                     >
                       {count}

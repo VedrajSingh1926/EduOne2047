@@ -61,7 +61,7 @@ export const AIDocumentCenter: React.FC<AIDocumentCenterProps> = ({
           </p>
         </div>
 
-        <label className="px-4 py-2 rounded-xl bg-blue-600 interaction-btn-primary text-white text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer self-start sm:self-auto">
+        <label className="px-4 py-2 rounded-xl bg-emerald-600 interaction-btn-primary text-white text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer self-start sm:self-auto">
           <Upload className="w-3.5 h-3.5" />
           <span>Upload Document</span>
           <input type="file" className="hidden" onChange={handleFileUpload} />
@@ -70,7 +70,7 @@ export const AIDocumentCenter: React.FC<AIDocumentCenterProps> = ({
 
       {isProcessing && (
         <div className="p-3.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-800 text-xs font-medium flex items-center gap-2">
-          <RefreshCw className="w-3.5 h-3.5 text-blue-600 animate-spin" />
+          <RefreshCw className="w-3.5 h-3.5 text-emerald-600 animate-spin" />
           <span>Running document field extraction...</span>
         </div>
       )}
@@ -166,7 +166,7 @@ export const AIDocumentCenter: React.FC<AIDocumentCenterProps> = ({
                   </button>
                   <button
                     onClick={() => onApproveDocument(doc.id)}
-                    className="px-3 py-1 rounded-md bg-blue-600 text-white font-medium text-xs interaction-btn-primary transition-colors flex items-center gap-1 shadow-2xs"
+                    className="px-3 py-1 rounded-md bg-emerald-600 text-white font-medium text-xs interaction-btn-primary transition-colors flex items-center gap-1 shadow-2xs"
                   >
                     <Check className="w-3.5 h-3.5" />
                     <span>Approve</span>
@@ -204,7 +204,7 @@ export const AIDocumentCenter: React.FC<AIDocumentCenterProps> = ({
             </div>
 
             <div className="p-6 rounded-xl bg-slate-50 text-center text-xs text-slate-500 border border-slate-200">
-              <Sparkles className="w-6 h-6 text-blue-600 mx-auto mb-1.5" />
+              <Sparkles className="w-6 h-6 text-emerald-600 mx-auto mb-1.5" />
               <div className="font-semibold text-slate-800">OCR Scan Verification</div>
               <p className="text-[10px] mt-0.5">High resolution document verification window</p>
             </div>
@@ -234,7 +234,7 @@ export const AIDocumentCenter: React.FC<AIDocumentCenterProps> = ({
                     onApproveDocument(selectedDoc.id);
                     setSelectedDoc(null);
                   }}
-                  className="px-4 py-1.5 rounded-lg bg-blue-600 text-white font-medium text-xs interaction-btn-primary"
+                  className="px-4 py-1.5 rounded-lg bg-emerald-600 text-white font-medium text-xs interaction-btn-primary"
                 >
                   Approve Data
                 </button>

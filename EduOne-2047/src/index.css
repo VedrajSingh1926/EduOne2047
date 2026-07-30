@@ -1,29 +1,42 @@
 @import "tailwindcss";
 
 @theme {
-  /* Primary Brand (#066157) overriding default blue */
-  --color-blue-50: #E6F4F2;
-  --color-blue-100: #d2ebe7;
-  --color-blue-200: #B7D9D4;
-  --color-blue-300: #76b3ac;
-  --color-blue-400: #4c9089;
-  --color-blue-500: #31746e;
-  --color-blue-600: #066157;
-  --color-blue-700: #055248;
-  --color-blue-800: #04443D;
-  --color-blue-900: #1a342f;
-  --color-blue-950: #0d1e1b;
+  /* Core Monochromatic Emerald Scale */
+  --color-emerald-50: #EAF6F4;
+  --color-emerald-100: #A9D8D2;
+  --color-emerald-200: #4AAFA5;
+  --color-emerald-300: #159A8C;
+  --color-emerald-400: #0B8A7A;
+  --color-emerald-500: #066157;
+  --color-emerald-600: #055248;
+  --color-emerald-700: #04443D;
+  --color-emerald-800: #033A35;
+  --color-emerald-900: #022B28;
+
+  /* Aliasing legacy colors strictly to Emerald to prevent ANY blue/cyan leaks */
+  --color-blue-50: var(--color-emerald-50);
+  --color-blue-100: var(--color-emerald-100);
+  --color-blue-200: var(--color-emerald-200);
+  --color-blue-300: var(--color-emerald-300);
+  --color-blue-400: var(--color-emerald-400);
+  --color-blue-500: var(--color-emerald-500);
+  --color-blue-600: var(--color-emerald-600);
+  --color-blue-700: var(--color-emerald-700);
+  --color-blue-800: var(--color-emerald-800);
+  --color-blue-900: var(--color-emerald-900);
   
-  /* AI Accent Colors */
-  --color-emerald-500: #0B8A7A;
-  --color-teal-500: #159A8C;
-  --color-cyan-500: #3AA7C1;
+  --color-cyan-500: var(--color-emerald-400);
+  --color-teal-500: var(--color-emerald-300);
+  --color-indigo-500: var(--color-emerald-600);
+  --color-indigo-600: var(--color-emerald-700);
+  --color-amber-500: var(--color-emerald-400);
+  --color-rose-500: var(--color-emerald-600);
 
   /* Neutrals overriding slate */
-  --color-slate-50: #F7FAF9;
-  --color-slate-100: #F1F5F4;
-  --color-slate-200: #DCE5E3;
-  --color-slate-300: #B9C8C5;
+  --color-slate-50: #F8FBFA;
+  --color-slate-100: #F3F8F7;
+  --color-slate-200: #DCE9E6;
+  --color-slate-300: #B9D3CE;
   --color-slate-500: #64748B;
   --color-slate-600: #475569;
   --color-slate-900: #0F172A;
@@ -68,7 +81,7 @@
     @apply bg-white border border-slate-200 rounded-[20px] transition-all duration-300;
   }
   .card-enterprise:hover {
-    border-color: #B7D9D4;
+    border-color: #A9D8D2;
     box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
   }
 
@@ -157,11 +170,11 @@
 @layer components {
   @media (prefers-reduced-motion: no-preference) {
     .interaction-card {
-      @apply transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-lg hover:shadow-slate-200/50;
+      @apply transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1 hover:scale-[1.02] hover:shadow-lg hover:shadow-slate-200/50;
     }
     
     .interaction-btn-primary {
-      @apply transition-all duration-150 ease-in-out hover:brightness-110 active:scale-95;
+      @apply transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:brightness-110 active:scale-95;
     }
     
     .interaction-btn-secondary {
@@ -177,7 +190,7 @@
     }
     
     .interaction-nav-item {
-      @apply transition-all duration-200 ease-in-out hover:bg-slate-800/50;
+      @apply transition-all duration-[250ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-slate-800/50;
     }
   }
 }

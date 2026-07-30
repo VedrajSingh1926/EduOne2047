@@ -81,7 +81,7 @@ export const NeedsAttention: React.FC<NeedsAttentionProps> = ({
           onClick={() => onOpenCommandCenter("Build Needs Attention summary")}
           className="px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-medium flex items-center gap-1.5 shadow-2xs self-start sm:self-auto interaction-btn-secondary"
         >
-          <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
           <span>AI Prioritize</span>
         </button>
       </div>
@@ -151,9 +151,9 @@ export const NeedsAttention: React.FC<NeedsAttentionProps> = ({
                   </div>
                 </div>
 
-                <div className="p-3.5 rounded-xl bg-blue-50/40 border border-blue-100 space-y-1">
-                  <div className="font-semibold text-blue-900 flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                <div className="p-3.5 rounded-xl bg-emerald-50/40 border border-emerald-100 space-y-1">
+                  <div className="font-semibold text-emerald-900 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
                     <span>AI Recommended Action:</span>
                   </div>
                   <p className="text-slate-700 leading-relaxed">{item.suggestedAction}</p>
@@ -176,7 +176,7 @@ export const NeedsAttention: React.FC<NeedsAttentionProps> = ({
                 </button>
                 <button
                   onClick={() => onResolveEscalation(item.id)}
-                  className="px-4 py-1.5 rounded-lg bg-blue-600 text-white font-medium text-xs flex items-center gap-1.5 shadow-2xs interaction-btn-primary"
+                  className="px-4 py-1.5 rounded-lg bg-emerald-600 text-white font-medium text-xs flex items-center gap-1.5 shadow-2xs interaction-btn-primary"
                 >
                   <CheckCircle2 className="w-3.5 h-3.5" />
                   <span>Approve Action</span>

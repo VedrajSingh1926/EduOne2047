@@ -102,7 +102,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
 
         <button
           onClick={() => setShowAddModal(true)}
-          className="px-4 py-2 bg-blue-600 text-white text-xs font-medium interaction-btn-primary flex items-center gap-1.5 rounded-xl shadow-2xs self-start sm:self-auto"
+          className="px-4 py-2 bg-emerald-600 text-white text-xs font-medium interaction-btn-primary flex items-center gap-1.5 rounded-xl shadow-2xs self-start sm:self-auto"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>Add Student</span>
@@ -222,7 +222,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                           : s.feeStatus === 'PENDING'
                           ? 'bg-amber-50 text-amber-700 border border-amber-200'
                           : s.feeStatus === 'PARTIAL'
-                          ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                           : 'bg-red-50 text-red-700 border border-red-200'
                       }`}
                     >
@@ -322,7 +322,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                   onOpenDocOCR(selectedStudent.name);
                   setSelectedStudent(null);
                 }}
-                className="px-4 py-2 rounded-xl bg-blue-600 text-white font-medium text-xs interaction-btn-primary"
+                className="px-4 py-2 rounded-xl bg-emerald-600 text-white font-medium text-xs interaction-btn-primary"
               >
                 Scan Admission Documents
               </button>
@@ -428,7 +428,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-blue-600 text-white font-medium interaction-btn-primary"
+                  className="px-4 py-2 rounded-lg bg-emerald-600 text-white font-medium interaction-btn-primary"
                 >
                   Save Record
                 </button>

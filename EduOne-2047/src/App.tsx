@@ -491,7 +491,7 @@ function CoreApplication() {
   }
 
   return (
-    <div className={`min-h-screen bg-slate-50 font-sans selection:bg-blue-600 selection:text-white ${easyMode ? 'easy-mode' : ''} ${textSize === 'large' ? 'text-scale-large' : textSize === 'xlarge' ? 'text-scale-xlarge' : ''}`}>
+    <div className={`min-h-screen bg-slate-50 font-sans selection:bg-emerald-600 selection:text-white ${easyMode ? 'easy-mode' : ''} ${textSize === 'large' ? 'text-scale-large' : textSize === 'xlarge' ? 'text-scale-xlarge' : ''}`}>
       {/* Top Navbar */}
       <Navbar
         activeModule={activeModule}

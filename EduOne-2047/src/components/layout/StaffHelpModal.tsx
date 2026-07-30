@@ -61,7 +61,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
       desc: 'View absent teachers and let AI recommend available teachers qualified for that subject.',
       moduleId: 'timetable',
       icon: GraduationCap,
-      color: 'bg-blue-50 text-blue-700 border-blue-200'
+      color: 'bg-emerald-50 text-emerald-700 border-emerald-200'
     },
     {
       title: 'Collect Fee & Print Payment Receipt',
@@ -82,7 +82,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
       desc: 'Check room numbers, period schedules, and print paper schedules for staff room noticeboards.',
       moduleId: 'timetable',
       icon: CalendarDays,
-      color: 'bg-indigo-50 text-indigo-700 border-indigo-200'
+      color: 'bg-emerald-50 text-emerald-700 border-indigo-200'
     }
   ];
 
@@ -93,7 +93,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
         {/* Header */}
         <div className="bg-slate-900 text-white p-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-blue-600 rounded-xl">
+            <div className="p-2.5 bg-emerald-600 rounded-xl">
               <HelpCircle className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -112,7 +112,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
               className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold flex items-center gap-1.5 border border-slate-700"
               title="Listen to Instructions Spoken Aloud"
             >
-              <Volume2 className="w-4 h-4 text-blue-400" />
+              <Volume2 className="w-4 h-4 text-emerald-400" />
               <span>🔊 Listen</span>
             </button>
 
@@ -131,11 +131,11 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
             onClick={() => setActiveTab('quickstart')}
             className={`px-4 py-2.5 text-xs font-bold rounded-t-xl border-t border-x transition-all flex items-center gap-2 ${
               activeTab === 'quickstart'
-                ? 'bg-white border-slate-300 text-blue-700 border-b-white -mb-px'
+                ? 'bg-white border-slate-300 text-emerald-700 border-b-white -mb-px'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Sparkles className="w-4 h-4 text-blue-600" />
+            <Sparkles className="w-4 h-4 text-emerald-600" />
             <span>1-Click Daily Tasks</span>
           </button>
 
@@ -143,7 +143,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
             onClick={() => setActiveTab('roles')}
             className={`px-4 py-2.5 text-xs font-bold rounded-t-xl border-t border-x transition-all flex items-center gap-2 ${
               activeTab === 'roles'
-                ? 'bg-white border-slate-300 text-blue-700 border-b-white -mb-px'
+                ? 'bg-white border-slate-300 text-emerald-700 border-b-white -mb-px'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -155,11 +155,11 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
             onClick={() => setActiveTab('voice_audio')}
             className={`px-4 py-2.5 text-xs font-bold rounded-t-xl border-t border-x transition-all flex items-center gap-2 ${
               activeTab === 'voice_audio'
-                ? 'bg-white border-slate-300 text-blue-700 border-b-white -mb-px'
+                ? 'bg-white border-slate-300 text-emerald-700 border-b-white -mb-px'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Volume2 className="w-4 h-4 text-indigo-600" />
+            <Volume2 className="w-4 h-4 text-emerald-600" />
             <span>Voice & Audio Features</span>
           </button>
 
@@ -167,7 +167,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
             onClick={() => setActiveTab('faq')}
             className={`px-4 py-2.5 text-xs font-bold rounded-t-xl border-t border-x transition-all flex items-center gap-2 ${
               activeTab === 'faq'
-                ? 'bg-white border-slate-300 text-blue-700 border-b-white -mb-px'
+                ? 'bg-white border-slate-300 text-emerald-700 border-b-white -mb-px'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -182,10 +182,10 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
           {/* TAB 1: QUICKSTART */}
           {activeTab === 'quickstart' && (
             <div className="space-y-4">
-              <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 flex items-start gap-3">
-                <Bot className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-                <div className="text-xs text-blue-900">
-                  <p className="font-bold text-sm text-blue-950 mb-1">How can we help you today?</p>
+              <div className="p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex items-start gap-3">
+                <Bot className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                <div className="text-xs text-emerald-900">
+                  <p className="font-bold text-sm text-emerald-950 mb-1">How can we help you today?</p>
                   <p>
                     Click any task below to navigate straight to that feature. You can also click the <strong>Voice Microphone</strong> in the top search bar to simply speak what you need!
                   </p>
@@ -198,7 +198,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
                   return (
                     <div
                       key={idx}
-                      className="p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-blue-400 transition-all flex flex-col justify-between space-y-3 shadow-2xs"
+                      className="p-4 rounded-xl border-2 border-slate-200 bg-white hover:border-emerald-400 transition-all flex flex-col justify-between space-y-3 shadow-2xs"
                     >
                       <div className="flex items-start gap-3">
                         <div className={`p-2.5 rounded-lg border shrink-0 ${task.color}`}>
@@ -215,7 +215,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
                           onNavigateToModule(task.moduleId);
                           onClose();
                         }}
-                        className="w-full py-2 px-3 bg-slate-900 hover:bg-blue-600 text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5"
+                        className="w-full py-2 px-3 bg-slate-900 hover:bg-emerald-600 text-white font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5"
                       >
                         <span>Open {task.title.split(' ')[0]} Tool</span>
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -231,7 +231,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
           {activeTab === 'roles' && (
             <div className="space-y-4">
               <p className="text-xs text-slate-600 font-medium">
-                EduOne customizes your screen according to your school role. You are currently operating as <strong className="text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">{currentRole}</strong>.
+                EduOne customizes your screen according to your school role. You are currently operating as <strong className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">{currentRole}</strong>.
               </p>
 
               <div className="space-y-3">
@@ -261,7 +261,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
                     key={r.role}
                     className={`p-4 rounded-xl border-2 transition-all flex items-start justify-between gap-4 ${
                       currentRole === r.role
-                        ? 'border-blue-600 bg-blue-50/50 shadow-2xs'
+                        ? 'border-emerald-600 bg-emerald-50/50 shadow-2xs'
                         : 'border-slate-200 bg-white hover:border-slate-300'
                     }`}
                   >
@@ -269,7 +269,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-sm text-slate-900">{r.title}</span>
                         {currentRole === r.role && (
-                          <span className="px-2 py-0.5 text-[10px] font-extrabold rounded bg-blue-600 text-white">
+                          <span className="px-2 py-0.5 text-[10px] font-extrabold rounded bg-emerald-600 text-white">
                             ACTIVE
                           </span>
                         )}
@@ -286,7 +286,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
                       className={`px-3.5 py-2 rounded-lg text-xs font-bold shrink-0 transition-all ${
                         currentRole === r.role
                           ? 'bg-emerald-600 text-white cursor-default'
-                          : 'bg-slate-900 hover:bg-blue-600 text-white'
+                          : 'bg-slate-900 hover:bg-emerald-600 text-white'
                       }`}
                     >
                       {currentRole === r.role ? 'Selected' : 'Switch To Persona'}
@@ -392,7 +392,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
 
           <button
             onClick={onClose}
-            className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-md transition-all ml-auto"
+            className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow-md transition-all ml-auto"
           >
             Got It! Close Guide
           </button>

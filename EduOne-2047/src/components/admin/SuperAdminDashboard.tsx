@@ -71,7 +71,7 @@ export const SuperAdminDashboard: React.FC = () => {
   return (
     <div className="p-6 premium-container space-y-6">
       <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg">
+        <div className="w-12 h-12 rounded-xl bg-emerald-600 flex items-center justify-center shadow-lg">
           <ShieldCheck className="w-6 h-6 text-white" />
         </div>
         <div>
@@ -85,7 +85,7 @@ export const SuperAdminDashboard: React.FC = () => {
         {/* Registration Form */}
         <div className="lg:col-span-1 card-enterprise p-6 interaction-card">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2 mb-6">
-            <UserPlus className="w-5 h-5 text-blue-600" />
+            <UserPlus className="w-5 h-5 text-emerald-600" />
             Register New Staff
           </h2>
 
@@ -121,7 +121,7 @@ export const SuperAdminDashboard: React.FC = () => {
               <input type="text" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="e.g. temp123" className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
             </div>
 
-            <button type="submit" className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-2.5 rounded-xl mt-2 shadow-md interaction-btn-primary">
+            <button type="submit" className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl mt-2 shadow-md interaction-btn-primary">
               Create Account
             </button>
           </form>
@@ -131,10 +131,10 @@ export const SuperAdminDashboard: React.FC = () => {
         <div className="lg:col-span-2 card-enterprise overflow-hidden interaction-card">
           <div className="p-6 border-b border-slate-100 flex items-center justify-between">
             <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-              <Users className="w-5 h-5 text-blue-600" />
+              <Users className="w-5 h-5 text-emerald-600" />
               Active Platform Users
             </h2>
-            <div className="bg-blue-50 text-blue-700 px-3 py-1 text-xs font-black rounded-lg">
+            <div className="bg-emerald-50 text-emerald-700 px-3 py-1 text-xs font-black rounded-lg">
               {users.length} Total
             </div>
           </div>
@@ -158,7 +158,7 @@ export const SuperAdminDashboard: React.FC = () => {
                       <td className="px-6 py-4 font-mono font-bold text-slate-900">{u.id}</td>
                       <td className="px-6 py-4 font-medium">{u.name}</td>
                       <td className="px-6 py-4">
-                        <span className="bg-blue-50 border border-blue-200 text-blue-700 px-2.5 py-1 rounded-md text-[10px] font-black">
+                        <span className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-2.5 py-1 rounded-md text-[10px] font-black">
                           {u.role}
                         </span>
                       </td>
@@ -182,7 +182,7 @@ export const SuperAdminDashboard: React.FC = () => {
       <div className="card-enterprise overflow-hidden mt-6 interaction-card">
         <div className="p-6 border-b border-slate-100">
           <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-blue-600" />
+            <ShieldCheck className="w-5 h-5 text-emerald-600" />
             Roles & Permissions Matrix
           </h2>
           <p className="text-sm text-slate-500 mt-1">Centralized RBAC architecture read-only view. Shows active permissions for each role.</p>

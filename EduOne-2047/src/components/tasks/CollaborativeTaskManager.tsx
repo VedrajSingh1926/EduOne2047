@@ -150,8 +150,8 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
             Tasks & Google Tasks Sync
-            <span className="text-[10px] px-2 py-0.5 rounded bg-blue-50 text-blue-700 border border-blue-200 font-semibold flex items-center gap-1">
-              <Check className="w-3 h-3 text-blue-600" /> Two-Way Sync Active
+            <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold flex items-center gap-1">
+              <Check className="w-3 h-3 text-emerald-600" /> Two-Way Sync Active
             </span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
@@ -171,7 +171,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
 
           <button
             onClick={() => setShowModal(true)}
-            className="px-4 py-2 text-xs font-medium text-white bg-blue-600 interaction-btn-primary rounded-xl shadow-2xs transition-all flex items-center gap-1.5"
+            className="px-4 py-2 text-xs font-medium text-white bg-emerald-600 interaction-btn-primary rounded-xl shadow-2xs transition-all flex items-center gap-1.5"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Create Task</span>
@@ -196,7 +196,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
             </h3>
           </div>
           <span className="text-[11px] text-slate-400 font-medium flex items-center gap-1">
-            Google Workspace API <ArrowUpRight className="w-3 h-3 text-blue-600" />
+            Google Workspace API <ArrowUpRight className="w-3 h-3 text-emerald-600" />
           </span>
         </div>
 
@@ -210,13 +210,13 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
                 className={`p-3.5 rounded-xl border transition-all cursor-pointer space-y-1.5 ${
                   isCompleted
                     ? 'bg-slate-50 border-slate-200/60 opacity-75'
-                    : 'bg-white border-slate-200/90 hover:border-blue-300 shadow-2xs'
+                    : 'bg-white border-slate-200/90 hover:border-emerald-300 shadow-2xs'
                 }`}
               >
                 <div className="flex items-start gap-2">
                   <button
                     type="button"
-                    className="mt-0.5 shrink-0 text-slate-400 hover:text-blue-600"
+                    className="mt-0.5 shrink-0 text-slate-400 hover:text-emerald-600"
                   >
                     {isCompleted ? (
                       <CheckCircle2 className="w-4 h-4 text-emerald-600" />
@@ -240,7 +240,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
 
                 <div className="flex items-center justify-between text-[10px] text-slate-400 pt-1 border-t border-slate-100">
                   <span>Due: {gt.due || 'Today'}</span>
-                  <span className={isCompleted ? 'text-emerald-600 font-semibold' : 'text-blue-600 font-medium'}>
+                  <span className={isCompleted ? 'text-emerald-600 font-semibold' : 'text-emerald-600 font-medium'}>
                     {isCompleted ? 'Completed ✓' : 'Click to Complete'}
                   </span>
                 </div>
@@ -273,12 +273,12 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
                     className="p-4 rounded-xl bg-white border border-slate-200/90 shadow-2xs interaction-card space-y-2.5"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
+                      <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
                         {t.assignedRole}
                       </span>
                       {t.aiSuggested && (
-                        <span className="px-1.5 py-0.5 text-[9px] font-bold rounded bg-indigo-50 text-indigo-700 border border-indigo-100 flex items-center gap-1">
-                          <Sparkles className="w-3 h-3 text-indigo-500" /> AI
+                        <span className="px-1.5 py-0.5 text-[9px] font-bold rounded bg-emerald-50 text-emerald-700 border border-indigo-100 flex items-center gap-1">
+                          <Sparkles className="w-3 h-3 text-emerald-500" /> AI
                         </span>
                       )}
                     </div>
@@ -316,7 +316,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
       {/* Role-Based Access Control Matrix */}
       <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs interaction-card space-y-4">
         <div className="flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-indigo-600" />
+          <ShieldCheck className="w-4 h-4 text-emerald-600" />
           <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
             Role-Based Access Control (RBAC) Governance Matrix
           </h3>
@@ -328,14 +328,14 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
               key={r.role}
               className={`p-3.5 rounded-xl border ${
                 currentRole === r.role
-                  ? 'border-blue-300 bg-blue-50/30'
+                  ? 'border-emerald-300 bg-emerald-50/30'
                   : 'border-slate-200 bg-slate-50/50'
               }`}
             >
               <div className="font-semibold text-slate-900 flex items-center justify-between">
                 <span>{r.role}</span>
                 {currentRole === r.role && (
-                  <span className="text-[9px] text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded font-extrabold">
+                  <span className="text-[9px] text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded font-extrabold">
                     ACTIVE
                   </span>
                 )}
@@ -394,16 +394,16 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
                 </select>
               </div>
 
-              <div className="p-3 bg-blue-50/60 border border-blue-200/80 rounded-xl flex items-center justify-between">
+              <div className="p-3 bg-emerald-50/60 border border-emerald-200/80 rounded-xl flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <CheckSquare className="w-4 h-4 text-blue-600" />
-                  <span className="font-semibold text-blue-900">Sync directly with Google Tasks API</span>
+                  <CheckSquare className="w-4 h-4 text-emerald-600" />
+                  <span className="font-semibold text-emerald-900">Sync directly with Google Tasks API</span>
                 </div>
                 <input
                   type="checkbox"
                   checked={syncWithGoogle}
                   onChange={(e) => setSyncWithGoogle(e.target.checked)}
-                  className="w-4 h-4 text-blue-600 rounded accent-blue-600 cursor-pointer"
+                  className="w-4 h-4 text-emerald-600 rounded accent-blue-600 cursor-pointer"
                 />
               </div>
 
@@ -417,7 +417,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold interaction-btn-primary"
+                  className="px-4 py-2 rounded-xl bg-emerald-600 text-white font-semibold interaction-btn-primary"
                 >
                   Save Task
                 </button>

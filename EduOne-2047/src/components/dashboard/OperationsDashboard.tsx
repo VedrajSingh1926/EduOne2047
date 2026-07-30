@@ -66,7 +66,7 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
 
   const feeStatusDistribution = [
     { name: 'Paid in Full', value: 78, color: '#2563eb' },
-    { name: 'Partial Paid', value: 14, color: '#f59e0b' },
+    { name: 'Partial Paid', value: 14, color: '#A9D8D2' },
     { name: 'Overdue', value: 8, color: '#ef4444' }
   ];
 
@@ -80,7 +80,7 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
           </h1>
           <div className="flex items-center gap-2 mt-2">
             {currentUser && (
-              <span className="px-2 py-0.5 text-[10px] font-semibold bg-blue-50 text-blue-600 border border-blue-100 rounded-md uppercase tracking-wider">
+              <span className="px-2 py-0.5 text-[10px] font-semibold bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-md uppercase tracking-wider">
                 {currentUser.role}
               </span>
             )}
@@ -92,7 +92,7 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
 
         <button
           onClick={() => onOpenCommandCenter("Generate timetable")}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium rounded-xl shadow-2xs transition-all flex items-center gap-1.5 self-start sm:self-auto shrink-0"
+          className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium rounded-xl shadow-2xs transition-all flex items-center gap-1.5 self-start sm:self-auto shrink-0"
         >
           <Sparkles className="w-3.5 h-3.5" />
           <span>Auto-Generate Timetable</span>
@@ -158,10 +158,10 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
 
       {/* Personalized Workspace Snapshot */}
       {currentUser && (
-        <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 shadow-sm space-y-4">
+        <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-50 to-indigo-50 border border-emerald-100 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-blue-600" />
+              <Calendar className="w-4 h-4 text-emerald-600" />
               My Daily Snapshot ({currentUser.role})
             </h2>
           </div>
@@ -176,9 +176,9 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
                     <span className="font-semibold text-slate-800">08:00 AM - Physics</span>
                     <span className="text-xs text-slate-500">Grade 10-A</span>
                   </div>
-                  <div className="flex justify-between items-center text-sm p-2 bg-blue-50 border border-blue-100 rounded-lg">
-                    <span className="font-semibold text-blue-800">09:00 AM - Math (Substitute)</span>
-                    <span className="text-xs text-blue-600">Grade 9-B</span>
+                  <div className="flex justify-between items-center text-sm p-2 bg-emerald-50 border border-emerald-100 rounded-lg">
+                    <span className="font-semibold text-emerald-800">09:00 AM - Math (Substitute)</span>
+                    <span className="text-xs text-emerald-600">Grade 9-B</span>
                   </div>
                 </div>
               ) : currentUser.role === 'Admin' || currentUser.role === 'User ID Administrator' ? (
@@ -197,11 +197,11 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
               <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">Priority Tasks</h3>
               <div className="space-y-2">
                 <div className="flex items-start gap-2 text-sm p-2">
-                  <input type="checkbox" className="mt-1 rounded text-blue-600 border-slate-300" />
+                  <input type="checkbox" className="mt-1 rounded text-emerald-600 border-slate-300" />
                   <span className="text-slate-700">Review {currentUser.role === 'Teacher' ? 'student assignments' : 'pending staff access requests'}</span>
                 </div>
                 <div className="flex items-start gap-2 text-sm p-2">
-                  <input type="checkbox" className="mt-1 rounded text-blue-600 border-slate-300" />
+                  <input type="checkbox" className="mt-1 rounded text-emerald-600 border-slate-300" />
                   <span className="text-slate-700">Submit weekly activity report</span>
                 </div>
               </div>
@@ -214,7 +214,7 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
       <div className="p-6 rounded-2xl bg-white border-2 border-slate-300 shadow-2xs space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="w-3 h-3 rounded-full bg-blue-600" />
+            <span className="w-3 h-3 rounded-full bg-emerald-600" />
             <h2 className="text-xs font-extrabold text-slate-900 uppercase tracking-wider">
               1-Click Staff Shortcuts (Easy Launcher)
             </h2>
@@ -235,9 +235,9 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
 
           <button
             onClick={() => onNavigate('teachers')}
-            className="p-3 rounded-xl bg-blue-50 hover:bg-blue-100 border-2 border-blue-300 text-blue-950 font-bold text-xs transition-all flex flex-col items-center justify-center gap-1.5 text-center shadow-2xs group"
+            className="p-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-300 text-emerald-950 font-bold text-xs transition-all flex flex-col items-center justify-center gap-1.5 text-center shadow-2xs group"
           >
-            <GraduationCap className="w-5 h-5 text-blue-700 group-hover:scale-110 transition-transform" />
+            <GraduationCap className="w-5 h-5 text-emerald-700 group-hover:scale-110 transition-transform" />
             <span>Find Substitute</span>
           </button>
 
@@ -259,9 +259,9 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
 
           <button
             onClick={onOpenAddStudent}
-            className="p-3 rounded-xl bg-indigo-50 hover:bg-indigo-100 border-2 border-indigo-300 text-indigo-950 font-bold text-xs transition-all flex flex-col items-center justify-center gap-1.5 text-center shadow-2xs group"
+            className="p-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 border-2 border-indigo-300 text-emerald-950 font-bold text-xs transition-all flex flex-col items-center justify-center gap-1.5 text-center shadow-2xs group"
           >
-            <Plus className="w-5 h-5 text-indigo-700 group-hover:scale-110 transition-transform" />
+            <Plus className="w-5 h-5 text-emerald-700 group-hover:scale-110 transition-transform" />
             <span>Add Student</span>
           </button>
 
@@ -389,7 +389,7 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
               <h3 className="text-sm font-semibold text-slate-900">AI Agent Workflows Log</h3>
               <button
                 onClick={() => onNavigate('command-center')}
-                className="text-xs font-medium text-blue-600 hover:underline flex items-center gap-1"
+                className="text-xs font-medium text-emerald-600 hover:underline flex items-center gap-1"
               >
                 <span>Command Center</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
@@ -405,7 +405,7 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-semibold text-slate-900">{log.actionTitle}</span>
-                      <span className="px-2 py-0.5 text-[10px] font-medium rounded bg-blue-50 text-blue-700 border border-blue-100">
+                      <span className="px-2 py-0.5 text-[10px] font-medium rounded bg-emerald-50 text-emerald-700 border border-emerald-100">
                         {log.agentName}
                       </span>
                     </div>

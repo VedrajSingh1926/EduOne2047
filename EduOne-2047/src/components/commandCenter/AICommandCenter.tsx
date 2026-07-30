@@ -134,7 +134,7 @@ export const AICommandCenter: React.FC<AICommandCenterProps> = ({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
             <Bot className="w-5 h-5" />
           </div>
           <div>
@@ -172,7 +172,7 @@ export const AICommandCenter: React.FC<AICommandCenterProps> = ({
               <div
                 className={`max-w-2xl p-4 rounded-xl text-xs sm:text-sm leading-relaxed ${
                   msg.sender === 'user'
-                    ? 'bg-blue-600 text-white rounded-br-none'
+                    ? 'bg-emerald-600 text-white rounded-br-none'
                     : 'bg-slate-100/80 text-slate-900 rounded-bl-none border border-slate-200/80'
                 }`}
               >
@@ -183,7 +183,7 @@ export const AICommandCenter: React.FC<AICommandCenterProps> = ({
                   <div className="mt-3 p-3.5 rounded-lg bg-white text-slate-800 border border-slate-200 space-y-2 text-xs shadow-2xs">
                     <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-2">
                       <div className="flex items-center gap-2 font-medium text-slate-900">
-                        <Zap className="w-3.5 h-3.5 text-blue-600" />
+                        <Zap className="w-3.5 h-3.5 text-emerald-600" />
                         <span>{msg.actionResult.summary}</span>
                       </div>
                       <div className="px-2 py-0.5 text-[10px] font-semibold rounded bg-slate-100 text-slate-700">
@@ -214,7 +214,7 @@ export const AICommandCenter: React.FC<AICommandCenterProps> = ({
 
           {isLoading && (
             <div className="flex items-center gap-2.5 p-3 rounded-lg bg-slate-100 text-slate-600 text-xs w-fit">
-              <RefreshCw className="w-3.5 h-3.5 text-blue-600 animate-spin" />
+              <RefreshCw className="w-3.5 h-3.5 text-emerald-600 animate-spin" />
               <span>AI Agent processing request...</span>
             </div>
           )}
@@ -248,7 +248,7 @@ export const AICommandCenter: React.FC<AICommandCenterProps> = ({
           <button
             onClick={() => handleSendMessage()}
             disabled={isLoading || !inputPrompt.trim()}
-            className="px-4 py-2.5 rounded-lg bg-blue-600 text-white text-xs font-medium hover:bg-blue-700 disabled:opacity-50 transition-all flex items-center gap-1.5"
+            className="px-4 py-2.5 rounded-lg bg-emerald-600 text-white text-xs font-medium hover:bg-emerald-700 disabled:opacity-50 transition-all flex items-center gap-1.5"
           >
             <span>Run</span>
             <Send className="w-3.5 h-3.5" />
@@ -276,7 +276,7 @@ export const AICommandCenter: React.FC<AICommandCenterProps> = ({
           </div>
 
           <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-2.5">
-            <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
             <div>
               <div className="text-xs font-semibold text-slate-900">Substitute assigned</div>
               <div className="text-[10px] text-slate-500 mt-0.5">Dr. Alok Nath assigned for Period 2</div>
@@ -284,7 +284,7 @@ export const AICommandCenter: React.FC<AICommandCenterProps> = ({
           </div>
 
           <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-2.5">
-            <CheckCircle2 className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
             <div>
               <div className="text-xs font-semibold text-slate-900">Admission forms processed</div>
               <div className="text-[10px] text-slate-500 mt-0.5">4 student profiles created via OCR</div>

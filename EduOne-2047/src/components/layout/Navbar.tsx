@@ -143,7 +143,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
             
             <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => onSelectModule ? onSelectModule('dashboard') : onNavigateToModule?.('dashboard')}>
-              <div className="w-9 h-9 rounded-xl bg-blue-700 flex items-center justify-center font-extrabold text-white text-base shadow-xs">
+              <div className="w-9 h-9 rounded-xl bg-emerald-700 flex items-center justify-center font-extrabold text-white text-base shadow-xs">
                 E
               </div>
               <div>
@@ -151,7 +151,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span className="font-bold text-base text-slate-900 tracking-tight">
                     EduOne
                   </span>
-                  <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-blue-100 text-blue-800 border border-blue-200">
+                  <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">
                     STAFF PORTAL
                   </span>
                 </div>
@@ -187,7 +187,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               type="button"
               onClick={handleStartDictation}
               className={`absolute right-2.5 p-1 rounded-lg transition-all flex items-center gap-1 text-[11px] font-bold ${
-                isListening ? 'bg-red-500 text-white animate-pulse' : 'bg-slate-200 hover:bg-blue-100 text-slate-700 hover:text-blue-700'
+                isListening ? 'bg-red-500 text-white animate-pulse' : 'bg-slate-200 hover:bg-emerald-100 text-slate-700 hover:text-emerald-700'
               }`}
               title="Click to speak your search or command out loud"
             >
@@ -219,7 +219,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Read Aloud Page Audio Button */}
           <button
             onClick={handleReadAloud}
-            className="p-2 rounded-xl bg-slate-100 hover:bg-indigo-100 border border-slate-300 text-indigo-700 transition-colors"
+            className="p-2 rounded-xl bg-slate-100 hover:bg-emerald-100 border border-slate-300 text-emerald-700 transition-colors"
             title="Read Page Summary Spoken Aloud"
           >
             <Volume2 className="w-4 h-4" />
@@ -258,9 +258,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* AI Command Center Shortcut */}
           <button
             onClick={() => onOpenCommandCenter()}
-            className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 transition-all"
+            className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 transition-all"
           >
-            <Bot className="w-4 h-4 text-blue-600" />
+            <Bot className="w-4 h-4 text-emerald-600" />
             <span>AI Assistant</span>
           </button>
 
@@ -285,7 +285,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition-colors"
               title="Click to change your display name"
             >
-              <div className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-bold">
+              <div className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] font-bold">
                 {currentUser.name.charAt(0)}
               </div>
               <span className="text-xs font-bold text-slate-800">{currentUser.name}</span>

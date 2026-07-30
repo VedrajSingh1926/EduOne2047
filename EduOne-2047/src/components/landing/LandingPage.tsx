@@ -116,7 +116,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
   const inboxTasks = [
     { type: 'Attendance', title: 'Teacher Absent (Grade 10 Math)', action: 'Approve Substitute: Mr. Sharma', icon: AlertTriangle, color: 'text-amber-500', bg: 'bg-amber-100' },
     { type: 'Finance', title: 'Fee Mismatch: Term 2 Tuition', action: 'Verify Payment Receipt', icon: CreditCard, color: 'text-rose-500', bg: 'bg-rose-100' },
-    { type: 'Documents', title: 'OCR Confidence Low: Transfer Cert', action: 'Review Highlighted Fields', icon: FileCheck, color: 'text-blue-500', bg: 'bg-blue-100' }
+    { type: 'Documents', title: 'OCR Confidence Low: Transfer Cert', action: 'Review Highlighted Fields', icon: FileCheck, color: 'text-emerald-500', bg: 'bg-emerald-100' }
   ];
 
   const complianceBadges = [
@@ -127,11 +127,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-blue-600 selection:text-white overflow-x-hidden relative pt-16">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-emerald-600 selection:text-white overflow-x-hidden relative pt-16">
       {/* Top Header Navbar */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-[14px] border-b border-slate-200 px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md shadow-blue-500/20">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md shadow-emerald-500/20">
             E1
           </div>
           <div>
@@ -144,15 +144,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          <a href="#features" className="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors">Features</a>
-          <a href="#sandbox" className="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors">Sandbox</a>
+          <a href="#features" className="text-sm font-bold text-slate-600 hover:text-emerald-600 transition-colors">Features</a>
+          <a href="#sandbox" className="text-sm font-bold text-slate-600 hover:text-emerald-600 transition-colors">Sandbox</a>
         </nav>
 
         <div className="flex items-center gap-3">
           {/* Mobile Navigation */}
           <nav className="flex md:hidden items-center gap-4 mr-2">
-            <a href="#features" className="text-xs font-bold text-slate-600 hover:text-blue-600">Features</a>
-            <a href="#sandbox" className="text-xs font-bold text-slate-600 hover:text-blue-600">Sandbox</a>
+            <a href="#features" className="text-xs font-bold text-slate-600 hover:text-emerald-600">Features</a>
+            <a href="#sandbox" className="text-xs font-bold text-slate-600 hover:text-emerald-600">Sandbox</a>
           </nav>
           
           <button
@@ -170,14 +170,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
       <section className="relative pt-24 pb-20 px-4 sm:px-8 premium-container w-full text-center z-10">
         {/* Live Animated Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10 rounded-3xl mx-4 sm:mx-0">
-          <div className="absolute inset-0 opacity-40 animate-gradient-x bg-[linear-gradient(180deg,#F7FAF9_0%,#F3F8F7_100%)]"></div>
+          <div className="absolute inset-0 opacity-40 animate-gradient-x bg-[linear-gradient(180deg,#F8FBFA_0%,#F3F8F7_100%)]"></div>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(6,97,87,0.08)_0%,transparent_70%)] backdrop-blur-[2px]"></div>
           
           {/* Floating Educational Icons */}
           <motion.div
             animate={{ y: [0, -30, 0], rotate: [0, 10, -10, 0] }}
             transition={{ duration: 8, ease: "easeInOut", repeat: Infinity }}
-            className="absolute top-10 left-10 md:left-24 text-blue-500/40"
+            className="absolute top-10 left-10 md:left-24 text-emerald-500/10"
           >
             <BookOpen className="w-20 h-20 md:w-32 md:h-32 drop-shadow-md" />
           </motion.div>
@@ -185,7 +185,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
           <motion.div
             animate={{ y: [0, 40, 0], rotate: [0, -15, 10, 0] }}
             transition={{ duration: 10, ease: "easeInOut", repeat: Infinity, delay: 1 }}
-            className="absolute bottom-10 right-10 md:right-24 text-indigo-500/40"
+            className="absolute bottom-10 right-10 md:right-24 text-emerald-500/10"
           >
             <Monitor className="w-24 h-24 md:w-36 md:h-36 drop-shadow-md" />
           </motion.div>
@@ -193,7 +193,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
           <motion.div
             animate={{ y: [0, -25, 0], x: [0, 20, 0], rotate: [0, 20, -5, 0] }}
             transition={{ duration: 12, ease: "easeInOut", repeat: Infinity, delay: 2 }}
-            className="absolute top-20 right-1/4 text-cyan-500/40 hidden sm:block"
+            className="absolute top-20 right-1/4 text-emerald-500/10 hidden sm:block"
           >
             <PenTool className="w-20 h-20 drop-shadow-md" />
           </motion.div>
@@ -201,7 +201,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
           <motion.div
             animate={{ y: [0, 35, 0], x: [0, -25, 0], rotate: [0, -20, 15, 0] }}
             transition={{ duration: 14, ease: "easeInOut", repeat: Infinity, delay: 0.5 }}
-            className="absolute bottom-20 left-1/4 text-emerald-500/30 hidden sm:block"
+            className="absolute bottom-20 left-1/4 text-emerald-500/10 hidden sm:block"
           >
             <GraduationCap className="w-24 h-24 drop-shadow-md" />
           </motion.div>
@@ -211,9 +211,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
 
         <motion.div initial="hidden" animate="visible" variants={fadeUpVariant} className="flex flex-col items-center">
 
-          <h1 className="text-[clamp(2.5rem,5vw,5.5rem)] font-black tracking-tight text-slate-900 leading-tight max-w-[900px] mx-auto">
+          <h1 className="text-[clamp(3rem,5vw,5.5rem)] font-black tracking-tight text-slate-900 leading-tight max-w-[900px] mx-auto">
             Autonomous School Operations <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-teal-500 to-cyan-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#066157] via-[#0B8A7A] to-[#159A8C]">
               Powered by Specialized AI & Role Control
             </span>
           </h1>
@@ -331,9 +331,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
             <motion.div 
               initial="hidden" whileInView="visible" viewport={{ once: true }}
               variants={fadeUpVariant}
-              className="bg-blue-600 rounded-3xl p-8 shadow-xl shadow-blue-600/20 text-white"
+              className="bg-emerald-600 rounded-3xl p-8 shadow-xl shadow-emerald-600/20 text-white"
             >
-              <div className="text-sm font-bold text-blue-200 uppercase tracking-wider mb-6">EduOne2047</div>
+              <div className="text-sm font-bold text-emerald-200 uppercase tracking-wider mb-6">EduOne2047</div>
               <motion.div variants={staggerContainer} className="flex flex-wrap items-center gap-2 text-xl font-bold">
                 {['Read', '→', 'Understand', '→', 'Decide', '→', 'Automate', '→', 'Notify'].map((word, i) => (
                   <motion.span 
@@ -342,7 +342,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
                       hidden: { opacity: 0, x: -10 },
                       visible: { opacity: 1, x: 0, transition: { duration: 0.4 } }
                     }}
-                    className={word === '→' ? 'text-blue-300 mx-1' : ''}
+                    className={word === '→' ? 'text-emerald-300 mx-1' : ''}
                   >
                     {word}
                   </motion.span>
@@ -375,7 +375,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
                 variants={scaleUpVariant}
                 className="flex items-center gap-6 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:-translate-y-1.5 hover:shadow-lg transition-all duration-300"
               >
-                <div className="w-12 h-12 shrink-0 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                <div className="w-12 h-12 shrink-0 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-600">
                   <step.icon className="w-6 h-6" />
                 </div>
                 <div>
@@ -407,7 +407,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               {inboxTasks.map((task, i) => (
                 <div 
                   key={i} 
-                  className={`p-5 card-enterprise border ${i === inboxStep ? 'border-blue-300 shadow-lg scale-[1.02]' : 'border-slate-200 shadow-sm opacity-60'} transition-all duration-300 flex items-start gap-4 hover:-translate-y-1 hover:shadow-md cursor-default`}
+                  className={`p-5 card-enterprise border ${i === inboxStep ? 'border-emerald-300 shadow-lg scale-[1.02]' : 'border-slate-200 shadow-sm opacity-60'} transition-all duration-300 flex items-start gap-4 hover:-translate-y-1 hover:shadow-md cursor-default`}
                 >
                   <div className={`w-10 h-10 shrink-0 rounded-full ${task.bg} ${task.color} flex items-center justify-center`}>
                     <task.icon className="w-5 h-5" />
@@ -416,7 +416,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
                     <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">{task.type}</div>
                     <div className="font-bold text-slate-900 text-base">{task.title}</div>
                     <div className="mt-3 flex items-center gap-2">
-                      <button className="px-4 py-1.5 bg-blue-50 text-blue-600 font-semibold text-sm rounded-lg hover:bg-blue-100 transition-colors">
+                      <button className="px-4 py-1.5 bg-emerald-50 text-emerald-600 font-semibold text-sm rounded-lg hover:bg-emerald-100 transition-colors">
                         {task.action}
                       </button>
                     </div>
@@ -430,7 +430,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
 
       {/* SECTION 5 — FEE RECONCILIATION SPOTLIGHT */}
       <section className="py-32 bg-slate-900 text-white relative overflow-hidden text-center">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-400 via-slate-900 to-slate-900"></div>
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-400 via-slate-900 to-slate-900"></div>
         <div className="premium-container relative z-10">
           <h2 className="text-2xl sm:text-3xl font-medium text-slate-300 mb-8">Manual Fee Reconciliation Time</h2>
           <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
@@ -474,7 +474,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
                 key={tab}
                 onClick={() => setActiveTab(tab as any)}
                 className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all ${
-                  activeTab === tab ? 'bg-blue-600 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  activeTab === tab ? 'bg-emerald-600 text-white shadow-md' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -486,7 +486,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
             <AnimatePresence mode="wait">
               {activeTab === 'documents' && (
                 <motion.div key="docs" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6"><FileText className="w-8 h-8" /></div>
+                  <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-6"><FileText className="w-8 h-8" /></div>
                   <h3 className="text-2xl font-bold text-slate-900 mb-4">Intelligent Document Processing</h3>
                   <p className="text-slate-600 text-lg">Upload physical forms, certificates, or receipts. The system extracts exact data points automatically, routing low-confidence reads to human staff for final verification.</p>
                 </motion.div>
@@ -500,7 +500,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               )}
               {activeTab === 'timetable' && (
                 <motion.div key="time" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mb-6"><Calendar className="w-8 h-8" /></div>
+                  <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-6"><Calendar className="w-8 h-8" /></div>
                   <h3 className="text-2xl font-bold text-slate-900 mb-4">Dynamic Timetable & Substitutions</h3>
                   <p className="text-slate-600 text-lg">Create robust class schedules without conflicts. When a teacher marks absent, the AI substitute recommendation engine immediately finds the best available replacement staff.</p>
                 </motion.div>
@@ -530,8 +530,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               role: 'For Principals',
               headline: 'Total operational oversight without the spreadsheet fatigue.',
               icon: Briefcase,
-              color: 'text-blue-600',
-              bg: 'bg-blue-50',
+              color: 'text-emerald-600',
+              bg: 'bg-emerald-50',
               reverse: false
             },
             {
@@ -546,8 +546,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               role: 'For Teachers',
               headline: 'Less time chasing attendance sheets, more time teaching.',
               icon: GraduationCap,
-              color: 'text-indigo-600',
-              bg: 'bg-indigo-50',
+              color: 'text-emerald-600',
+              bg: 'bg-emerald-50',
               reverse: false
             },
             {
@@ -593,7 +593,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
 
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer} className="grid md:grid-cols-3 gap-6">
             <motion.div variants={scaleUpVariant} className="p-6 card-enterprise hover:-translate-y-1 hover:shadow-md transition-all">
-              <Building2 className="w-8 h-8 text-blue-600 mb-4" />
+              <Building2 className="w-8 h-8 text-emerald-600 mb-4" />
               <h3 className="font-bold text-slate-900 mb-2">Multi-Board Support</h3>
               <p className="text-sm text-slate-600">Native structures mapping exactly to CBSE, ICSE, and State Board academic formatting requirements.</p>
             </motion.div>
@@ -611,7 +611,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
             </motion.div>
 
             <motion.div variants={scaleUpVariant} className="p-6 card-enterprise hover:-translate-y-1 hover:shadow-md transition-all">
-              <Users className="w-8 h-8 text-indigo-600 mb-4" />
+              <Users className="w-8 h-8 text-emerald-600 mb-4" />
               <h3 className="font-bold text-slate-900 mb-2">RTE Quota Tracking</h3>
               <p className="text-sm text-slate-600">Automated flagging for RTE students and scholarship-eligibility to ensure compliance without manual spreadsheets.</p>
             </motion.div>
@@ -647,7 +647,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
                 className="bg-slate-50 border border-slate-200 rounded-[20px] p-6 flex flex-col hover:-translate-y-1.5 hover:shadow-xl transition-all duration-200 group"
               >
                 <div className="mb-4">
-                  <span className="px-2.5 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold rounded uppercase tracking-wider">
+                  <span className="px-2.5 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-bold rounded uppercase tracking-wider">
                     {role.badge}
                   </span>
                 </div>
@@ -656,7 +656,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
                 <p className="text-sm text-slate-600 mb-6 flex-1">{role.focus}</p>
                 <button 
                   onClick={() => onOpenLogin(role.user.split('(')[1].replace(')',''))}
-                  className="w-full py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-semibold text-slate-700 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-colors"
+                  className="w-full py-2.5 bg-white border border-slate-300 rounded-xl text-sm font-semibold text-slate-700 group-hover:bg-emerald-600 group-hover:text-white group-hover:border-emerald-600 transition-colors"
                 >
                   Login as {role.role}
                 </button>
@@ -670,7 +670,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
       <section className="py-24 bg-slate-900 text-white">
         <div className="premium-container text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}>
-            <ShieldCheck className="w-12 h-12 text-blue-400 mx-auto mb-6" />
+            <ShieldCheck className="w-12 h-12 text-emerald-400 mx-auto mb-6" />
             <h2 className="text-3xl font-bold mb-12">Trust & Security by Design</h2>
           </motion.div>
 
@@ -704,7 +704,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
           <h2 className="text-3xl font-black text-slate-900 mb-6">Ready to Automate Your School?</h2>
           <button
             onClick={() => onOpenLogin()}
-            className="px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-2xl shadow-xl shadow-blue-600/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2 mx-auto mb-16"
+            className="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold rounded-2xl shadow-xl shadow-emerald-600/30 transition-all hover:-translate-y-1 flex items-center justify-center gap-2 mx-auto mb-16"
           >
             <Bot className="w-4 h-4" />
             <span>Launch Staff Portal</span>

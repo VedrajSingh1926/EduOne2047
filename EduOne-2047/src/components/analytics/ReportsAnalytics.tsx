@@ -52,7 +52,7 @@ export const ReportsAnalytics: React.FC<ReportsAnalyticsProps> = ({ supplyItems 
           </p>
         </div>
 
-        <button className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs self-start sm:self-auto">
+        <button className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs self-start sm:self-auto">
           <Download className="w-3.5 h-3.5" />
           <span>Export Executive Board PDF</span>
         </button>
@@ -122,7 +122,7 @@ export const ReportsAnalytics: React.FC<ReportsAnalyticsProps> = ({ supplyItems 
                 <XAxis dataKey="teacher" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#64748b' }} />
                 <YAxis domain={[0, 30]} axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#64748b' }} />
                 <Tooltip />
-                <Bar dataKey="lectures" fill="#3b82f6" radius={[4, 4, 0, 0]} name="Assigned" />
+                <Bar dataKey="lectures" fill="#159A8C" radius={[4, 4, 0, 0]} name="Assigned" />
                 <Bar dataKey="max" fill="#f1f5f9" radius={[4, 4, 0, 0]} name="Max Cap" />
               </BarChart>
             </ResponsiveContainer>
