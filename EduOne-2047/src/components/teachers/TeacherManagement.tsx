@@ -46,8 +46,8 @@ export const TeacherManagement: React.FC<TeacherManagementProps> = ({
         </div>
 
         {absentTeachers.length > 0 && (
-          <div className="px-3 py-1.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium flex items-center gap-2 self-start sm:self-auto">
-            <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+          <div className="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-medium flex items-center gap-2 self-start sm:self-auto">
+            <AlertCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
             <span>{absentTeachers.length} Teacher Absent Today</span>
           </div>
         )}

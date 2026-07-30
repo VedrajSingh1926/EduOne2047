@@ -98,7 +98,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans selection:bg-emerald-600 selection:text-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-emerald-50 to-emerald-50 flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans selection:bg-emerald-600 selection:text-white">
       {/* Background Gradients */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-600/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-emerald-600/10 rounded-full blur-[100px] pointer-events-none" />
@@ -117,11 +117,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
         
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-10">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 mb-6 relative">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 mb-6 relative">
             <ShieldCheck className="w-8 h-8 text-white" />
             <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-slate-900" />
           </div>
-          <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-700 to-indigo-600 tracking-tight mb-2">EduOne2047</h1>
+          <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-700 to-emerald-600 tracking-tight mb-2">EduOne2047</h1>
           <p className="text-sm text-slate-500 font-medium">Secure Staff Authentication</p>
         </div>
 
@@ -146,7 +146,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
                 value={staffId}
                 onChange={(e) => setStaffId(e.target.value)}
                 autoFocus={!prefillId}
-                className="w-full bg-white border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-emerald-500 transition-all shadow-sm"
+                className="w-full bg-white border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all shadow-sm"
               />
             </div>
           </div>
@@ -162,7 +162,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoFocus={!!prefillId}
-                className="w-full bg-white border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-emerald-500 transition-all shadow-sm"
+                className="w-full bg-white border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all shadow-sm"
               />
             </div>
             {prefillId && (
@@ -194,7 +194,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
             className={`w-full mt-6 py-4 rounded-xl flex items-center justify-center gap-2 text-sm font-bold text-white shadow-xl transition-all ${
               isAuthenticating 
                 ? 'bg-slate-200 text-slate-500 border-slate-300 cursor-not-allowed shadow-none' 
-                : 'bg-gradient-to-r from-emerald-600 to-indigo-600 hover:from-emerald-500 hover:to-indigo-500 shadow-emerald-600/25 active:scale-[0.98]'
+                : 'bg-gradient-to-r from-emerald-600 to-emerald-600 hover:from-emerald-500 hover:to-emerald-500 shadow-emerald-600/25 active:scale-[0.98]'
             }`}
           >
             {isAuthenticating ? (

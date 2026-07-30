@@ -127,7 +127,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b-2 border-slate-200/90 px-3 lg:px-6 py-2 transition-all shadow-2xs">
+    <header className="sticky top-0 z-40 bg-white/85 backdrop-blur-[14px] border-b border-slate-200 px-3 lg:px-6 py-2 transition-all shadow-sm">
       <div className="premium-container flex flex-col md:flex-row items-center justify-between gap-3">
         
         {/* Brand & Mobile Menu Toggle */}
@@ -143,7 +143,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
             
             <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => onSelectModule ? onSelectModule('dashboard') : onNavigateToModule?.('dashboard')}>
-              <div className="w-9 h-9 rounded-xl bg-emerald-700 flex items-center justify-center font-extrabold text-white text-base shadow-xs">
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-emerald-400 flex items-center justify-center font-extrabold text-white text-base shadow-xs">
                 E
               </div>
               <div>
@@ -163,7 +163,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Mobile Staff Help Trigger */}
           <button
             onClick={onOpenHelpGuide}
-            className="md:hidden px-2.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs flex items-center gap-1 shadow-2xs"
+            className="md:hidden px-2.5 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs flex items-center gap-1 shadow-2xs"
           >
             <HelpCircle className="w-4 h-4" />
             <span>Staff Help</span>
@@ -179,7 +179,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search student, fee, or speak e.g. 'Show fee defaulters'..."
-              className="w-full pl-9 pr-20 py-2 text-xs sm:text-sm bg-slate-100/90 text-slate-900 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all placeholder:text-slate-500 font-medium"
+              className="w-full pl-9 pr-20 py-2 text-xs sm:text-sm bg-slate-100/90 text-slate-900 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white transition-all placeholder:text-slate-500 font-medium"
             />
             
             {/* Dictation Voice Mic Button */}
@@ -207,7 +207,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={onToggleEasyMode}
             className={`px-2.5 py-1.5 text-xs font-bold rounded-xl border transition-all flex items-center gap-1.5 shadow-2xs ${
               easyMode
-                ? 'bg-amber-400 text-slate-950 border-amber-500'
+                ? 'bg-emerald-400 text-slate-950 border-emerald-500'
                 : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
             }`}
             title="Toggle Senior High-Contrast Easy Mode"
@@ -249,7 +249,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Staff Help & How To Use Button */}
           <button
             onClick={onOpenHelpGuide}
-            className="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs flex items-center gap-1.5 border border-amber-600 shadow-2xs"
+            className="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold text-xs flex items-center gap-1.5 border border-emerald-600 shadow-2xs"
           >
             <HelpCircle className="w-4 h-4 text-slate-950" />
             <span>Staff Guide</span>

@@ -203,7 +203,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                 placeholder="Search emails or parents..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-emerald-500 transition-all"
+                className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
               />
             </div>
 
@@ -249,7 +249,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                     }}
                     className={`p-3.5 rounded-xl border transition-all cursor-pointer space-y-2 ${
                       isSelected
-                        ? 'bg-emerald-50/70 border-emerald-300 ring-1 ring-blue-300/50'
+                        ? 'bg-emerald-50/70 border-emerald-300 ring-1 ring-emerald-300/50'
                         : thread.unread
                         ? 'bg-slate-50/80 border-slate-200 hover:border-slate-300'
                         : 'bg-white border-slate-200/70 hover:bg-slate-50/60'
@@ -394,7 +394,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                   placeholder="parent@example.com"
                   value={recipient}
                   onChange={(e) => setRecipient(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-emerald-500"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
                 />
               </div>
 
@@ -406,7 +406,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                   placeholder="School Fee Receipt Acknowledgment / Notice"
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-emerald-500"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
                 />
               </div>
 
@@ -441,7 +441,7 @@ export const GmailCommsCenter: React.FC<GmailCommsCenterProps> = ({
                   required
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-emerald-500 leading-relaxed font-sans"
+                  className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 leading-relaxed font-sans"
                 />
               </div>
 

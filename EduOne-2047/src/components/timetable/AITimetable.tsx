@@ -35,10 +35,10 @@ export const AITimetable: React.FC<AITimetableProps> = ({
 
   const getSubjectColor = (subject: string) => {
     if (subject.includes('Physics') || subject.includes('Science')) return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-    if (subject.includes('Math')) return 'bg-emerald-50 text-emerald-700 border-indigo-200';
+    if (subject.includes('Math')) return 'bg-emerald-50 text-emerald-700 border-emerald-200';
     if (subject.includes('Chemistry')) return 'bg-emerald-50 text-emerald-700 border-emerald-200';
     if (subject.includes('English') || subject.includes('Literature')) return 'bg-purple-50 text-purple-700 border-purple-200';
-    if (subject.includes('Computer') || subject.includes('Coding')) return 'bg-sky-50 text-sky-700 border-sky-200';
+    if (subject.includes('Computer') || subject.includes('Coding')) return 'bg-emerald-50 text-emerald-700 border-emerald-200';
     return 'bg-slate-50 text-slate-700 border-slate-200';
   };
 
@@ -106,13 +106,13 @@ export const AITimetable: React.FC<AITimetableProps> = ({
       <div className="rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[700px]">
-            <thead>
+            <thead className="bg-emerald-50 text-emerald-800">
               <tr className="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                <th className="p-3.5 pl-4 w-24">Period</th>
-                <th className="p-3.5">Subject & Class</th>
-                <th className="p-3.5">Room</th>
-                <th className="p-3.5">Assigned Faculty</th>
-                <th className="p-3.5 text-right pr-4">Action</th>
+                <th className="p-3.5 pl-4 w-24 text-emerald-800">Period</th>
+                <th className="p-3.5 text-emerald-800">Subject & Class</th>
+                <th className="p-3.5 text-emerald-800">Room</th>
+                <th className="p-3.5 text-emerald-800">Assigned Faculty</th>
+                <th className="p-3.5 text-right pr-4 text-emerald-800">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-xs">
@@ -151,7 +151,7 @@ export const AITimetable: React.FC<AITimetableProps> = ({
                     <td className="p-3.5">
                       <div className="font-medium text-slate-900">{slot.teacherName}</div>
                       {slot.isSubstitute && (
-                        <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded mt-0.5 inline-block">
+                        <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded mt-0.5 inline-block">
                           Substitute (Replaced: {slot.originalTeacherName})
                         </span>
                       )}

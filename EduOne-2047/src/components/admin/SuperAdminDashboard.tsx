@@ -99,17 +99,17 @@ export const SuperAdminDashboard: React.FC = () => {
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Staff ID</label>
-              <input type="text" value={newStaffId} onChange={e => setNewStaffId(e.target.value)} placeholder="e.g. TCH-105" className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+              <input type="text" value={newStaffId} onChange={e => setNewStaffId(e.target.value)} placeholder="e.g. TCH-105" className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Full Name</label>
-              <input type="text" value={newName} onChange={e => setNewName(e.target.value)} placeholder="e.g. John Doe" className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+              <input type="text" value={newName} onChange={e => setNewName(e.target.value)} placeholder="e.g. John Doe" className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Role Assignment</label>
-              <select value={newRole} onChange={e => setNewRole(e.target.value as Role)} className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+              <select value={newRole} onChange={e => setNewRole(e.target.value as Role)} className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
                 {Object.keys(ROLE_PERMISSIONS).map(r => (
                   <option key={r} value={r}>{r}</option>
                 ))}
@@ -118,7 +118,7 @@ export const SuperAdminDashboard: React.FC = () => {
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Temporary Password</label>
-              <input type="text" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="e.g. temp123" className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
+              <input type="text" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="e.g. temp123" className="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
             </div>
 
             <button type="submit" className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-xl mt-2 shadow-md interaction-btn-primary">
@@ -144,12 +144,12 @@ export const SuperAdminDashboard: React.FC = () => {
               <div className="p-10 text-center text-slate-500 text-sm font-medium">Loading user database...</div>
             ) : (
               <table className="w-full text-left text-sm">
-                <thead className="bg-slate-50 text-slate-600 font-bold uppercase text-xs">
+                <thead className="bg-emerald-50 text-emerald-800 font-bold uppercase text-xs">
                   <tr>
-                    <th className="px-6 py-4">Staff ID</th>
-                    <th className="px-6 py-4">Name</th>
-                    <th className="px-6 py-4">Role</th>
-                    <th className="px-6 py-4">Security</th>
+                    <th className="px-6 py-4 text-emerald-800">Staff ID</th>
+                    <th className="px-6 py-4 text-emerald-800">Name</th>
+                    <th className="px-6 py-4 text-emerald-800">Role</th>
+                    <th className="px-6 py-4 text-emerald-800">Security</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">

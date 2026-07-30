@@ -81,7 +81,7 @@ export const ReportsAnalytics: React.FC<ReportsAnalyticsProps> = ({ supplyItems 
         <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
           <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider block">Inventory Health</span>
           <div className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1 tracking-tight">Optimal</div>
-          <div className="text-xs text-amber-600 font-medium mt-1">1 item low stock (A4 paper)</div>
+          <div className="text-xs text-emerald-600 font-medium mt-1">1 item low stock (A4 paper)</div>
         </div>
       </div>
 
@@ -150,7 +150,7 @@ export const ReportsAnalytics: React.FC<ReportsAnalyticsProps> = ({ supplyItems 
                     item.status === 'CRITICAL'
                       ? 'bg-red-50 text-red-700 border border-red-200'
                       : item.status === 'LOW_STOCK'
-                      ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                       : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                   }`}
                 >

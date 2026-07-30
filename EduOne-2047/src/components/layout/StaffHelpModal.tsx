@@ -75,14 +75,14 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
       desc: 'Upload student paper forms or photos — AI automatically fills student profiles.',
       moduleId: 'documents',
       icon: BookOpen,
-      color: 'bg-amber-50 text-amber-700 border-amber-200'
+      color: 'bg-emerald-50 text-emerald-700 border-emerald-200'
     },
     {
       title: 'View & Print Class Timetable',
       desc: 'Check room numbers, period schedules, and print paper schedules for staff room noticeboards.',
       moduleId: 'timetable',
       icon: CalendarDays,
-      color: 'bg-emerald-50 text-emerald-700 border-indigo-200'
+      color: 'bg-emerald-50 text-emerald-700 border-emerald-200'
     }
   ];
 
@@ -171,7 +171,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
-            <BookOpen className="w-4 h-4 text-amber-600" />
+            <BookOpen className="w-4 h-4 text-emerald-600" />
             <span>Simple FAQ & Terms</span>
           </button>
         </div>

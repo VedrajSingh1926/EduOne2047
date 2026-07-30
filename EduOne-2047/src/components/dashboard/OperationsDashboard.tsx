@@ -124,7 +124,7 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
           </div>
           <div className="mt-3 flex items-baseline justify-between">
             <span className="text-2xl font-bold text-slate-900 tracking-tight">84</span>
-            <span className="text-xs font-medium text-amber-600">1 Absent</span>
+            <span className="text-xs font-medium text-emerald-600">1 Absent</span>
           </div>
           <p className="text-[11px] text-slate-400 mt-1">Substitute suggested</p>
         </div>
@@ -158,7 +158,7 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
 
       {/* Personalized Workspace Snapshot */}
       {currentUser && (
-        <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-50 to-indigo-50 border border-emerald-100 shadow-sm space-y-4">
+        <div className="p-6 rounded-2xl bg-gradient-to-br from-emerald-50 to-emerald-50 border border-emerald-100 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-bold text-slate-900 flex items-center gap-2">
               <Calendar className="w-4 h-4 text-emerald-600" />
@@ -251,15 +251,15 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
 
           <button
             onClick={onOpenDocUpload}
-            className="p-3 rounded-xl bg-amber-50 hover:bg-amber-100 border-2 border-amber-300 text-amber-950 font-bold text-xs transition-all flex flex-col items-center justify-center gap-1.5 text-center shadow-2xs group"
+            className="p-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-300 text-emerald-950 font-bold text-xs transition-all flex flex-col items-center justify-center gap-1.5 text-center shadow-2xs group"
           >
-            <Upload className="w-5 h-5 text-amber-700 group-hover:scale-110 transition-transform" />
+            <Upload className="w-5 h-5 text-emerald-700 group-hover:scale-110 transition-transform" />
             <span>Scan Admission Form</span>
           </button>
 
           <button
             onClick={onOpenAddStudent}
-            className="p-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 border-2 border-indigo-300 text-emerald-950 font-bold text-xs transition-all flex flex-col items-center justify-center gap-1.5 text-center shadow-2xs group"
+            className="p-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 border-2 border-emerald-300 text-emerald-950 font-bold text-xs transition-all flex flex-col items-center justify-center gap-1.5 text-center shadow-2xs group"
           >
             <Plus className="w-5 h-5 text-emerald-700 group-hover:scale-110 transition-transform" />
             <span>Add Student</span>

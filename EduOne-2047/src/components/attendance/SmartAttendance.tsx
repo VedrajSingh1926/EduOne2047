@@ -56,9 +56,9 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
 
       {/* AI Risk Detection Banner */}
       {lowAttendanceStudents.length > 0 && (
-        <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-start gap-3">
-            <ShieldAlert className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+            <ShieldAlert className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
             <div>
               <div className="text-xs font-bold text-slate-900 flex items-center gap-2">
                 <span>{lowAttendanceStudents.length} At-Risk Attendance Patterns Detected</span>
@@ -115,14 +115,14 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
       <div className="rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden interaction-card">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
-            <thead>
+            <thead className="bg-emerald-50 text-emerald-800">
               <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-                <th className="p-3.5 pl-4">Student</th>
-                <th className="p-3.5">Class</th>
-                <th className="p-3.5">30-Day Rate</th>
-                <th className="p-3.5">Pattern Insight</th>
-                <th className="p-3.5">Mark Today</th>
-                <th className="p-3.5 text-right pr-4">Parent Alert</th>
+                <th className="p-3.5 pl-4 text-emerald-800">Student</th>
+                <th className="p-3.5 text-emerald-800">Class</th>
+                <th className="p-3.5 text-emerald-800">30-Day Rate</th>
+                <th className="p-3.5 text-emerald-800">Pattern Insight</th>
+                <th className="p-3.5 text-emerald-800">Mark Today</th>
+                <th className="p-3.5 text-right pr-4 text-emerald-800">Parent Alert</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-xs">
@@ -147,13 +147,13 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
                     <td className="p-3.5">
                       <div className="flex items-center gap-1.5">
                         <span className="font-semibold text-slate-900">{s.attendancePct}%</span>
-                        {hasRisk && <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />}
+                        {hasRisk && <AlertTriangle className="w-3.5 h-3.5 text-emerald-500" />}
                       </div>
                     </td>
 
                     <td className="p-3.5">
                       {hasRisk ? (
-                        <div className="text-[11px] font-medium text-amber-600">
+                        <div className="text-[11px] font-medium text-emerald-600">
                           {s.riskFlag || 'Absence trend detected'}
                         </div>
                       ) : (

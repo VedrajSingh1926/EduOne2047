@@ -84,7 +84,7 @@ export const AIDocumentCenter: React.FC<AIDocumentCenterProps> = ({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by file name or person..."
-            className="w-full pl-8 pr-4 py-1.5 text-xs bg-slate-100/70 rounded-lg border border-slate-200 text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full pl-8 pr-4 py-1.5 text-xs bg-slate-100/70 rounded-lg border border-slate-200 text-slate-900 focus:outline-none focus:ring-1 focus:ring-emerald-500"
           />
         </div>
 
@@ -126,8 +126,8 @@ export const AIDocumentCenter: React.FC<AIDocumentCenterProps> = ({
               </div>
 
               {doc.reason && (
-                <div className="p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-[11px] text-amber-800 my-2 flex items-start gap-1.5 font-medium">
-                  <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
+                <div className="p-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-[11px] text-emerald-800 my-2 flex items-start gap-1.5 font-medium">
+                  <AlertTriangle className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
                   <span>{doc.reason}</span>
                 </div>
               )}

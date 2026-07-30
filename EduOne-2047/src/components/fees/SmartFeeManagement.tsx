@@ -112,7 +112,7 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
 
         <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs interaction-card">
           <span className="text-[11px] font-medium text-slate-500 uppercase tracking-wider block">Pending Outstanding</span>
-          <div className="text-2xl font-bold text-amber-600 mt-1 tracking-tight">
+          <div className="text-2xl font-bold text-emerald-600 mt-1 tracking-tight">
             ₹{totalPending.toLocaleString()}
           </div>
           <p className="text-xs text-slate-400 mt-1">Automated reminders active</p>
@@ -129,9 +129,9 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
 
       {/* Mismatch Alert Box */}
       {mismatches.length > 0 && (
-        <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+            <AlertTriangle className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
             <div>
               <div className="text-xs font-bold text-slate-900 flex items-center gap-2">
                 <span>Discrepancy Detected for Ananya Verma (REC-UPI-9921)</span>
@@ -181,14 +181,14 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
       <div className="rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden interaction-card">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
-            <thead>
+            <thead className="bg-emerald-50 text-emerald-800">
               <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-                <th className="p-3.5 pl-4">Invoice & Student</th>
-                <th className="p-3.5">Billed</th>
-                <th className="p-3.5">Paid</th>
-                <th className="p-3.5">Receipt & Mode</th>
-                <th className="p-3.5">Status</th>
-                <th className="p-3.5 text-right pr-4">Action</th>
+                <th className="p-3.5 pl-4 text-emerald-800">Invoice & Student</th>
+                <th className="p-3.5 text-emerald-800">Billed</th>
+                <th className="p-3.5 text-emerald-800">Paid</th>
+                <th className="p-3.5 text-emerald-800">Receipt & Mode</th>
+                <th className="p-3.5 text-emerald-800">Status</th>
+                <th className="p-3.5 text-right pr-4 text-emerald-800">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-xs">
@@ -221,7 +221,7 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
                           fee.status === 'PAID'
                             ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                             : fee.status === 'PENDING'
-                            ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                             : fee.status === 'MISMATCH'
                             ? 'bg-red-50 text-red-700 border border-red-200'
                             : 'bg-red-50 text-red-700 border border-red-200'

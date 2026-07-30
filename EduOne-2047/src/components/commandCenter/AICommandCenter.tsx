@@ -201,8 +201,8 @@ export const AICommandCenter: React.FC<AICommandCenterProps> = ({
                     </div>
 
                     {msg.actionResult.requiresApproval && (
-                      <div className="mt-2 p-2 rounded bg-amber-50 border border-amber-200 text-amber-800 text-[11px] flex items-center gap-1.5 font-medium">
-                        <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                      <div className="mt-2 p-2 rounded bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] flex items-center gap-1.5 font-medium">
+                        <AlertTriangle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                         <span>Escalated to Needs Attention for human approval.</span>
                       </div>
                     )}
@@ -243,7 +243,7 @@ export const AICommandCenter: React.FC<AICommandCenterProps> = ({
             onChange={(e) => setInputPrompt(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
             placeholder="Type command e.g., 'Generate timetable', 'Show fee defaulters'..."
-            className="flex-1 px-3.5 py-2.5 bg-slate-100/80 text-slate-900 rounded-lg border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="flex-1 px-3.5 py-2.5 bg-slate-100/80 text-slate-900 rounded-lg border border-slate-200 text-xs sm:text-sm focus:outline-none focus:ring-1 focus:ring-emerald-500"
           />
           <button
             onClick={() => handleSendMessage()}
@@ -292,7 +292,7 @@ export const AICommandCenter: React.FC<AICommandCenterProps> = ({
           </div>
 
           <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-2.5">
-            <CheckCircle2 className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
             <div>
               <div className="text-xs font-semibold text-slate-900">Parents notified</div>
               <div className="text-[10px] text-slate-500 mt-0.5">Dispatched 3 automated fee reminders</div>

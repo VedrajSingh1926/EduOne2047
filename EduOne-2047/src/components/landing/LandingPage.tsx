@@ -19,6 +19,7 @@ import {
   Building2,
   Sliders,
   ChevronRight,
+  ChevronDown,
   Globe,
   KeyRound,
   FileCheck,
@@ -114,8 +115,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
   ];
 
   const inboxTasks = [
-    { type: 'Attendance', title: 'Teacher Absent (Grade 10 Math)', action: 'Approve Substitute: Mr. Sharma', icon: AlertTriangle, color: 'text-amber-500', bg: 'bg-amber-100' },
-    { type: 'Finance', title: 'Fee Mismatch: Term 2 Tuition', action: 'Verify Payment Receipt', icon: CreditCard, color: 'text-rose-500', bg: 'bg-rose-100' },
+    { type: 'Attendance', title: 'Teacher Absent (Grade 10 Math)', action: 'Approve Substitute: Mr. Sharma', icon: AlertTriangle, color: 'text-emerald-500', bg: 'bg-emerald-100' },
+    { type: 'Finance', title: 'Fee Mismatch: Term 2 Tuition', action: 'Verify Payment Receipt', icon: CreditCard, color: 'text-emerald-500', bg: 'bg-emerald-100' },
     { type: 'Documents', title: 'OCR Confidence Low: Transfer Cert', action: 'Review Highlighted Fields', icon: FileCheck, color: 'text-emerald-500', bg: 'bg-emerald-100' }
   ];
 
@@ -129,40 +130,86 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-emerald-600 selection:text-white overflow-x-hidden relative pt-16">
       {/* Top Header Navbar */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-[14px] border-b border-slate-200 px-4 sm:px-8 py-3.5 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md shadow-emerald-500/20">
-            E1
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-lg text-slate-900 tracking-tight">EduOne2047</span>
-            </div>
-            <p className="text-[11px] text-slate-500 hidden sm:block">Next-Gen Autonomous School Operations</p>
-          </div>
-        </div>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
-          <a href="#features" className="text-sm font-bold text-slate-600 hover:text-emerald-600 transition-colors">Features</a>
-          <a href="#sandbox" className="text-sm font-bold text-slate-600 hover:text-emerald-600 transition-colors">Sandbox</a>
-        </nav>
-
-        <div className="flex items-center gap-3">
-          {/* Mobile Navigation */}
-          <nav className="flex md:hidden items-center gap-4 mr-2">
-            <a href="#features" className="text-xs font-bold text-slate-600 hover:text-emerald-600">Features</a>
-            <a href="#sandbox" className="text-xs font-bold text-slate-600 hover:text-emerald-600">Sandbox</a>
-          </nav>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-[14px] border-b border-slate-200 py-3.5 transition-all shadow-sm">
+        <div className="premium-container flex items-center justify-between">
           
-          <button
-            onClick={() => onOpenLogin()}
-            className="px-4 py-2 text-xs rounded-xl flex items-center gap-1.5 hover:-translate-y-0.5 btn-primary"
-          >
-            <span className="hidden sm:inline">Login</span>
-            <span className="sm:hidden">Log in</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          {/* Brand */}
+          <div className="flex items-center gap-3 cursor-pointer">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-emerald-400 flex items-center justify-center text-white font-extrabold shadow-md shadow-emerald-600/20">
+              E1
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <span className="font-extrabold text-lg text-slate-900 tracking-tight">EduOne2047</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
+            
+            {/* Platform Dropdown */}
+            <div className="relative group">
+              <button className="flex items-center gap-1 text-sm font-semibold text-slate-600 group-hover:text-emerald-600 transition-colors py-4">
+                Platform <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+              </button>
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 translate-y-2 group-hover:translate-y-0 p-3">
+                <a href="#features" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Core Operations</a>
+                <a href="#compliance" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Government Compliance</a>
+              </div>
+            </div>
+
+            {/* Modules Dropdown */}
+            <div className="relative group">
+              <button className="flex items-center gap-1 text-sm font-semibold text-slate-600 group-hover:text-emerald-600 transition-colors py-4">
+                Modules <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+              </button>
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 translate-y-2 group-hover:translate-y-0 p-3">
+                <a href="#finance" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Fee Management</a>
+                <a href="#timetable" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Timetable & Attendance</a>
+              </div>
+            </div>
+
+            {/* AI Dropdown */}
+            <div className="relative group">
+              <button className="flex items-center gap-1 text-sm font-semibold text-slate-600 group-hover:text-emerald-600 transition-colors py-4">
+                AI <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+              </button>
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 translate-y-2 group-hover:translate-y-0 p-3">
+                <a href="#ocr" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Document OCR</a>
+                <a href="#copilot" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Staff Copilot</a>
+              </div>
+            </div>
+
+            {/* Security Dropdown */}
+            <div className="relative group">
+              <button className="flex items-center gap-1 text-sm font-semibold text-slate-600 group-hover:text-emerald-600 transition-colors py-4">
+                Security <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+              </button>
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 translate-y-2 group-hover:translate-y-0 p-3">
+                <a href="#rbac" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Role-Based Access</a>
+                <a href="#audit" className="block px-4 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-emerald-600 rounded-xl">Audit Logs</a>
+              </div>
+            </div>
+
+            <a href="#sandbox" className="text-sm font-semibold text-slate-600 hover:text-emerald-600 transition-colors py-4">Demo</a>
+          </nav>
+
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => onOpenLogin()}
+              className="hidden sm:flex px-4 py-2 text-sm font-bold text-emerald-700 hover:text-emerald-600 transition-colors"
+            >
+              Login
+            </button>
+            <button
+              onClick={() => onOpenLogin()}
+              className="px-5 py-2.5 text-sm rounded-xl flex items-center gap-2 btn-primary"
+            >
+              <span>Launch Portal</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </header>
 
@@ -254,9 +301,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  className="flex items-center gap-4 bg-amber-50 p-4 rounded-xl border border-amber-100 w-full"
+                  className="flex items-center gap-4 bg-emerald-50 p-4 rounded-xl border border-emerald-100 w-full"
                 >
-                  <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600">
+                  <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
                     <AlertTriangle className="w-5 h-5" />
                   </div>
                   <div className="text-left flex-1">
@@ -438,7 +485,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
               className="text-center"
             >
-              <div className="text-5xl font-black text-rose-400 line-through decoration-rose-500/50 mb-2">
+              <div className="text-5xl font-black text-emerald-400 line-through decoration-rose-500/50 mb-2">
                 <CountUp end={3} duration={1.5} />-<CountUp end={4} duration={2} /> days/month
               </div>
               <div className="text-slate-400 flex items-center justify-center gap-2">
@@ -507,7 +554,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               )}
               {activeTab === 'attendance' && (
                 <motion.div key="att" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center text-center">
-                  <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-6"><Users className="w-8 h-8" /></div>
+                  <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-6"><Users className="w-8 h-8" /></div>
                   <h3 className="text-2xl font-bold text-slate-900 mb-4">Smart Attendance Matrix</h3>
                   <p className="text-slate-600 text-lg">One-tap morning roll call for teachers. The system automatically identifies chronic absenteeism patterns and prepares parent communication drafts.</p>
                 </motion.div>
@@ -554,8 +601,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               role: 'For Parents',
               headline: 'Immediate WhatsApp updates on fees and daily attendance.',
               icon: Smartphone,
-              color: 'text-amber-600',
-              bg: 'bg-amber-50',
+              color: 'text-emerald-600',
+              bg: 'bg-emerald-50',
               reverse: true
             }
           ].map((persona, idx) => (

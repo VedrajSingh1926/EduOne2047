@@ -277,7 +277,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
                         {t.assignedRole}
                       </span>
                       {t.aiSuggested && (
-                        <span className="px-1.5 py-0.5 text-[9px] font-bold rounded bg-emerald-50 text-emerald-700 border border-indigo-100 flex items-center gap-1">
+                        <span className="px-1.5 py-0.5 text-[9px] font-bold rounded bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center gap-1">
                           <Sparkles className="w-3 h-3 text-emerald-500" /> AI
                         </span>
                       )}
@@ -374,7 +374,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
                   required
                   value={taskTitle}
                   onChange={(e) => setTaskTitle(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                   placeholder="e.g. Confirm fee receipt adjustment for Grade 8"
                 />
               </div>
@@ -384,7 +384,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
                 <select
                   value={assignedRole}
                   onChange={(e) => setAssignedRole(e.target.value as Role)}
-                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                 >
                   <option value="Admin">Admin</option>
                   <option value="Vice Principal">Vice Principal</option>
@@ -403,7 +403,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
                   type="checkbox"
                   checked={syncWithGoogle}
                   onChange={(e) => setSyncWithGoogle(e.target.checked)}
-                  className="w-4 h-4 text-emerald-600 rounded accent-blue-600 cursor-pointer"
+                  className="w-4 h-4 text-emerald-600 rounded accent-emerald-600 cursor-pointer"
                 />
               </div>
 

@@ -118,7 +118,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by student, roll number, or parent..."
-            className="w-full pl-8 pr-4 py-1.5 text-xs bg-slate-100/70 rounded-lg border border-slate-200 text-slate-900 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full pl-8 pr-4 py-1.5 text-xs bg-slate-100/70 rounded-lg border border-slate-200 text-slate-900 focus:outline-none focus:ring-1 focus:ring-emerald-500"
           />
         </div>
 
@@ -153,15 +153,15 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
       <div className="rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden interaction-card">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
-            <thead>
+            <thead className="bg-emerald-50 text-emerald-800">
               <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
-                <th className="p-3.5 pl-4">Student</th>
-                <th className="p-3.5">Grade & Roll</th>
-                <th className="p-3.5">Parent Contact</th>
-                <th className="p-3.5">Attendance</th>
-                <th className="p-3.5">Fee Status</th>
-                <th className="p-3.5">Documents</th>
-                <th className="p-3.5 text-right pr-4">Actions</th>
+                <th className="p-3.5 pl-4 text-emerald-800">Student</th>
+                <th className="p-3.5 text-emerald-800">Grade & Roll</th>
+                <th className="p-3.5 text-emerald-800">Parent Contact</th>
+                <th className="p-3.5 text-emerald-800">Attendance</th>
+                <th className="p-3.5 text-emerald-800">Fee Status</th>
+                <th className="p-3.5 text-emerald-800">Documents</th>
+                <th className="p-3.5 text-right pr-4 text-emerald-800">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 text-xs">
@@ -179,7 +179,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                         <div className="font-semibold text-slate-900 flex items-center gap-1.5">
                           <span>{s.name}</span>
                           {s.riskFlag && (
-                            <AlertTriangle className="w-3.5 h-3.5 text-amber-500" title={s.riskFlag} />
+                            <AlertTriangle className="w-3.5 h-3.5 text-emerald-500" title={s.riskFlag} />
                           )}
                         </div>
                         <div className="text-[10px] text-slate-400">{s.id}</div>
@@ -205,7 +205,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                       <div className="w-16 bg-slate-100 h-1.5 rounded-full overflow-hidden">
                         <div
                           className={`h-full ${
-                            s.attendancePct >= 90 ? 'bg-emerald-500' : s.attendancePct >= 80 ? 'bg-amber-500' : 'bg-red-500'
+                            s.attendancePct >= 90 ? 'bg-emerald-500' : s.attendancePct >= 80 ? 'bg-emerald-500' : 'bg-red-500'
                           }`}
                           style={{ width: `${s.attendancePct}%` }}
                         />
@@ -220,7 +220,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                         s.feeStatus === 'PAID'
                           ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                           : s.feeStatus === 'PENDING'
-                          ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                           : s.feeStatus === 'PARTIAL'
                           ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                           : 'bg-red-50 text-red-700 border border-red-200'
@@ -235,7 +235,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                       className={`px-2 py-0.5 text-[10px] font-medium rounded ${
                         s.documentsStatus === 'VERIFIED'
                           ? 'bg-slate-100 text-slate-700'
-                          : 'bg-amber-50 text-amber-700'
+                          : 'bg-emerald-50 text-emerald-700'
                       }`}
                     >
                       {s.documentsStatus}
@@ -301,13 +301,13 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50">
                   <span className="text-slate-400">Pending Balance</span>
-                  <div className="font-bold text-amber-600 text-sm mt-0.5">₹{selectedStudent.pendingFees.toLocaleString()}</div>
+                  <div className="font-bold text-emerald-600 text-sm mt-0.5">₹{selectedStudent.pendingFees.toLocaleString()}</div>
                 </div>
               </div>
 
               {selectedStudent.riskFlag && (
-                <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 flex items-start gap-2">
-                  <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-start gap-2">
+                  <ShieldAlert className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                   <div>
                     <span className="font-semibold">Risk Alert:</span>
                     <p className="mt-0.5">{selectedStudent.riskFlag}</p>
