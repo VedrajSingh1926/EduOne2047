@@ -127,9 +127,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-blue-600 selection:text-white overflow-x-hidden relative">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-blue-600 selection:text-white overflow-x-hidden relative pt-16">
       {/* Top Header Navbar */}
-      <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white font-bold shadow-md shadow-blue-500/20">
             E1
@@ -142,13 +142,28 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
           </div>
         </div>
 
-        <button
-          onClick={() => onOpenLogin()}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center gap-1.5 hover:-translate-y-0.5"
-        >
-          <span>Login</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </button>
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-8">
+          <a href="#features" className="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors">Features</a>
+          <a href="#sandbox" className="text-sm font-bold text-slate-600 hover:text-blue-600 transition-colors">Sandbox</a>
+        </nav>
+
+        <div className="flex items-center gap-3">
+          {/* Mobile Navigation */}
+          <nav className="flex md:hidden items-center gap-4 mr-2">
+            <a href="#features" className="text-xs font-bold text-slate-600 hover:text-blue-600">Features</a>
+            <a href="#sandbox" className="text-xs font-bold text-slate-600 hover:text-blue-600">Sandbox</a>
+          </nav>
+          
+          <button
+            onClick={() => onOpenLogin()}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl shadow-lg shadow-blue-600/30 transition flex items-center gap-1.5 hover:-translate-y-0.5"
+          >
+            <span className="hidden sm:inline">Login</span>
+            <span className="sm:hidden">Log in</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </header>
 
       {/* SECTION 1 — HERO */}
@@ -223,7 +238,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               variants={fadeUpVariant}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              href="#sandbox"
+              href="#features"
               className="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-slate-700 text-sm font-semibold rounded-2xl border border-slate-200 shadow-sm transition-all text-center"
             >
               Explore Features
@@ -447,7 +462,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
       </section>
 
       {/* SECTION 6 — FEATURE DEEP-DIVE */}
-      <section className="py-24 bg-white border-b border-slate-200">
+      <section id="features" className="py-24 bg-white border-b border-slate-200 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900">Core Capabilities</h2>
@@ -617,7 +632,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
       </section>
 
       {/* SECTION 8 — ROLE-BASED PORTALS (SANDBOX) */}
-      <section id="sandbox" className="py-24 bg-white border-t border-slate-200">
+      <section id="sandbox" className="py-24 bg-white border-t border-slate-200 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-8">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant} className="text-center mb-12">
             <h2 className="text-3xl font-bold text-slate-900">Try the Live Demo (Sandbox Data)</h2>
