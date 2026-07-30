@@ -10,12 +10,12 @@ const USERS = [
 
 for (const user of USERS) {
   test(`RBAC UI Visibility: ${user.name}`, async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/app');
     
     // Fill credentials
     await page.fill('input[type="text"]', user.id);
     await page.fill('input[type="password"]', 'admin123');
-    await page.click('button:has-text("Sign In to Operations")');
+    await page.click('button:has-text("Initialize Session")');
     
     // Wait for load
     await expect(page.locator(`text=${user.role}`).first()).toBeVisible({ timeout: 10000 });

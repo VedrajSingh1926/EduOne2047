@@ -1,21 +1,21 @@
 import { test, expect } from '@playwright/test';
 
 const USERS = [
-  { id: 'EMP-739', name: 'Super Admin', role: 'Super Admin' },
-  { id: 'EMP-902', name: 'Principal', role: 'Principal' },
-  { id: 'TCH-202', name: 'Class Teacher', role: 'Class Teacher' },
-  { id: 'ACT-511', name: 'Accountant', role: 'Accountant' },
-  { id: 'REC-114', name: 'Receptionist', role: 'Receptionist' }
+  { id: 'EMP-739', name: 'Vikram Sharma', role: 'Super Admin', password: 'vikram@739' },
+  { id: 'EMP-902', name: 'Anjali Desai', role: 'Principal', password: 'anjali@902' },
+  { id: 'TCH-202', name: 'Priya Patel', role: 'Class Teacher', password: 'priya@202' },
+  { id: 'ACT-511', name: 'Rahul Verma', role: 'Accountant', password: 'rahul@511' },
+  { id: 'REC-114', name: 'Sneha Reddy', role: 'Receptionist', password: 'sneha@114' }
 ];
 
 for (const user of USERS) {
   test(`Login Flow: ${user.name}`, async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/app');
     
     // Fill credentials
     await page.fill('input[type="text"]', user.id);
-    await page.fill('input[type="password"]', 'admin123');
-    await page.click('button:has-text("Sign In to Operations")');
+    await page.fill('input[type="password"]', user.password);
+    await page.click('button:has-text("Initialize Session")');
     
     // Confirm correct dashboard/role appears
     await expect(page.locator(`text=${user.role}`).first()).toBeVisible({ timeout: 10000 });
@@ -33,19 +33,19 @@ for (const user of USERS) {
     await page.click('button[title="Log out securely"]');
     
     // Confirm logged out
-    await expect(page.locator('text="Sign In to Operations"')).toBeVisible();
+    await expect(page.locator('text="Initialize Session"')).toBeVisible();
     
     // Confirm session clears by navigating back
     await page.goto('/app');
-    await expect(page.locator('text="Sign In to Operations"')).toBeVisible();
+    await expect(page.locator('text="Initialize Session"')).toBeVisible();
   });
 }
 
 test('Login Flow: Invalid Password', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app');
   await page.fill('input[type="text"]', 'EMP-739');
   await page.fill('input[type="password"]', 'wrongpassword');
-  await page.click('button:has-text("Sign In to Operations")');
+  await page.click('button:has-text("Initialize Session")');
   
-  await expect(page.locator('text="Invalid Staff ID or password"')).toBeVisible({ timeout: 5000 });
+  await expect(page.locator('text="Invalid credentials."')).toBeVisible({ timeout: 5000 });
 });

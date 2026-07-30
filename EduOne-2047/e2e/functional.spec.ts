@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 
 test('Functional: Class Teacher marks attendance', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app');
   await page.fill('input[type="text"]', 'TCH-202');
   await page.fill('input[type="password"]', 'admin123');
-  await page.click('button:has-text("Sign In to Operations")');
+  await page.click('button:has-text("Initialize Session")');
   
   await expect(page.locator('text="Class Teacher"').first()).toBeVisible({ timeout: 10000 });
   await page.click('button:has-text("Attendance")');
@@ -19,10 +19,10 @@ test('Functional: Class Teacher marks attendance', async ({ page }) => {
 });
 
 test('Functional: Accountant fee reconciliation', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app');
   await page.fill('input[type="text"]', 'ACT-511');
   await page.fill('input[type="password"]', 'admin123');
-  await page.click('button:has-text("Sign In to Operations")');
+  await page.click('button:has-text("Initialize Session")');
   
   await expect(page.locator('text="Accountant"').first()).toBeVisible({ timeout: 10000 });
   await page.click('button:has-text("Fee Management")');
@@ -39,10 +39,10 @@ test('Functional: Accountant fee reconciliation', async ({ page }) => {
 });
 
 test('Functional: Receptionist visitor/document', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app');
   await page.fill('input[type="text"]', 'REC-114');
   await page.fill('input[type="password"]', 'admin123');
-  await page.click('button:has-text("Sign In to Operations")');
+  await page.click('button:has-text("Initialize Session")');
   
   await expect(page.locator('text="Receptionist"').first()).toBeVisible({ timeout: 10000 });
   await page.click('button:has-text("Documents")');

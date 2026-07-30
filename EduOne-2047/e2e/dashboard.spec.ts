@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 
 test('Dashboard KPI: Super Admin sees all', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app');
   await page.fill('input[type="text"]', 'EMP-739');
-  await page.fill('input[type="password"]', 'admin123');
-  await page.click('button:has-text("Sign In to Operations")');
+  await page.fill('input[type="password"]', 'vikram@739');
+  await page.click('button:has-text("Initialize Session")');
   
   await expect(page.locator('text="Super Admin"').first()).toBeVisible({ timeout: 10000 });
   
@@ -16,10 +16,10 @@ test('Dashboard KPI: Super Admin sees all', async ({ page }) => {
 });
 
 test('Dashboard KPI: Class Teacher sees own class only', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app');
   await page.fill('input[type="text"]', 'TCH-202');
-  await page.fill('input[type="password"]', 'admin123');
-  await page.click('button:has-text("Sign In to Operations")');
+  await page.fill('input[type="password"]', 'priya@202');
+  await page.click('button:has-text("Initialize Session")');
   
   await expect(page.locator('text="Class Teacher"').first()).toBeVisible({ timeout: 10000 });
   
@@ -31,10 +31,10 @@ test('Dashboard KPI: Class Teacher sees own class only', async ({ page }) => {
 });
 
 test('Dashboard KPI: Accountant sees fee data', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app');
   await page.fill('input[type="text"]', 'ACT-511');
-  await page.fill('input[type="password"]', 'admin123');
-  await page.click('button:has-text("Sign In to Operations")');
+  await page.fill('input[type="password"]', 'rahul@511');
+  await page.click('button:has-text("Initialize Session")');
   
   await expect(page.locator('text="Accountant"').first()).toBeVisible({ timeout: 10000 });
   

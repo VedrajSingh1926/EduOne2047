@@ -33,37 +33,37 @@ export const initializeDatabase = async () => {
     const usersObj = {
       "EMP-739": {
         id: "EMP-739",
-        password: "admin123",
+        password: "vikram@739",
         role: "Super Admin",
-        name: "Super Admin",
+        name: "Vikram Sharma",
         email: "emp-739@eduone.local"
       },
       "EMP-902": {
         id: "EMP-902",
-        password: "admin123",
+        password: "anjali@902",
         role: "Principal",
-        name: "Principal",
+        name: "Anjali Desai",
         email: "emp-902@eduone.local"
       },
       "TCH-202": {
         id: "TCH-202",
-        password: "admin123",
+        password: "priya@202",
         role: "Class Teacher",
-        name: "Elena Rostova",
+        name: "Priya Patel",
         email: "tch-202@eduone.local"
       },
       "ACT-511": {
         id: "ACT-511",
-        password: "admin123",
+        password: "rahul@511",
         role: "Accountant",
-        name: "Michael Chang",
+        name: "Rahul Verma",
         email: "act-511@eduone.local"
       },
       "REC-114": {
         id: "REC-114",
-        password: "admin123",
+        password: "sneha@114",
         role: "Receptionist",
-        name: "Sarah Connor",
+        name: "Sneha Reddy",
         email: "rec-114@eduone.local"
       }
     };

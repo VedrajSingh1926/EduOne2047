@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
 
 test('UI/UX: Hover states and styling', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app');
   await page.fill('input[type="text"]', 'EMP-739');
-  await page.fill('input[type="password"]', 'admin123');
-  await page.click('button:has-text("Sign In to Operations")');
+  await page.fill('input[type="password"]', 'vikram@739');
+  await page.click('button:has-text("Initialize Session")');
   
   await expect(page.locator('text="Super Admin"').first()).toBeVisible({ timeout: 10000 });
   
@@ -20,10 +20,10 @@ test('UI/UX: Hover states and styling', async ({ page }) => {
 // (Chromium, Mobile Chrome, Tablet Chrome).
 // This test will run across all those viewports, recording video for each.
 test('UI/UX: Responsiveness and no horizontal scroll', async ({ page }) => {
-  await page.goto('/');
+  await page.goto('/app');
   await page.fill('input[type="text"]', 'EMP-739');
   await page.fill('input[type="password"]', 'admin123');
-  await page.click('button:has-text("Sign In to Operations")');
+  await page.click('button:has-text("Initialize Session")');
   
   await expect(page.locator('text="Super Admin"').first()).toBeVisible({ timeout: 10000 });
   
