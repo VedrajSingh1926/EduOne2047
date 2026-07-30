@@ -32,8 +32,26 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <aside 
       className="bg-white border-r border-slate-200 p-4 flex flex-col justify-between shrink-0 shadow-sm z-50 overflow-hidden relative w-64 hidden md:flex"
     >
-      <div className="space-y-5">
+      <div className="space-y-6">
         
+        {/* Brand Logo */}
+        <div className="flex items-center gap-2.5 cursor-pointer pb-2" onClick={() => onSelectModule('dashboard')}>
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-emerald-400 flex items-center justify-center font-extrabold text-white text-base shadow-xs">
+            E
+          </div>
+          <div>
+            <div className="flex items-center gap-1.5">
+              <span className="font-bold text-base text-slate-900 tracking-tight">
+                EduOne
+              </span>
+              <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                STAFF
+              </span>
+            </div>
+            <p className="text-[10px] text-slate-500 font-medium tracking-wide">School Operations</p>
+          </div>
+        </div>
+
         {/* Core Operations Section */}
         <div>
           <div className="px-2 pb-2 text-[10px] font-black text-slate-400 uppercase tracking-wider flex items-center justify-between">

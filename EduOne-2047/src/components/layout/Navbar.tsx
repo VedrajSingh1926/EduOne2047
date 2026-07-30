@@ -129,22 +129,9 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Brand & Mobile Menu Toggle */}
         <div className="flex items-center justify-between w-full md:w-auto gap-3">
           <div className="flex items-center gap-2">
-            
-            <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => onSelectModule ? onSelectModule('dashboard') : onNavigateToModule?.('dashboard')}>
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-emerald-400 flex items-center justify-center font-extrabold text-white text-base shadow-xs">
-                E
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <span className="font-bold text-base text-slate-900 tracking-tight">
-                    EduOne
-                  </span>
-                  <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                    STAFF PORTAL
-                  </span>
-                </div>
-                <p className="text-[10px] text-slate-500 hidden sm:block font-medium">School Operations Platform</p>
-              </div>
+            {/* Left side empty or just a subtle breadcrumb / title if needed, but we keep it clean */}
+            <div className="hidden md:flex items-center text-sm font-bold text-slate-400">
+              Workspace
             </div>
           </div>
 

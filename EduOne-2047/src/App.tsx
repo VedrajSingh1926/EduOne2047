@@ -487,33 +487,33 @@ function CoreApplication() {
   }
 
   return (
-    <div className={`flex flex-col min-h-screen bg-slate-50 font-sans selection:bg-emerald-600 selection:text-white ${easyMode ? 'easy-mode' : ''} ${textSize === 'large' ? 'text-scale-large' : textSize === 'xlarge' ? 'text-scale-xlarge' : ''}`}>
-      {/* Top Navbar */}
-      <Navbar
+    <div className={`flex h-screen overflow-hidden bg-slate-50 font-sans selection:bg-emerald-600 selection:text-white ${easyMode ? 'easy-mode' : ''} ${textSize === 'large' ? 'text-scale-large' : textSize === 'xlarge' ? 'text-scale-xlarge' : ''}`}>
+      {/* Left Sidebar (Full Height) */}
+      <Sidebar
         activeModule={activeModule}
         onSelectModule={setActiveModule}
-        currentUser={activeUser}
-        onLogout={() => {
-          setIsAuthenticated(false);
-          setCurrentUser(null);
-          setActiveModule('landing');
-        }}
         unresolvedEscalationsCount={unresolvedEscalationsCount}
-        onOpenCommandCenter={handleOpenCommandCenter}
-        easyMode={easyMode}
-        onToggleEasyMode={() => setEasyMode(!easyMode)}
         onOpenHelpGuide={() => setIsHelpModalOpen(true)}
-        onOpenShortcuts={() => setIsShortcutsModalOpen(true)}
+        currentUser={activeUser}
       />
 
-      <div className="flex flex-1 overflow-hidden relative">
-        {/* Left Sidebar */}
-        <Sidebar
+      <div className="flex flex-col flex-1 overflow-hidden relative">
+        {/* Top Navbar (Right Side Only) */}
+        <Navbar
           activeModule={activeModule}
           onSelectModule={setActiveModule}
-          unresolvedEscalationsCount={unresolvedEscalationsCount}
-          onOpenHelpGuide={() => setIsHelpModalOpen(true)}
           currentUser={activeUser}
+          onLogout={() => {
+            setIsAuthenticated(false);
+            setCurrentUser(null);
+            setActiveModule('landing');
+          }}
+          unresolvedEscalationsCount={unresolvedEscalationsCount}
+          onOpenCommandCenter={handleOpenCommandCenter}
+          easyMode={easyMode}
+          onToggleEasyMode={() => setEasyMode(!easyMode)}
+          onOpenHelpGuide={() => setIsHelpModalOpen(true)}
+          onOpenShortcuts={() => setIsShortcutsModalOpen(true)}
         />
 
         {/* Main Workspace Area */}
