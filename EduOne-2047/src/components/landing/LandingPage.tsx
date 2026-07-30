@@ -125,8 +125,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-blue-600 selection:text-white overflow-x-hidden relative">
-      {/* Subtle Grid Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
       {/* Top Header Navbar */}
       <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3.5 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -151,8 +149,28 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
       </header>
 
       {/* SECTION 1 — HERO */}
-      <section className="relative pt-16 pb-12 px-4 sm:px-8 max-w-7xl mx-auto w-full text-center z-10">
+      <section className="relative pt-24 pb-20 px-4 sm:px-8 max-w-7xl mx-auto w-full text-center z-10">
+        {/* Live Animated Background */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10 rounded-3xl mx-4 sm:mx-0">
+          <motion.div
+            animate={{
+              scale: [1, 1.1, 1],
+              rotate: [0, 90, 0],
+            }}
+            transition={{
+              duration: 20,
+              ease: "linear",
+              repeat: Infinity,
+            }}
+            className="absolute -top-1/2 -left-1/2 w-[200%] h-[200%] opacity-30"
+            style={{
+              backgroundImage: 'conic-gradient(from 90deg at 50% 50%, rgba(59, 130, 246, 0.1) 0%, rgba(99, 102, 241, 0.15) 50%, rgba(6, 182, 212, 0.1) 100%)',
+            }}
+          />
+          <div className="absolute inset-0 bg-white/60 backdrop-blur-3xl"></div>
+        </div>
         
+
         <motion.div initial="hidden" animate="visible" variants={fadeUpVariant} className="flex flex-col items-center">
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 leading-tight max-w-4xl mx-auto">
