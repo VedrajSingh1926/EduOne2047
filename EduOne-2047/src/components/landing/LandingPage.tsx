@@ -29,8 +29,12 @@ import {
   Clock,
   Smartphone,
   Briefcase,
-  GraduationCap
+  GraduationCap,
+  BookOpen,
+  PenTool,
+  Monitor
 } from 'lucide-react';
+
 
 interface LandingPageProps {
   onOpenLogin: () => void;
@@ -153,7 +157,41 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin, onQuickRo
         {/* Live Animated Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10 rounded-3xl mx-4 sm:mx-0">
           <div className="absolute inset-0 opacity-40 animate-gradient-x bg-gradient-to-r from-blue-200 via-indigo-100 to-cyan-200"></div>
-          <div className="absolute inset-0 bg-white/30 backdrop-blur-3xl"></div>
+          
+          {/* Floating Educational Icons */}
+          <motion.div
+            animate={{ y: [0, -30, 0], rotate: [0, 10, -10, 0] }}
+            transition={{ duration: 8, ease: "easeInOut", repeat: Infinity }}
+            className="absolute top-10 left-10 md:left-24 text-blue-500/20"
+          >
+            <BookOpen className="w-20 h-20 md:w-32 md:h-32" />
+          </motion.div>
+          
+          <motion.div
+            animate={{ y: [0, 40, 0], rotate: [0, -15, 10, 0] }}
+            transition={{ duration: 10, ease: "easeInOut", repeat: Infinity, delay: 1 }}
+            className="absolute bottom-10 right-10 md:right-24 text-indigo-500/20"
+          >
+            <Monitor className="w-24 h-24 md:w-36 md:h-36" />
+          </motion.div>
+          
+          <motion.div
+            animate={{ y: [0, -25, 0], x: [0, 20, 0], rotate: [0, 20, -5, 0] }}
+            transition={{ duration: 12, ease: "easeInOut", repeat: Infinity, delay: 2 }}
+            className="absolute top-20 right-1/4 text-cyan-500/20 hidden sm:block"
+          >
+            <PenTool className="w-20 h-20" />
+          </motion.div>
+          
+          <motion.div
+            animate={{ y: [0, 35, 0], x: [0, -25, 0], rotate: [0, -20, 15, 0] }}
+            transition={{ duration: 14, ease: "easeInOut", repeat: Infinity, delay: 0.5 }}
+            className="absolute bottom-20 left-1/4 text-emerald-500/15 hidden sm:block"
+          >
+            <GraduationCap className="w-24 h-24" />
+          </motion.div>
+
+          <div className="absolute inset-0 bg-white/40 backdrop-blur-xl"></div>
         </div>
 
 
