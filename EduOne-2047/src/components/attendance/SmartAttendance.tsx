@@ -11,7 +11,7 @@ import {
   Activity,
   UserCheck
 } from 'lucide-react';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { Html5Qrcode } from 'html5-qrcode';
 import { Student, AttendanceRecord } from '../../types';
 
 interface SmartAttendanceProps {
@@ -35,20 +35,17 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
   const [autoMode, setAutoMode] = useState(false);
   const [recentScans, setRecentScans] = useState<{ id: string, name: string, time: string, gate: string }[]>([]);
 
-  // Real CV Auto-Attendance using html5-qrcode
+  // Real CV Auto-Attendance using html5-qrcode natively
   useEffect(() => {
-    let scanner: Html5QrcodeScanner | null = null;
+    let html5QrCode: Html5Qrcode | null = null;
     let lastScannedId = '';
     let lastScanTime = 0;
 
     if (autoMode) {
-      scanner = new Html5QrcodeScanner(
-        "qr-reader",
+      html5QrCode = new Html5Qrcode("qr-reader");
+      html5QrCode.start(
+        { facingMode: "environment" },
         { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 },
-        false
-      );
-
-      scanner.render(
         (decodedText) => {
           const now = Date.now();
           // Debounce same scan by 3 seconds
@@ -78,12 +75,14 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
         (error) => {
           // Ignore scanning errors (occurs constantly when no QR code is in frame)
         }
-      );
+      ).catch(err => {
+        console.error("Failed to start QR scanner natively", err);
+      });
     }
 
     return () => {
-      if (scanner) {
-        scanner.clear().catch(console.error);
+      if (html5QrCode && html5QrCode.isScanning) {
+        html5QrCode.stop().then(() => html5QrCode?.clear()).catch(console.error);
       }
     };
   }, [autoMode, students, onMarkAttendance]);
