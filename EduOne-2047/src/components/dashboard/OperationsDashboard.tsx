@@ -13,7 +13,8 @@ import {
   BookOpen,
   PhoneCall,
   Clock,
-  UserPlus
+  UserPlus,
+  Server, Monitor, ShieldCheck, BusFront, Library, HeartPulse, FileText, BadgeAlert, ShieldAlert, Bus, AlertTriangle, Heart
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -205,11 +206,229 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
           </>
         )}
 
-        {/* Fallback for other roles (e.g. Students, Parents) */}
-        {(currentUser && !['Super Admin', 'Principal', 'Vice Principal', 'User ID Administrator', 'Class Teacher', 'Accountant', 'Receptionist'].includes(currentUser.role)) && (
-          <div className="col-span-2 lg:col-span-4 p-5 rounded-2xl bg-emerald-50 border border-emerald-100 shadow-2xs flex items-center justify-center text-emerald-800 text-sm font-medium">
-            Welcome to EduOne2047. More specific metrics for {currentUser.role} will be available soon.
-          </div>
+        {(currentUser && currentUser.role === 'IT Support') && (
+          <>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Active Tickets</span><AlertTriangle className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">12</span><span className="text-xs font-medium text-emerald-600">-3</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Pending resolution</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">System Uptime</span><Server className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">99.9%</span><span className="text-xs font-medium text-emerald-600">Stable</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Last 30 days</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Smart Boards</span><Monitor className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">42/45</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">3 offline</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Access Requests</span><ShieldCheck className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">5</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Pending approval</p>
+            </div>
+          </>
+        )}
+
+        {(currentUser && currentUser.role === 'Librarian') && (
+          <>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Total Books</span><Library className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">12,450</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Cataloged items</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Issued Today</span><BookOpen className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">45</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Across all grades</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Overdue Returns</span><Clock className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">18</span><span className="text-xs font-medium text-rose-500">Action needed</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Pending for 7+ days</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">New Arrivals</span><Plus className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">120</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Pending cataloging</p>
+            </div>
+          </>
+        )}
+
+        {(currentUser && currentUser.role === 'Transport Manager') && (
+          <>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Active Routes</span><BusFront className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">18/20</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Currently operating</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Students in Transit</span><Users className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">845</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Checked in</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Fleet Status</span><Bus className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">2</span><span className="text-xs font-medium text-rose-500">Maintenance</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Buses in garage</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Delays</span><Clock className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">1</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Route 4B (Traffic)</p>
+            </div>
+          </>
+        )}
+
+        {(currentUser && currentUser.role === 'Security Guard') && (
+          <>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Visitors Today</span><UserPlus className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">42</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Logged at Main Gate</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Active Passes</span><BadgeAlert className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">8</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Currently on campus</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Security Alerts</span><ShieldAlert className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">0</span><span className="text-xs font-medium text-emerald-600">All Clear</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">No incidents reported</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Lockdown Status</span><ShieldCheck className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">Safe</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Normal operations</p>
+            </div>
+          </>
+        )}
+
+        {(currentUser && currentUser.role === 'Counselor') && (
+          <>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Sessions Today</span><Users className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">6</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Completed & Upcoming</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Well-being Alerts</span><HeartPulse className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">2</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Requires follow-up</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Parent Meetings</span><Users className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">1</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Scheduled for this week</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Open Cases</span><Heart className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">14</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Active student monitoring</p>
+            </div>
+          </>
+        )}
+
+        {(currentUser && currentUser.role === 'Exam Coordinator') && (
+          <>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Upcoming Exams</span><Calendar className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">12</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Mid-terms scheduled</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Papers Graded</span><CheckCircle2 className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">85%</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Of current cycle</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Results Pending</span><FileText className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">3</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Classes pending publication</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Invigilation Duties</span><Users className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">100%</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Assigned for next week</p>
+            </div>
+          </>
+        )}
+
+        {(currentUser && currentUser.role === 'Subject Teacher') && (
+          <>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Lectures Today</span><BookOpen className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">5</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Across 3 grades</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Syllabus Completion</span><TrendingUp className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">62%</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">On track for finals</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Assignments</span><FileText className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">28</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Pending review</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Tests Graded</span><CheckCircle2 className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">100%</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Recent unit test</p>
+            </div>
+          </>
+        )}
+
+        {(currentUser && currentUser.role === 'Student') && (
+          <>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">My Attendance</span><CheckCircle2 className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">96.5%</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">This term</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Next Exam</span><Calendar className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">Physics</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">In 3 days</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Homework</span><BookOpen className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">2</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Due tomorrow</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Recent Grade</span><FileText className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">A-</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">Math Quiz</p>
+            </div>
+          </>
+        )}
+
+        {(currentUser && currentUser.role === 'Parent') && (
+          <>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Ward Attendance</span><CheckCircle2 className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">96.5%</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">This term</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Fee Dues</span><Receipt className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">₹0</span><span className="text-xs font-medium text-emerald-600">Cleared</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">All up to date</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Next Meeting</span><Users className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">PTM</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">In 2 weeks</p>
+            </div>
+            <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
+              <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Announcements</span><AlertTriangle className="w-4 h-4 text-slate-400" /></div>
+              <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">1</span></div>
+              <p className="text-[11px] text-slate-400 mt-1">School holiday notice</p>
+            </div>
+          </>
         )}
       </div>
 
@@ -227,7 +446,45 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
             {/* Timetable Snapshot */}
             <div className="bg-white rounded-xl p-4 border border-slate-200">
               <h3 className="text-xs font-bold text-slate-700 uppercase tracking-wider mb-3">Today's Schedule</h3>
-              {currentUser.role === 'Teacher' ? (
+              {currentUser.role === 'IT Support' ? (
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-sm p-2 bg-slate-50 rounded-lg">
+                    <span className="font-semibold text-slate-800">10:00 AM - Network Maintenance</span>
+                    <span className="text-xs text-slate-500">Server Room</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm p-2 bg-emerald-50 border border-emerald-100 rounded-lg">
+                    <span className="font-semibold text-emerald-800">02:00 PM - Smart Board Repair</span>
+                    <span className="text-xs text-emerald-600">Grade 9-B</span>
+                  </div>
+                </div>
+              ) : currentUser.role === 'Librarian' ? (
+                <div className="text-sm text-slate-600 py-2">
+                  Morning stock checking and cataloging new arrivals.
+                </div>
+              ) : currentUser.role === 'Transport Manager' ? (
+                <div className="text-sm text-slate-600 py-2">
+                  Dispatching morning fleet and monitoring Route 4B delay.
+                </div>
+              ) : currentUser.role === 'Security Guard' ? (
+                <div className="text-sm text-slate-600 py-2">
+                  Main Gate duty and vendor entry verifications.
+                </div>
+              ) : currentUser.role === 'Counselor' ? (
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-sm p-2 bg-slate-50 rounded-lg">
+                    <span className="font-semibold text-slate-800">11:00 AM - 1-on-1 Session</span>
+                    <span className="text-xs text-slate-500">Grade 10</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm p-2 bg-emerald-50 border border-emerald-100 rounded-lg">
+                    <span className="font-semibold text-emerald-800">03:00 PM - Parent Meeting</span>
+                    <span className="text-xs text-emerald-600">Office</span>
+                  </div>
+                </div>
+              ) : currentUser.role === 'Exam Coordinator' ? (
+                <div className="text-sm text-slate-600 py-2">
+                  Finalizing seating arrangements for upcoming Mid-terms.
+                </div>
+              ) : currentUser.role === 'Class Teacher' || currentUser.role === 'Subject Teacher' ? (
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-sm p-2 bg-slate-50 rounded-lg">
                     <span className="font-semibold text-slate-800">08:00 AM - Physics</span>
@@ -238,7 +495,22 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
                     <span className="text-xs text-emerald-600">Grade 9-B</span>
                   </div>
                 </div>
-              ) : currentUser.role === 'Admin' || currentUser.role === 'User ID Administrator' ? (
+              ) : currentUser.role === 'Student' ? (
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-sm p-2 bg-slate-50 rounded-lg">
+                    <span className="font-semibold text-slate-800">08:00 AM - Physics</span>
+                    <span className="text-xs text-slate-500">Room 101</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm p-2 bg-slate-50 rounded-lg">
+                    <span className="font-semibold text-slate-800">09:00 AM - Chemistry</span>
+                    <span className="text-xs text-slate-500">Lab 2</span>
+                  </div>
+                </div>
+              ) : currentUser.role === 'Parent' ? (
+                <div className="text-sm text-slate-600 py-2">
+                  No upcoming meetings. Ward is currently attending Physics.
+                </div>
+              ) : currentUser.role === 'Admin' || currentUser.role === 'User ID Administrator' || currentUser.role === 'Super Admin' || currentUser.role === 'Principal' || currentUser.role === 'Vice Principal' ? (
                 <div className="text-sm text-slate-600 py-2">
                   No classes scheduled. Administrative duties ongoing.
                 </div>
@@ -255,11 +527,33 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
               <div className="space-y-2">
                 <div className="flex items-start gap-2 text-sm p-2">
                   <input type="checkbox" className="mt-1 rounded text-emerald-600 border-slate-300" />
-                  <span className="text-slate-700">Review {currentUser.role === 'Teacher' ? 'student assignments' : 'pending staff access requests'}</span>
+                  <span className="text-slate-700">
+                    {currentUser.role === 'IT Support' ? 'Review pending staff access requests'
+                    : currentUser.role === 'Librarian' ? 'Process new book arrivals'
+                    : currentUser.role === 'Transport Manager' ? 'Review Route 4B delay'
+                    : currentUser.role === 'Security Guard' ? 'Monitor main gate cameras'
+                    : currentUser.role === 'Counselor' ? 'Review student behavioral reports'
+                    : currentUser.role === 'Exam Coordinator' ? 'Finalize Mid-term seating plan'
+                    : (currentUser.role === 'Class Teacher' || currentUser.role === 'Subject Teacher') ? 'Review student assignments'
+                    : currentUser.role === 'Student' ? 'Complete Physics homework'
+                    : currentUser.role === 'Parent' ? 'Sign field trip permission slip'
+                    : 'Review pending staff access requests'}
+                  </span>
                 </div>
                 <div className="flex items-start gap-2 text-sm p-2">
                   <input type="checkbox" className="mt-1 rounded text-emerald-600 border-slate-300" />
-                  <span className="text-slate-700">Submit weekly activity report</span>
+                  <span className="text-slate-700">
+                    {currentUser.role === 'IT Support' ? 'Update firewall rules'
+                    : currentUser.role === 'Librarian' ? 'Send overdue notices'
+                    : currentUser.role === 'Transport Manager' ? 'Schedule bus maintenance'
+                    : currentUser.role === 'Security Guard' ? 'Verify vendor entry logs'
+                    : currentUser.role === 'Counselor' ? 'Prepare workshop material'
+                    : currentUser.role === 'Exam Coordinator' ? 'Distribute question papers'
+                    : (currentUser.role === 'Class Teacher' || currentUser.role === 'Subject Teacher') ? 'Submit weekly activity report'
+                    : currentUser.role === 'Student' ? 'Prepare for Math test'
+                    : currentUser.role === 'Parent' ? 'Check upcoming PTA meeting schedule'
+                    : 'Submit weekly activity report'}
+                  </span>
                 </div>
               </div>
             </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Role, CurrentUser } from '../../types';
-import { ShieldCheck, User, Lock, LogIn, ArrowLeft } from 'lucide-react';
+import { ShieldCheck, User, Lock, LogIn, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { ref, get, child } from 'firebase/database';
 import { db } from '../../lib/firebase';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
   const navigate = useNavigate();
   const [staffId, setStaffId] = useState(prefillId || '');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [detectedUser, setDetectedUser] = useState<CurrentUser | null>(null);
@@ -70,30 +71,25 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
     setIsAuthenticating(true);
 
     try {
-      // Manual Authentication against Realtime Database
-      const dbRef = ref(db);
-      const snapshot = await get(child(dbRef, `users/${staffId.trim()}`));
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ staffId: staffId.trim(), password })
+      });
       
-      if (snapshot.exists()) {
-        const userData = snapshot.val();
+      const data = await response.json();
+      
+      if (response.ok && data.success) {
+        // Save session token in sessionStorage
+        sessionStorage.setItem('sessionToken', data.token);
         
-        if (userData.password === password) {
-          // Password matches!
-          onLogin({
-            id: userData.id,
-            name: userData.name,
-            role: userData.role as Role,
-            class_id: userData.class_id
-          });
-        } else {
-          setError('Invalid credentials.');
-        }
+        onLogin(data.user);
       } else {
-        setError('User not found.');
+        setError(data.error || 'Invalid credentials.');
       }
     } catch (err) {
       console.error(err);
-      setError('Database connection error.');
+      setError('Server connection error.');
     } finally {
       setIsAuthenticating(false);
     }
@@ -159,13 +155,24 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoFocus={!!prefillId}
-                className="w-full bg-white border border-slate-200 rounded-xl py-3.5 pl-11 pr-4 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all shadow-sm"
+                className="w-full bg-white border border-slate-200 rounded-xl py-3.5 pl-11 pr-11 text-sm font-bold text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all shadow-sm"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 focus:outline-none"
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+              </button>
             </div>
             {prefillId && (
               <p className="text-xs text-slate-500 font-medium ml-1">

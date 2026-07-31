@@ -16,6 +16,7 @@ export const SuperAdminDashboard: React.FC = () => {
   const [newRole, setNewRole] = useState<Role>('Class Teacher' as Role);
   const [newPassword, setNewPassword] = useState('');
   const [feedback, setFeedback] = useState({ type: '', message: '' });
+  const [generatedPasswordData, setGeneratedPasswordData] = useState<{ id: string, name: string, password: string } | null>(null);
 
   const fetchUsers = async () => {
     try {
@@ -47,13 +48,33 @@ export const SuperAdminDashboard: React.FC = () => {
     }
 
     try {
-      await set(ref(db, `users/${newStaffId}`), {
+      const sessionToken = sessionStorage.getItem('sessionToken');
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${sessionToken}`
+        },
+        body: JSON.stringify({
+          staffId: newStaffId,
+          name: newName,
+          role: newRole,
+          password: newPassword,
+          email: `${newStaffId.toLowerCase()}@eduone.com`
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to register user.');
+      }
+
+      setGeneratedPasswordData({
         id: newStaffId,
         name: newName,
-        role: newRole,
-        password: newPassword,
-        email: `${newStaffId.toLowerCase()}@eduone.com`
+        password: newPassword
       });
+
       toast.success(`User ${newName} added successfully`);
       setFeedback({ type: 'success', message: 'User added successfully' });
       // Reset form
@@ -62,10 +83,10 @@ export const SuperAdminDashboard: React.FC = () => {
       setNewPassword('');
       // Refresh list
       fetchUsers();
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      toast.error('Failed to register user.');
-      setFeedback({ type: 'error', message: 'Failed to register user.' });
+      toast.error(err.message || 'Failed to register user.');
+      setFeedback({ type: 'error', message: err.message || 'Failed to register user.' });
     }
   };
 
@@ -156,7 +177,6 @@ export const SuperAdminDashboard: React.FC = () => {
                     <th className="px-6 py-4 text-emerald-800">Name</th>
                     <th className="px-6 py-4 text-emerald-800">Role</th>
                     <th className="px-6 py-4 text-emerald-800">Email</th>
-                    <th className="px-6 py-4 text-emerald-800">Temp Password</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -170,11 +190,6 @@ export const SuperAdminDashboard: React.FC = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4 text-slate-600">{u.email || '-'}</td>
-                      <td className="px-6 py-4">
-                        <span className="text-xs font-mono bg-slate-100 px-2 py-1 rounded text-slate-600">
-                          {u.password || '******'}
-                        </span>
-                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -212,6 +227,36 @@ export const SuperAdminDashboard: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {generatedPasswordData && (
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 animate-in zoom-in-95">
+            <h2 className="text-xl font-bold text-slate-900 mb-2">Staff Account Created</h2>
+            <p className="text-sm text-slate-500 mb-6">
+              Please securely share these credentials with {generatedPasswordData.name}. 
+              The password will <strong>not</strong> be shown again.
+            </p>
+            
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3 mb-6">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-bold text-slate-500">Staff ID</span>
+                <span className="font-mono font-black text-slate-900">{generatedPasswordData.id}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-bold text-slate-500">Temp Password</span>
+                <span className="font-mono font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded">{generatedPasswordData.password}</span>
+              </div>
+            </div>
+
+            <button 
+              onClick={() => setGeneratedPasswordData(null)}
+              className="w-full py-2 bg-emerald-600 text-white font-bold rounded-lg shadow-sm hover:bg-emerald-700 transition-colors"
+            >
+              I have saved the credentials
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

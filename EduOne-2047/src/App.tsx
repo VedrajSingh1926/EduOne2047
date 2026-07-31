@@ -19,6 +19,7 @@ import { ReportsAnalytics } from './components/analytics/ReportsAnalytics';
 import { CollaborativeTaskManager } from './components/tasks/CollaborativeTaskManager';
 import { GmailCommsCenter } from './components/gmail/GmailCommsCenter';
 import { LoginForm } from './components/auth/LoginForm';
+import { ForcePasswordReset } from './components/auth/ForcePasswordReset';
 import { SuperAdminDashboard } from './components/admin/SuperAdminDashboard';
 import {
   INITIAL_STUDENTS,
@@ -72,18 +73,18 @@ function CoreApplication() {
 
 
   // Fallback for direct role URL testing
-  const activeUser = currentUser || { id: 'TEST-000', name: 'Test User', role: currentRole };
+  
 
   useEffect(() => {
     // Route Protection
-    if (isAuthenticated && activeUser) {
+    if (isAuthenticated && currentUser) {
       const currentRoute = APP_ROUTES.find(r => r.id === activeModule);
-      if (!currentRoute || !canAccess(activeUser, currentRoute.permission)) {
+      if (!currentRoute || !canAccess(currentUser, currentRoute.permission)) {
         console.warn(`Unauthorized access attempt to ${activeModule}. Redirecting to default dashboard.`);
-        setActiveModule(getDefaultDashboard(activeUser.role));
+        setActiveModule(getDefaultDashboard(currentUser.role));
       }
     }
-  }, [activeModule, isAuthenticated, activeUser]);
+  }, [activeModule, isAuthenticated, currentUser]);
   const [initialCommandPrompt, setInitialCommandPrompt] = useState<string | undefined>(undefined);
 
   // Staff Accessibility States
@@ -186,7 +187,7 @@ function CoreApplication() {
   };
 
   const handleUpdateStudent = async (studentId: string, updates: Partial<Student>) => {
-    if (!canAccess(activeUser, [PERMISSIONS.STUDENTS_EDIT_ALL, PERMISSIONS.STUDENTS_EDIT_HOMEROOM])) {
+    if (!canAccess(currentUser, [PERMISSIONS.STUDENTS_EDIT_ALL, PERMISSIONS.STUDENTS_EDIT_HOMEROOM])) {
       toast.error("UNAUTHORIZED: You do not have permission to modify students.");
       return;
     }
@@ -199,7 +200,7 @@ function CoreApplication() {
   };
 
   const handleAssignSubstitute = async (teacherOrSlotId: string, substituteTeacherName: string) => {
-    if (!hasPermission(activeUser, PERMISSIONS.TIMETABLE_MANAGE)) {
+    if (!hasPermission(currentUser, PERMISSIONS.TIMETABLE_MANAGE)) {
       toast.error("UNAUTHORIZED: You do not have permission to manage timetables.");
       return;
     }
@@ -234,7 +235,7 @@ function CoreApplication() {
   };
 
   const handleUpdateTeacherStatus = async (teacherId: string, newStatus: 'PRESENT' | 'ABSENT' | 'ON_LEAVE') => {
-    if (!hasPermission(activeUser, PERMISSIONS.TEACHERS_MANAGE)) {
+    if (!hasPermission(currentUser, PERMISSIONS.TEACHERS_MANAGE)) {
       toast.error("UNAUTHORIZED: You do not have permission to manage teachers.");
       return;
     }
@@ -247,7 +248,7 @@ function CoreApplication() {
   };
 
   const handleMarkAttendance = async (studentId: string, status: 'PRESENT' | 'ABSENT' | 'LATE' | 'EXCUSED') => {
-    if (!hasPermission(activeUser, PERMISSIONS.ATTENDANCE_MARK_HOMEROOM)) {
+    if (!hasPermission(currentUser, PERMISSIONS.ATTENDANCE_MARK_HOMEROOM)) {
       toast.error("UNAUTHORIZED: You do not have permission to mark attendance.");
       return;
     }
@@ -277,7 +278,7 @@ function CoreApplication() {
   };
 
   const handleBulkMarkAttendance = async (studentIds: string[], status: 'PRESENT' | 'ABSENT' | 'LATE' | 'EXCUSED') => {
-    if (!hasPermission(activeUser, PERMISSIONS.ATTENDANCE_MARK_HOMEROOM)) {
+    if (!hasPermission(currentUser, PERMISSIONS.ATTENDANCE_MARK_HOMEROOM)) {
       toast.error("UNAUTHORIZED: You do not have permission to mark attendance.");
       return;
     }
@@ -332,7 +333,7 @@ function CoreApplication() {
   };
 
   const handleUploadReceipt = async (fileName: string, studentName: string) => {
-    if (!hasPermission(activeUser, PERMISSIONS.DOCUMENTS_UPLOAD_FEE)) {
+    if (!hasPermission(currentUser, PERMISSIONS.DOCUMENTS_UPLOAD_FEE)) {
       toast.error("UNAUTHORIZED: You do not have permission to upload fee receipts.");
       return;
     }
@@ -361,7 +362,7 @@ function CoreApplication() {
   };
 
   const handleResolveMismatch = async (feeId: string) => {
-    if (!hasPermission(activeUser, PERMISSIONS.FEES_RECONCILE)) {
+    if (!hasPermission(currentUser, PERMISSIONS.FEES_RECONCILE)) {
       toast.error("UNAUTHORIZED: You do not have permission to reconcile fees.");
       return;
     }
@@ -396,7 +397,7 @@ function CoreApplication() {
   };
 
   const handleUploadDocument = async (file: File) => {
-    if (!hasPermission(activeUser, PERMISSIONS.DOCUMENTS_UPLOAD_ALL)) {
+    if (!hasPermission(currentUser, PERMISSIONS.DOCUMENTS_UPLOAD_ALL)) {
       toast.error("UNAUTHORIZED: You do not have permission to upload general documents.");
       return;
     }
@@ -425,7 +426,7 @@ function CoreApplication() {
   };
 
   const handleApproveDocument = async (docId: string) => {
-    if (!hasPermission(activeUser, PERMISSIONS.DOCUMENTS_MANAGE_ALL)) {
+    if (!hasPermission(currentUser, PERMISSIONS.DOCUMENTS_MANAGE_ALL)) {
       toast.error("UNAUTHORIZED: You do not have permission to approve documents.");
       return;
     }
@@ -438,7 +439,7 @@ function CoreApplication() {
   };
 
   const handleRejectDocument = async (docId: string) => {
-    if (!hasPermission(activeUser, PERMISSIONS.DOCUMENTS_MANAGE_ALL)) {
+    if (!hasPermission(currentUser, PERMISSIONS.DOCUMENTS_MANAGE_ALL)) {
       toast.error("UNAUTHORIZED: You do not have permission to reject documents.");
       return;
     }
@@ -549,12 +550,20 @@ function CoreApplication() {
 
   return (
     <div className={`flex h-screen overflow-hidden bg-slate-50 font-sans selection:bg-emerald-600 selection:text-white ${easyMode ? 'easy-mode' : ''} ${textSize === 'large' ? 'text-scale-large' : textSize === 'xlarge' ? 'text-scale-xlarge' : ''}`}>
+      {currentUser?.mustResetPassword && (
+        <ForcePasswordReset 
+          currentUser={currentUser} 
+          onSuccess={() => {
+            setCurrentUser({ ...currentUser, mustResetPassword: false });
+          }} 
+        />
+      )}
       <Sidebar
         activeModule={activeModule}
         onSelectModule={setActiveModule}
         unresolvedEscalationsCount={unresolvedEscalationsCount}
         onOpenHelpGuide={() => setIsHelpModalOpen(true)}
-        currentUser={activeUser}
+        currentUser={currentUser}
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
@@ -564,7 +573,7 @@ function CoreApplication() {
         <Navbar
           activeModule={activeModule}
           onSelectModule={setActiveModule}
-          currentUser={activeUser}
+          currentUser={currentUser}
           onLogout={() => {
             setIsAuthenticated(false);
             setCurrentUser(null);
@@ -581,7 +590,7 @@ function CoreApplication() {
 
         {/* Main Workspace Area */}
         <main className="flex-1 overflow-y-auto bg-slate-50/50 p-4 md:p-6 lg:p-8 relative">
-          {activeModule === 'admin-panel' && canAccess(activeUser, PERMISSIONS.USERS_MANAGE_ALL) && (
+          {activeModule === 'admin-panel' && canAccess(currentUser, PERMISSIONS.USERS_MANAGE_ALL) && (
             <SuperAdminDashboard />
           )}
 

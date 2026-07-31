@@ -28,6 +28,7 @@ export interface CurrentUser {
   schoolId?: string;
   createdAt?: string;
   updatedAt?: string;
+  mustResetPassword?: boolean;
 }
 
 export type Severity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';

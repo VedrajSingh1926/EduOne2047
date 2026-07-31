@@ -77,14 +77,14 @@ export const ROLE_PERMISSIONS: Record<string, string[]> = {
   ],
 
   // PHASE 2 Placeholders
-  'Vice Principal': [],
-  'Subject Teacher': [],
-  'Exam Coordinator': [],
-  'IT Support': [],
-  'Librarian': [],
-  'Counselor': [],
-  'Transport Manager': [],
-  'Security Guard': [],
-  'Student': [],
-  'Parent': []
+  'Vice Principal': [PERMISSIONS.DASHBOARD_VIEW_FULL, PERMISSIONS.OPERATIONS_VIEW_ALL],
+  'Subject Teacher': [PERMISSIONS.DASHBOARD_VIEW_SCOPED, PERMISSIONS.TIMETABLE_VIEW],
+  'Exam Coordinator': [PERMISSIONS.DASHBOARD_VIEW_SCOPED, PERMISSIONS.STUDENTS_VIEW_ALL],
+  'IT Support': [PERMISSIONS.DASHBOARD_VIEW_SCOPED, PERMISSIONS.SYSTEM_SETTINGS, PERMISSIONS.USERS_MANAGE_ALL],
+  'Librarian': [PERMISSIONS.DASHBOARD_VIEW_SCOPED],
+  'Counselor': [PERMISSIONS.DASHBOARD_VIEW_SCOPED],
+  'Transport Manager': [PERMISSIONS.DASHBOARD_VIEW_SCOPED],
+  'Security Guard': [PERMISSIONS.DASHBOARD_VIEW_SCOPED],
+  'Student': [PERMISSIONS.DASHBOARD_VIEW_SCOPED],
+  'Parent': [PERMISSIONS.DASHBOARD_VIEW_SCOPED]
 };

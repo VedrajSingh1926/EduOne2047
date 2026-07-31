@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   AlertTriangle,
   Send,
   BellRing,
   ShieldAlert,
   Search,
-  CheckCircle2
+  CheckCircle2,
+  ScanLine,
+  Wifi,
+  Activity,
+  UserCheck
 } from 'lucide-react';
 import { Student, AttendanceRecord } from '../../types';
 
@@ -27,6 +31,37 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
   const [selectedClass, setSelectedClass] = useState('Grade 10-A');
   const [searchTerm, setSearchTerm] = useState('');
   const [alertSentMap, setAlertSentMap] = useState<Record<string, boolean>>({});
+  const [autoMode, setAutoMode] = useState(false);
+  const [recentScans, setRecentScans] = useState<{ id: string, name: string, time: string, gate: string }[]>([]);
+
+  // Simulation of RFID / CV Auto-Attendance
+  useEffect(() => {
+    let interval: any;
+    if (autoMode) {
+      interval = setInterval(() => {
+        // Pick a random student from the currently selected class who is not yet marked present today
+        const classStudents = students.filter(s => `${s.grade}-${s.section}` === selectedClass || selectedClass === 'ALL');
+        // In this simulation we just pick any student and show a scan event
+        if (classStudents.length > 0) {
+          const randomStudent = classStudents[Math.floor(Math.random() * classStudents.length)];
+          
+          const now = new Date();
+          const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+          const gates = ['Main Gate RFID', 'Library Camera AI', 'Hallway B Scanner', 'Entrance Facial Recognition'];
+          const randomGate = gates[Math.floor(Math.random() * gates.length)];
+
+          setRecentScans(prev => [
+            { id: randomStudent.id, name: randomStudent.name, time: timeString, gate: randomGate },
+            ...prev
+          ].slice(0, 10)); // Keep last 10
+          
+          // Mark them present
+          onMarkAttendance(randomStudent.id, 'PRESENT');
+        }
+      }, 3500); // Trigger a scan every 3.5 seconds
+    }
+    return () => clearInterval(interval);
+  }, [autoMode, students, selectedClass, onMarkAttendance]);
 
   const filteredStudents = students.filter((s) => {
     const matchesClass = `${s.grade}-${s.section}` === selectedClass || selectedClass === 'ALL';
@@ -46,19 +81,101 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200/80">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Attendance</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Smart Attendance</h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Real-time biometric & teacher logs, absence pattern tracking and automated parent alerts.
+            Real-time biometric & computer vision logs, auto-attendance, and absence pattern tracking.
           </p>
         </div>
 
-        <div className="px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold self-start sm:self-auto">
-          Overall Attendance: 94.8%
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setAutoMode(!autoMode)}
+            className={`px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all ${
+              autoMode 
+                ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20 animate-pulse-slow' 
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+            }`}
+          >
+            {autoMode ? <ScanLine className="w-4 h-4 animate-spin-slow" /> : <Wifi className="w-4 h-4" />}
+            {autoMode ? 'Auto-Attendance: ACTIVE' : 'Enable Auto-Attendance'}
+          </button>
         </div>
       </div>
 
+      {autoMode && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 p-6 rounded-2xl bg-slate-900 text-white shadow-xl relative overflow-hidden border border-slate-800">
+            {/* Ambient Background Effects */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
+            
+            <div className="flex items-center justify-between mb-6 relative z-10">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-emerald-500/20 rounded-lg">
+                  <Activity className="w-5 h-5 text-emerald-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold">Live Scanner Feed</h3>
+                  <p className="text-xs text-slate-400">Monitoring RFID gates and AI Vision nodes...</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-semibold border border-emerald-500/30">
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                ONLINE
+              </div>
+            </div>
+
+            <div className="space-y-3 relative z-10 min-h-[200px]">
+              {recentScans.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-48 text-slate-500">
+                  <ScanLine className="w-10 h-10 mb-3 opacity-20" />
+                  <p className="text-sm">Awaiting scans...</p>
+                </div>
+              ) : (
+                recentScans.map((scan, i) => (
+                  <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 animate-in fade-in slide-in-from-left-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-emerald-400">
+                        <UserCheck className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <div className="font-semibold text-sm">{scan.name}</div>
+                        <div className="text-xs text-slate-400">{scan.id}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-emerald-400 font-mono text-xs mb-0.5">{scan.time}</div>
+                      <div className="text-[10px] text-slate-500 uppercase tracking-wider">{scan.gate}</div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+          
+          <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
+             <div>
+               <h3 className="text-lg font-bold text-slate-900 mb-2">Automated Roll Call</h3>
+               <p className="text-sm text-slate-600 mb-6">
+                 Students passing through campus gates and equipped classrooms are automatically marked as PRESENT in real-time. 
+               </p>
+               <div className="space-y-4">
+                 <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                   <div className="text-sm font-semibold text-slate-700 mb-1">Today's Campus Traffic</div>
+                   <div className="text-3xl font-extrabold text-emerald-600">842 <span className="text-sm font-medium text-slate-500">/ 1080</span></div>
+                 </div>
+                 <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                   <div className="text-sm font-semibold text-slate-700 mb-1">Active AI Nodes</div>
+                   <div className="text-lg font-bold text-slate-900">14 <span className="text-sm font-medium text-slate-500">Online</span></div>
+                 </div>
+               </div>
+             </div>
+          </div>
+        </div>
+      )}
+
       {/* AI Risk Detection Banner */}
-      {lowAttendanceStudents.length > 0 && (
+      {!autoMode && lowAttendanceStudents.length > 0 && (
         <div className="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-start gap-3">
             <ShieldAlert className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
@@ -85,24 +202,26 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
       )}
 
       {/* Bulk Action Bar */}
-      <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center justify-between gap-3 mb-2">
-        <div className="text-xs font-semibold text-slate-700">
-          Bulk Actions ({filteredStudents.length} students selected)
+      {!autoMode && (
+        <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center justify-between gap-3 mb-2">
+          <div className="text-xs font-semibold text-slate-700">
+            Manual Override Actions ({filteredStudents.length} students selected)
+          </div>
+          <button
+            onClick={() => {
+              if (onBulkMarkAttendance) {
+                onBulkMarkAttendance(filteredStudents.map(s => s.id), 'PRESENT');
+              } else {
+                filteredStudents.forEach(s => onMarkAttendance(s.id, 'PRESENT'));
+              }
+            }}
+            className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-medium flex items-center gap-1.5 shadow-2xs hover:bg-emerald-700 transition-colors"
+          >
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Mark All Present</span>
+          </button>
         </div>
-        <button
-          onClick={() => {
-            if (onBulkMarkAttendance) {
-              onBulkMarkAttendance(filteredStudents.map(s => s.id), 'PRESENT');
-            } else {
-              filteredStudents.forEach(s => onMarkAttendance(s.id, 'PRESENT'));
-            }
-          }}
-          className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-medium flex items-center gap-1.5 shadow-2xs hover:bg-emerald-700 transition-colors"
-        >
-          <CheckCircle2 className="w-3.5 h-3.5" />
-          <span>Mark All Present</span>
-        </button>
-      </div>
+      )}
 
       {/* Controls Bar */}
       <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3 interaction-card">
@@ -114,10 +233,12 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
             className="px-3 py-1.5 text-xs bg-slate-100/70 rounded-lg border border-slate-200 font-medium text-slate-800 focus:outline-none"
           >
             <option value="ALL">All Classes</option>
+            <option value="Grade 9-A">Grade 9-A</option>
             <option value="Grade 10-A">Grade 10-A</option>
             <option value="Grade 10-B">Grade 10-B</option>
             <option value="Grade 11-A">Grade 11-A</option>
             <option value="Grade 11-B">Grade 11-B</option>
+            <option value="Grade 12-A">Grade 12-A</option>
             <option value="Grade 12-C">Grade 12-C</option>
           </select>
         </div>
@@ -135,7 +256,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
       </div>
 
       {/* Attendance Roster Table */}
-      <div className="rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden interaction-card">
+      <div className={`rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden interaction-card ${autoMode ? 'opacity-70 pointer-events-none' : ''}`}>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead className="bg-emerald-50 text-emerald-800">
@@ -233,4 +354,3 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
     </div>
   );
 };
-
