@@ -66,7 +66,7 @@ app.post("/api/ai/command", async (req, res) => {
   if (aiPrimary) {
     try {
       const response = await generateContentWithFailover(
-        "gemini-3.6-flash",
+        "gemini-1.5-flash",
         `You are EduOne 2047 AI Command Center engine for a school operations platform.
 User Role: ${role}
 Query: "${prompt}"
@@ -184,7 +184,7 @@ app.post("/api/ai/ocr", async (req, res) => {
   if (aiPrimary) {
     try {
       const response = await generateContentWithFailover(
-        "gemini-3.6-flash",
+        "gemini-1.5-flash",
         `Perform OCR analysis for document type: "${documentType}", File: "${fileName}".
 Return JSON object:
 {
