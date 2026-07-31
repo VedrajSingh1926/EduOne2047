@@ -27,6 +27,8 @@ if (apiKey) {
 }
 
 // Initialize Firebase Admin
+let db: any = null;
+
 try {
   let serviceAccount;
   if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
@@ -39,12 +41,11 @@ try {
     credential: cert(serviceAccount),
     databaseURL: "https://eduone-2047-default-rtdb.firebaseio.com"
   });
+  db = getDatabase();
   console.log("[EduOne 2047] Firebase Admin initialized successfully.");
 } catch (error) {
   console.error("Firebase Admin SDK could not be initialized:", error);
 }
-
-const db = getDatabase();
 
 // 1. Health check
 app.get("/api/health", (_req, res) => {
@@ -53,6 +54,10 @@ app.get("/api/health", (_req, res) => {
 
 // Auth: Login
 app.post("/api/auth/login", async (req, res) => {
+  if (!db) {
+    res.status(500).json({ error: "Database not configured" });
+    return;
+  }
   const { staffId, password } = req.body;
   if (!staffId || !password) {
     res.status(400).json({ error: "Missing staffId or password" });
@@ -100,6 +105,10 @@ app.post("/api/auth/login", async (req, res) => {
 
 // Auth: Register (Guarded)
 app.post("/api/auth/register", async (req, res) => {
+  if (!db) {
+    res.status(500).json({ error: "Database not configured" });
+    return;
+  }
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(403).json({ error: "Missing or invalid authorization header" });
@@ -152,6 +161,10 @@ app.post("/api/auth/register", async (req, res) => {
 
 // Auth: Reset Password
 app.post("/api/auth/reset-password", async (req, res) => {
+  if (!db) {
+    res.status(500).json({ error: "Database not configured" });
+    return;
+  }
   const { staffId, currentPassword, newPassword } = req.body;
   if (!staffId || !currentPassword || !newPassword) {
     res.status(400).json({ error: "Missing required fields" });
