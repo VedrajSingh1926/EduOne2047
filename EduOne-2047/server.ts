@@ -28,6 +28,7 @@ if (apiKey) {
 }
 
 // Initialize Firebase Admin
+let db: any = null;
 try {
   let serviceAccount;
   if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
@@ -40,12 +41,11 @@ try {
     credential: cert(serviceAccount),
     databaseURL: "https://eduone-2047-default-rtdb.firebaseio.com"
   });
+  db = getDatabase();
   console.log("[RootShala] Firebase Admin initialized successfully.");
 } catch (error) {
   console.error("Firebase Admin SDK could not be initialized:", error);
 }
-
-const db = getDatabase();
 
 // 1. Health check
 app.get("/api/health", (_req, res) => {
