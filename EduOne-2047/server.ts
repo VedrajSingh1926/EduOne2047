@@ -27,6 +27,7 @@ if (apiKey) {
 }
 
 // Initialize Firebase Admin
+let db: any = null;
 try {
   let serviceAccount;
   const rawPath = path.join(process.cwd(), "eduone-2047-firebase-adminsdk-fbsvc-3a3f4a42f2.json");
