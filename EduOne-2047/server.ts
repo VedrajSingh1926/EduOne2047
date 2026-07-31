@@ -30,10 +30,19 @@ if (apiKey) {
 let db: any = null;
 try {
   let serviceAccount;
+  const rawPath = path.join(process.cwd(), "eduone-2047-firebase-adminsdk-fbsvc-3a3f4a42f2.json");
+  const b64Path = path.join(process.cwd(), "firebase-key.b64");
+  
   if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
     serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+  } else if (fs.existsSync(rawPath)) {
+    serviceAccount = JSON.parse(fs.readFileSync(rawPath, "utf8"));
+  } else if (fs.existsSync(b64Path)) {
+    const b64Data = fs.readFileSync(b64Path, "utf8");
+    const decoded = Buffer.from(b64Data, "base64").toString("utf8");
+    serviceAccount = JSON.parse(decoded);
   } else {
-    serviceAccount = JSON.parse(fs.readFileSync(path.join(process.cwd(), "eduone-2047-firebase-adminsdk-fbsvc-3a3f4a42f2.json"), "utf8"));
+    throw new Error("No Firebase credentials found");
   }
 
   initializeApp({
@@ -67,12 +76,14 @@ app.post("/api/auth/login", async (req, res) => {
     const userRef = db.ref(`users/${staffId}`);
     const snapshot = await userRef.once("value");
     if (!snapshot.exists()) {
+      console.log(`[Login] User ${staffId} not found in DB.`);
       res.status(401).json({ error: "Invalid credentials" });
       return;
     }
 
     const userData = snapshot.val();
     const isMatch = await bcrypt.compare(password, userData.password);
+    console.log(`[Login] User ${staffId} found. Password match: ${isMatch}`);
 
     if (!isMatch) {
       res.status(401).json({ error: "Invalid credentials" });
@@ -514,31 +525,5 @@ app.post("/api/timetable/generate", (req, res) => {
     res.status(400).json({ error: "Constraint violation: Could not find a conflict-free assignment for all required lectures. Please check teacher capacities and class requirements." });
   }
 });
-
-// Mount Vite middleware or static directory
-async function startServer() {
-  if (process.env.NODE_ENV !== "production") {
-    const { createServer: createViteServer } = await import("vite");
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (_req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
-  }
-
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`[RootShala] Server running on http://localhost:${PORT}`);
-  });
-}
-
-if (process.env.VERCEL !== '1') {
-  startServer();
-}
 
 export default app;
