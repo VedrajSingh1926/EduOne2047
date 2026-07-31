@@ -259,21 +259,25 @@ function CoreApplication() {
         const today = new Date().toISOString().split('T')[0];
         const recordId = `ATT-${studentId}-${today}`;
         
-        await update(ref(db), {
-          [`students/${studentId}/attendancePct`]: Number(newPct.toFixed(1)),
-          [`attendance/${recordId}`]: {
-            id: recordId,
-            date: today,
-            gradeClass: `${student.grade}-${student.section}`,
-            studentId,
-            studentName: student.name,
-            status
-          }
+        // Write to students node
+        await update(ref(db, `students/${studentId}`), {
+          attendancePct: Number(newPct.toFixed(1))
+        });
+        
+        // Write to attendance node
+        await set(ref(db, `attendance/${recordId}`), {
+          id: recordId,
+          date: today,
+          gradeClass: `${student.grade}-${student.section}`,
+          studentId,
+          studentName: student.name,
+          status
         });
         toast.success(`Attendance marked ${status}.`);
       }
-    } catch(e) {
-      toast.error('Failed to mark attendance.');
+    } catch(e: any) {
+      console.error('Firebase Attendance Error:', e);
+      toast.error('Failed to mark attendance: ' + (e.message || String(e)));
     }
   };
 
@@ -283,17 +287,18 @@ function CoreApplication() {
       return;
     }
     try {
-      const updates: Record<string, any> = {};
+      const studentUpdates: Record<string, any> = {};
+      const attendanceUpdates: Record<string, any> = {};
       const today = new Date().toISOString().split('T')[0];
       
       studentIds.forEach(id => {
         const student = students.find(s => s.id === id);
         if (student) {
           const newPct = status === 'ABSENT' ? Math.max(50, student.attendancePct - 1.5) : Math.min(100, student.attendancePct + 0.5);
-          updates[`students/${id}/attendancePct`] = Number(newPct.toFixed(1));
+          studentUpdates[`${id}/attendancePct`] = Number(newPct.toFixed(1));
           
           const recordId = `ATT-${id}-${today}`;
-          updates[`attendance/${recordId}`] = {
+          attendanceUpdates[recordId] = {
             id: recordId,
             date: today,
             gradeClass: `${student.grade}-${student.section}`,
@@ -304,10 +309,17 @@ function CoreApplication() {
         }
       });
       
-      await update(ref(db), updates);
+      if (Object.keys(studentUpdates).length > 0) {
+        await update(ref(db, 'students'), studentUpdates);
+      }
+      if (Object.keys(attendanceUpdates).length > 0) {
+        await update(ref(db, 'attendance'), attendanceUpdates);
+      }
+      
       toast.success(`Successfully marked ${studentIds.length} students as ${status}.`);
-    } catch(e) {
-      toast.error('Failed to mark bulk attendance.');
+    } catch(e: any) {
+      console.error('Firebase Bulk Attendance Error:', e);
+      toast.error('Failed to mark bulk attendance: ' + (e.message || String(e)));
     }
   };
 
