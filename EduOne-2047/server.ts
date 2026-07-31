@@ -35,12 +35,12 @@ try {
   } else {
     serviceAccount = JSON.parse(fs.readFileSync(path.join(process.cwd(), "eduone-2047-firebase-adminsdk-fbsvc-3a3f4a42f2.json"), "utf8"));
   }
-  
+
   initializeApp({
     credential: cert(serviceAccount),
     databaseURL: "https://eduone-2047-default-rtdb.firebaseio.com"
   });
-  console.log("[EduOne 2047] Firebase Admin initialized successfully.");
+  console.log("[RootShala] Firebase Admin initialized successfully.");
 } catch (error) {
   console.error("Firebase Admin SDK could not be initialized:", error);
 }
@@ -49,7 +49,7 @@ const db = getDatabase();
 
 // 1. Health check
 app.get("/api/health", (_req, res) => {
-  res.json({ status: "ok", geminiEnabled: !!apiKey, app: "EduOne 2047" });
+  res.json({ status: "ok", geminiEnabled: !!apiKey, app: "RootShala" });
 });
 
 // Auth: Login
@@ -135,7 +135,7 @@ app.post("/api/auth/register", async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     await userRef.set({
       id: staffId,
       name,
@@ -158,7 +158,7 @@ app.post("/api/auth/reset-password", async (req, res) => {
     res.status(400).json({ error: "Missing required fields" });
     return;
   }
-  
+
   try {
     const userRef = db.ref(`users/${staffId}`);
     const snapshot = await userRef.once("value");
@@ -205,7 +205,7 @@ app.post("/api/ai/command", async (req, res) => {
     try {
       const response = await ai.models.generateContent({
         model: "gemini-3.6-flash",
-        contents: `You are EduOne 2047 AI Command Center engine for a school operations platform.
+        contents: `You are RootShala AI Command Center engine for a school operations platform.
 User Role: ${role}
 Query: "${prompt}"
 
@@ -243,10 +243,10 @@ Return STRICT valid JSON only.`,
 
   // Fallback intelligent agent execution engine
   let result = {
-    text: `EduOne 2047 AI processed request: "${prompt}". All sub-systems synchronized.`,
+    text: `RootShala AI processed request: "${prompt}". All sub-systems synchronized.`,
     summary: `Action executed for query: "${prompt}"`,
     confidenceScore: 96,
-    reason: "Matched query against EduOne 2047 high-priority operations matrix.",
+    reason: "Matched query against RootShala high-priority operations matrix.",
     source: "Operations Agent",
     actionType: "GENERAL_QUERY",
     requiresApproval: false,
@@ -318,54 +318,190 @@ Return STRICT valid JSON only.`,
 });
 
 // 3. Document OCR Endpoint
-app.post("/api/ai/ocr", async (req, res) => {
-  const { fileName, documentType } = req.body;
+app.post("/api/documents/extract", async (req, res) => {
+  const { imageBase64, mimeType, documentType, fileName } = req.body;
 
-  if (ai) {
-    try {
-      const response = await ai.models.generateContent({
-        model: "gemini-3.6-flash",
-        contents: `Perform OCR analysis for document type: "${documentType}", File: "${fileName}".
-Return JSON object:
-{
-  "extractedFields": { "key": "value" },
-  "confidenceScore": number (80 to 99),
-  "status": "APPROVED" | "NEEDS_REVIEW",
-  "reason": "Detailed OCR feedback"
-}`,
-        config: {
-          responseMimeType: "application/json",
-        },
-      });
-
-      const responseText = response.text;
-      if (responseText) {
-        res.json(JSON.parse(responseText));
-        return;
-      }
-    } catch (e) {
-      console.error("Gemini OCR error:", e);
-    }
+  if (!ai || !process.env.GEMINI_API_KEY) {
+    return res.status(500).json({ error: "Gemini API key not configured." });
   }
 
-  // Fallback intelligent OCR response
-  const isLowConfidence = fileName?.toLowerCase().includes("handwritten") || fileName?.toLowerCase().includes("mismatch");
-  res.json({
-    extractedFields: {
-      documentName: fileName || "Scanned_Doc.pdf",
-      extractedType: documentType || "ADMISSION_FORM",
-      candidateName: "Ananya Verma",
-      dateProcessed: new Date().toISOString().split("T")[0],
-      detectedAmount: documentType === "FEE_RECEIPT" ? "₹12,000" : "N/A",
-      utrCode: "UPI/20260727/882199",
-      parsedStatus: isLowConfidence ? "Low confidence OCR field detected" : "High fidelity scan",
-    },
-    confidenceScore: isLowConfidence ? 84 : 96,
-    status: isLowConfidence ? "NEEDS_REVIEW" : "APPROVED",
-    reason: isLowConfidence
-      ? "Optical OCR confidence is 84% (<90% threshold). Please confirm handwritten numbers."
-      : "High precision field extraction completed (96% confidence).",
+  if (!imageBase64) {
+    return res.status(400).json({ error: "No image provided." });
+  }
+
+  let schema = "";
+  if (documentType === "ADMISSION_FORM") {
+    schema = `{"studentName": "string", "dateOfBirth": "YYYY-MM-DD", "parentName": "string", "parentPhone": "string", "parentEmail": "string"}`;
+  } else if (documentType === "FEE_RECEIPT") {
+    schema = `{"studentName": "string", "invoiceNo": "string", "amount": "number", "paymentDate": "YYYY-MM-DD", "paymentMode": "string"}`;
+  } else if (documentType === "LEAVE_APPLICATION") {
+    schema = `{"studentName": "string", "leaveStartDate": "YYYY-MM-DD", "leaveEndDate": "YYYY-MM-DD", "reason": "string"}`;
+  } else {
+    return res.status(400).json({ error: "Unsupported document type: " + documentType });
+  }
+
+  const prompt = `Analyze this ${documentType} image and extract the requested fields. 
+Return a JSON object with this exact structure:
+{
+  "extractedFields": ${schema},
+  "confidenceScores": { "fieldName": number (0-100) },
+  "status": "APPROVED" | "NEEDS_REVIEW",
+  "reason": "Explain any low confidence fields or issues"
+}
+If any field's confidence is below 90, set status to "NEEDS_REVIEW". Otherwise "APPROVED".
+If a field cannot be found, return empty string or null and a confidence of 0.`;
+
+  try {
+    const base64Data = imageBase64.replace(/^data:image\/\w+;base64,/, '');
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: [
+        {
+          role: 'user', parts: [
+            { text: prompt },
+            { inlineData: { data: base64Data, mimeType: mimeType || "image/jpeg" } }
+          ]
+        }
+      ],
+      config: {
+        responseMimeType: "application/json",
+      },
+    });
+
+    const responseText = response.text;
+    if (responseText) {
+      const parsed = JSON.parse(responseText);
+      // Ensure we add overall confidence score (average or min of fields)
+      const scores = Object.values(parsed.confidenceScores || {}) as number[];
+      const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+      parsed.confidenceScore = avgScore;
+      res.json(parsed);
+    } else {
+      res.status(500).json({ error: "Empty response from Gemini API" });
+    }
+  } catch (e) {
+    console.error("Gemini OCR error:", e);
+    res.status(500).json({ error: "Extraction failed" });
+  }
+});
+
+// 4. Timetable Generation Endpoint (CSP Solver)
+app.post("/api/timetable/generate", (req, res) => {
+  const { teachers } = req.body;
+
+  if (!teachers || !Array.isArray(teachers)) {
+    return res.status(400).json({ error: "Invalid teachers data" });
+  }
+
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  const periods = [1, 2, 3, 4, 5];
+  const timeSlots = ['08:00 AM', '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM'];
+
+  interface Lesson {
+    id: string;
+    teacherId: string;
+    teacherName: string;
+    subject: string;
+    gradeClass: string;
+    maxLecturesPerDay: number;
+  }
+
+  const lessons: Lesson[] = [];
+  const LECTURES_PER_CLASS_PER_WEEK = 4;
+
+  teachers.forEach(t => {
+    (t.gradeClasses || []).forEach((c: string) => {
+      for (let i = 0; i < LECTURES_PER_CLASS_PER_WEEK; i++) {
+        lessons.push({
+          id: `L-${t.id}-${c}-${i}`,
+          teacherId: t.id,
+          teacherName: t.name,
+          subject: t.subject,
+          gradeClass: c,
+          maxLecturesPerDay: t.maxLecturesPerDay || 5
+        });
+      }
+    });
   });
+
+  const teacherSchedule: Record<string, Record<string, Record<number, boolean>>> = {};
+  const classSchedule: Record<string, Record<string, Record<number, boolean>>> = {};
+  const teacherLoad: Record<string, Record<string, number>> = {};
+
+  const allTeacherIds = Array.from(new Set(lessons.map(l => l.teacherId)));
+  const allClasses = Array.from(new Set(lessons.map(l => l.gradeClass)));
+
+  allTeacherIds.forEach(t => {
+    teacherSchedule[t] = {};
+    teacherLoad[t] = {};
+    days.forEach(d => {
+      teacherSchedule[t][d] = {};
+      teacherLoad[t][d] = 0;
+    });
+  });
+
+  allClasses.forEach(c => {
+    classSchedule[c] = {};
+    days.forEach(d => {
+      classSchedule[c][d] = {};
+    });
+  });
+
+  const assignments: any[] = [];
+
+  function solve(index: number): boolean {
+    if (index === lessons.length) return true;
+
+    const lesson = lessons[index];
+
+    for (const day of days) {
+      if (teacherLoad[lesson.teacherId][day] >= lesson.maxLecturesPerDay) continue;
+
+      for (let p = 0; p < periods.length; p++) {
+        const period = periods[p];
+
+        if (teacherSchedule[lesson.teacherId][day][period]) continue;
+        if (classSchedule[lesson.gradeClass][day][period]) continue;
+
+        teacherSchedule[lesson.teacherId][day][period] = true;
+        classSchedule[lesson.gradeClass][day][period] = true;
+        teacherLoad[lesson.teacherId][day]++;
+
+        assignments.push({
+          id: `SLOT-${Date.now()}-${index}`,
+          day,
+          period,
+          timeSlot: timeSlots[p],
+          gradeClass: lesson.gradeClass,
+          subject: lesson.subject,
+          teacherId: lesson.teacherId,
+          teacherName: lesson.teacherName,
+          room: `Room ${lesson.gradeClass.replace('Grade ', '')}`
+        });
+
+        if (solve(index + 1)) return true;
+
+        assignments.pop();
+        teacherSchedule[lesson.teacherId][day][period] = false;
+        classSchedule[lesson.gradeClass][day][period] = false;
+        teacherLoad[lesson.teacherId][day]--;
+      }
+    }
+    return false;
+  }
+
+  const teacherLessonCount: Record<string, number> = {};
+  lessons.forEach(l => teacherLessonCount[l.teacherId] = (teacherLessonCount[l.teacherId] || 0) + 1);
+  lessons.sort((a, b) => teacherLessonCount[b.teacherId] - teacherLessonCount[a.teacherId]);
+
+  const success = solve(0);
+
+  if (success) {
+    res.json({ status: 'ok', timetable: assignments });
+  } else {
+    res.status(400).json({ error: "Constraint violation: Could not find a conflict-free assignment for all required lectures. Please check teacher capacities and class requirements." });
+  }
 });
 
 // Mount Vite middleware or static directory
@@ -385,7 +521,7 @@ async function startServer() {
   }
 
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`[EduOne 2047] Server running on http://localhost:${PORT}`);
+    console.log(`[RootShala] Server running on http://localhost:${PORT}`);
   });
 }
 

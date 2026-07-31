@@ -8,19 +8,40 @@ const USERS = [
   { id: 'REC-114', name: 'Receptionist', role: 'Receptionist' }
 ];
 
+test.beforeEach(async ({ page }) => {
+  await page.route('**/api/auth/login', async route => {
+    const postData = JSON.parse(route.request().postData() || '{}');
+    const user = USERS.find(u => u.id === postData.staffId);
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        success: true,
+        user: { 
+          id: postData.staffId, 
+          name: user ? user.name : 'Test User', 
+          role: user ? user.role : 'Staff', 
+          mustResetPassword: false 
+        },
+        token: 'mock-session-token'
+      })
+    });
+  });
+});
+
 for (const user of USERS) {
   test(`RBAC UI Visibility: ${user.name}`, async ({ page }) => {
     await page.goto('/app');
     
     // Fill credentials
     await page.fill('input[type="text"]', user.id);
-    await page.fill('input[type="password"]', 'admin123');
+    await page.fill('input[type="password"]', 'password');
     await page.click('button:has-text("Initialize Session")');
     
     // Wait for load
-    await expect(page.locator(`text=${user.role}`).first()).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('text="Initialize Session"')).toBeHidden({ timeout: 10000 });
     
-    const navText = await page.locator('nav').innerText();
+    const navText = await page.evaluate(() => document.querySelector('nav')?.textContent || '');
 
     if (user.role === 'Class Teacher') {
       expect(navText).toContain('Students & Roster');

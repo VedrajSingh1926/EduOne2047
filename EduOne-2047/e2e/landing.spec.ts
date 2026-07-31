@@ -4,7 +4,7 @@ test('Landing Page: Basic visibility and navigation', async ({ page }) => {
   await page.goto('/');
   
   // Verify standard landing UI elements
-  await expect(page.locator('text="EduOne2047"').first()).toBeVisible();
+  await expect(page.locator('text="RootShala"').first()).toBeVisible();
   await expect(page.locator('text="Autonomous School Operating System"').first()).toBeVisible();
   
   // Check that clicking Login goes to the login form

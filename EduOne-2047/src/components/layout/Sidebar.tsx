@@ -47,13 +47,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
         
         {/* Brand Logo */}
         <div className="flex items-center gap-2.5 cursor-pointer pb-2" onClick={() => onSelectModule('dashboard')}>
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-emerald-400 flex items-center justify-center font-extrabold text-white text-base shadow-xs">
-            E
-          </div>
+          <img src="/Logo.png" alt="RootShala Logo" className="h-9 object-contain" />
           <div>
             <div className="flex items-center gap-1.5">
               <span className="font-bold text-base text-slate-900 tracking-tight">
-                EduOne
+                RootShala
               </span>
               <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200">
                 STAFF

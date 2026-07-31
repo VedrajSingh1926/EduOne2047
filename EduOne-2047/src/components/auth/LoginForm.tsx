@@ -80,8 +80,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
       const data = await response.json();
       
       if (response.ok && data.success) {
-        // Save session token in sessionStorage
-        sessionStorage.setItem('sessionToken', data.token);
+        // Save session token and user in localStorage for persistence
+        localStorage.setItem('sessionToken', data.token);
+        localStorage.setItem('currentUser', JSON.stringify(data.user));
         
         onLogin(data.user);
       } else {
@@ -115,11 +116,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
         
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-10">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 mb-6 relative">
-            <ShieldCheck className="w-8 h-8 text-white" />
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-slate-900" />
-          </div>
-          <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-700 to-emerald-600 tracking-tight mb-2">EduOne2047</h1>
+          <img src="/Logo.png" alt="RootShala Logo" className="h-16 object-contain mb-6 drop-shadow-md" />
+          <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-700 to-emerald-600 tracking-tight mb-2">RootShala</h1>
           <p className="text-sm text-slate-500 font-medium">Secure Staff Authentication</p>
         </div>
 

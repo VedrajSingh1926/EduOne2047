@@ -9,7 +9,7 @@ interface AITimetableProps {
   timetable: TimetableSlot[];
   teachers: Teacher[];
   onGenerateTimetable: () => void;
-  onAssignSubstitute: (slotId: string, substituteTeacherName: string) => void;
+  onAssignSubstitute: (slotId: string) => void;
 }
 
 export const AITimetable: React.FC<AITimetableProps> = ({
@@ -159,7 +159,7 @@ export const AITimetable: React.FC<AITimetableProps> = ({
 
                     <td className="p-3.5 text-right pr-4">
                       <button
-                        onClick={() => onAssignSubstitute(slot.id, 'Dr. Alok Nath')}
+                        onClick={() => onAssignSubstitute(slot.id)}
                         className="text-xs font-medium text-emerald-600 hover:text-emerald-700 hover:underline"
                       >
                         Reassign

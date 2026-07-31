@@ -138,12 +138,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
             className="flex items-center gap-3 cursor-pointer" 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#066157] to-[#0B8A7A] flex items-center justify-center text-white font-extrabold shadow-md shadow-emerald-600/20">
-              E1
-            </div>
+            <img src="/Logo.png" alt="RootShala Logo" className="h-9 object-contain drop-shadow-sm" />
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-lg text-[#0F172A] tracking-tight">EduOne2047</span>
+                <span className="font-extrabold text-lg text-[#0F172A] tracking-tight">RootShala</span>
               </div>
               <p className="text-[10px] text-slate-500 hidden sm:block font-medium">Autonomous School Operating System</p>
             </div>
@@ -223,7 +221,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
           </h1>
 
           <p className="mt-6 text-base sm:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            EduOne2047 automates fee reconciliation, timetable substitutions, and document processing — while keeping principals and admin staff in full control of every decision involving money, discipline, or student safety.
+            RootShala automates fee reconciliation, timetable substitutions, and document processing — while keeping principals and admin staff in full control of every decision involving money, discipline, or student safety.
           </p>
 
           <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
@@ -337,7 +335,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
               variants={fadeUpVariant}
               className="bg-emerald-600 rounded-3xl p-8 shadow-xl shadow-emerald-600/20 text-white"
             >
-              <div className="text-sm font-bold text-emerald-200 uppercase tracking-wider mb-6">EduOne2047</div>
+              <div className="text-sm font-bold text-emerald-200 uppercase tracking-wider mb-6">RootShala</div>
               <motion.div variants={staggerContainer} className="flex flex-wrap items-center gap-2 text-xl font-bold">
                 {['Read', '→', 'Understand', '→', 'Decide', '→', 'Automate', '→', 'Notify'].map((word, i) => (
                   <motion.span 
@@ -398,7 +396,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUpVariant}>
             <h2 className="text-3xl font-bold text-slate-900 mb-6">The "Needs Attention" Inbox</h2>
             <p className="text-lg text-slate-600 leading-relaxed mb-6">
-              Instead of digging through dashboards to find problems, EduOne2047 brings the problems to you. The platform autonomously identifies fee mismatches, absent teachers, and low-confidence OCR scans, presenting them as actionable cards.
+              Instead of digging through dashboards to find problems, RootShala brings the problems to you. The platform autonomously identifies fee mismatches, absent teachers, and low-confidence OCR scans, presenting them as actionable cards.
             </p>
             {/* // TODO: add once we have a real pilot - real product demo video loop replacing the right side */}
           </motion.div>

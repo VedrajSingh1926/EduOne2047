@@ -231,7 +231,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
           {activeTab === 'roles' && (
             <div className="space-y-4">
               <p className="text-xs text-slate-600 font-medium">
-                EduOne customizes your screen according to your school role. You are currently operating as <strong className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">{currentRole}</strong>.
+                RootShala customizes your screen according to your school role. You are currently operating as <strong className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">{currentRole}</strong>.
               </p>
 
               <div className="space-y-3">
@@ -306,7 +306,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
                   <span>Speech & Voice Assistance Built-In</span>
                 </div>
                 <p className="text-purple-950 leading-relaxed">
-                  We designed EduOne so that older staff and non-tech users don't have to struggle with small keyboards or typing complex queries!
+                  We designed RootShala so that older staff and non-tech users don't have to struggle with small keyboards or typing complex queries!
                 </p>
               </div>
 
@@ -387,7 +387,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
         {/* Footer */}
         <div className="bg-slate-100 p-4 border-t border-slate-200 flex items-center justify-between gap-3">
           <div className="text-xs text-slate-500 font-medium hidden sm:block">
-            Remix EduOne 2047 • Made for School Administrators & Educators
+            Remix RootShala • Made for School Administrators & Educators
           </div>
 
           <button

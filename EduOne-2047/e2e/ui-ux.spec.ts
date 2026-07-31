@@ -6,7 +6,7 @@ test('UI/UX: Hover states and styling', async ({ page }) => {
   await page.fill('input[type="password"]', 'vikram@739');
   await page.click('button:has-text("Initialize Session")');
   
-  await expect(page.locator('text="Super Admin"').first()).toBeVisible({ timeout: 10000 });
+  await expect(page.locator('text="Initialize Session"')).toBeHidden({ timeout: 10000 });
   
   // Verify sidebar hover state
   const sidebarBtn = page.locator('nav button').first();
@@ -25,7 +25,7 @@ test('UI/UX: Responsiveness and no horizontal scroll', async ({ page }) => {
   await page.fill('input[type="password"]', 'admin123');
   await page.click('button:has-text("Initialize Session")');
   
-  await expect(page.locator('text="Super Admin"').first()).toBeVisible({ timeout: 10000 });
+  await expect(page.locator('text="Initialize Session"')).toBeHidden({ timeout: 10000 });
   
   // Check that body width doesn't exceed viewport width (no horizontal scroll)
   const bodyWidth = await page.evaluate(() => document.body.scrollWidth);

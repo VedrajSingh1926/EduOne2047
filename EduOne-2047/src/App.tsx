@@ -56,24 +56,23 @@ function InitDBRoute() {
 
 function CoreApplication() {
   const [activeModule, setActiveModule] = useState<string>('dashboard');
-  
+
   // Authentication State
-  const initialRole = (new URLSearchParams(window.location.search).get('role') as Role) || 'Super Admin';
-  // If there's a role parameter, assume they bypassed login (e.g. from local testing). 
-  // Otherwise, default to unauthenticated.
-  const hasRoleParam = !!new URLSearchParams(window.location.search).get('role');
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(hasRoleParam);
+  const savedUserString = localStorage.getItem('currentUser');
+  const savedUser = savedUserString ? JSON.parse(savedUserString) : null;
+  const initialIsAuthenticated = !!savedUser;
   
-  const [currentRole, setCurrentRole] = useState<Role>(initialRole);
-  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
-  
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(initialIsAuthenticated);
+  const [currentRole, setCurrentRole] = useState<Role>(savedUser ? savedUser.role : 'Super Admin');
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(savedUser);
+
   // Login Prefill State
   const [loginPrefillId, setLoginPrefillId] = useState<string | undefined>(undefined);
 
 
 
   // Fallback for direct role URL testing
-  
+
 
   useEffect(() => {
     // Route Protection
@@ -199,25 +198,43 @@ function CoreApplication() {
     }
   };
 
-  const handleAssignSubstitute = async (teacherOrSlotId: string, substituteTeacherName: string) => {
+  const handleAssignSubstitute = async (slotId: string) => {
     if (!hasPermission(currentUser, PERMISSIONS.TIMETABLE_MANAGE)) {
       toast.error("UNAUTHORIZED: You do not have permission to manage timetables.");
       return;
     }
     try {
-      const slot = timetable.find(s => s.id === teacherOrSlotId || s.teacherId === teacherOrSlotId);
+      const slot = timetable.find(s => s.id === slotId);
       if (slot) {
+        // Find a qualified, free substitute
+        const occupiedTeacherIds = new Set(
+          timetable.filter(s => s.day === slot.day && s.period === slot.period).map(s => s.teacherId)
+        );
+
+        const substitute = Object.values(teachers).find(t =>
+          t.status !== 'ABSENT' &&
+          (t.subject === slot.subject || (t.secondarySubjects || []).includes(slot.subject)) &&
+          !occupiedTeacherIds.has(t.id) &&
+          t.id !== slot.teacherId
+        );
+
+        if (!substitute) {
+          toast.error('No free, qualified substitute available for this slot.');
+          return;
+        }
+
         await update(ref(db, `timetable/${slot.id}`), {
-          teacherName: substituteTeacherName,
+          teacherName: substitute.name,
+          teacherId: substitute.id,
           isSubstitute: true,
           originalTeacherName: `${slot.teacherName} (On Leave)`
         });
-        
+
         const newLog: AIActionLog = {
           id: `LOG-${Date.now()}`,
           agentName: 'Timetable Agent',
           actionTitle: 'Substitute Assigned',
-          details: `Assigned ${substituteTeacherName} for class coverage.`,
+          details: `Assigned ${substitute.name} for ${slot.subject} class coverage.`,
           confidenceScore: 98,
           reason: 'Matched subject qualification & free slot schedule.',
           source: 'Teacher Schedule Graph',
@@ -225,11 +242,11 @@ function CoreApplication() {
           status: 'SUCCESS'
         };
         await set(ref(db, `ai_logs/${newLog.id}`), newLog);
-        toast.success('Substitute assigned successfully.');
+        toast.success(`Substitute ${substitute.name} assigned successfully.`);
       } else {
         toast.error('Timetable slot not found.');
       }
-    } catch(e) {
+    } catch (e) {
       toast.error('Failed to assign substitute.');
     }
   };
@@ -242,7 +259,7 @@ function CoreApplication() {
     try {
       await update(ref(db, `teachers/${teacherId}`), { status: newStatus });
       toast.success('Teacher status updated.');
-    } catch(e) {
+    } catch (e) {
       toast.error('Failed to update status.');
     }
   };
@@ -255,12 +272,10 @@ function CoreApplication() {
     try {
       const student = students.find(s => s.id === studentId);
       if (student) {
-        const newPct = status === 'ABSENT' ? Math.max(50, student.attendancePct - 1.5) : Math.min(100, student.attendancePct + 0.5);
         const today = new Date().toISOString().split('T')[0];
         const recordId = `ATT-${studentId}-${today}`;
-        
+
         await update(ref(db), {
-          [`students/${studentId}/attendancePct`]: Number(newPct.toFixed(1)),
           [`attendance/${recordId}`]: {
             id: recordId,
             date: today,
@@ -272,7 +287,7 @@ function CoreApplication() {
         });
         toast.success(`Attendance marked ${status}.`);
       }
-    } catch(e) {
+    } catch (e) {
       toast.error('Failed to mark attendance.');
     }
   };
@@ -285,13 +300,10 @@ function CoreApplication() {
     try {
       const updates: Record<string, any> = {};
       const today = new Date().toISOString().split('T')[0];
-      
+
       studentIds.forEach(id => {
         const student = students.find(s => s.id === id);
         if (student) {
-          const newPct = status === 'ABSENT' ? Math.max(50, student.attendancePct - 1.5) : Math.min(100, student.attendancePct + 0.5);
-          updates[`students/${id}/attendancePct`] = Number(newPct.toFixed(1));
-          
           const recordId = `ATT-${id}-${today}`;
           updates[`attendance/${recordId}`] = {
             id: recordId,
@@ -303,10 +315,10 @@ function CoreApplication() {
           };
         }
       });
-      
+
       await update(ref(db), updates);
       toast.success(`Successfully marked ${studentIds.length} students as ${status}.`);
-    } catch(e) {
+    } catch (e) {
       toast.error('Failed to mark bulk attendance.');
     }
   };
@@ -327,7 +339,7 @@ function CoreApplication() {
       };
       await set(ref(db, `ai_logs/${newLog.id}`), newLog);
       toast.success('Parent alert sent.');
-    } catch(e) {
+    } catch (e) {
       toast.error('Failed to send parent alert.');
     }
   };
@@ -356,7 +368,7 @@ function CoreApplication() {
       };
       await set(ref(db, `documents/${newDoc.id}`), newDoc);
       toast.success('Fee receipt uploaded.');
-    } catch(e) {
+    } catch (e) {
       toast.error('Failed to upload receipt.');
     }
   };
@@ -371,7 +383,7 @@ function CoreApplication() {
       // Resolve the static escalation ESC-001
       await update(ref(db, `escalations/ESC-001`), { status: 'RESOLVED' });
       toast.success('Fee mismatch resolved.');
-    } catch(e) {
+    } catch (e) {
       toast.error('Failed to resolve mismatch.');
     }
   };
@@ -391,36 +403,39 @@ function CoreApplication() {
       };
       await set(ref(db, `ai_logs/${newLog.id}`), newLog);
       toast.success('Fee reminder sent.');
-    } catch(e) {
+    } catch (e) {
       toast.error('Failed to send fee reminder.');
     }
   };
 
-  const handleUploadDocument = async (file: File) => {
+  const handleUploadDocument = async (doc: DocumentItem) => {
     if (!hasPermission(currentUser, PERMISSIONS.DOCUMENTS_UPLOAD_ALL)) {
       toast.error("UNAUTHORIZED: You do not have permission to upload general documents.");
       return;
     }
     try {
-      const newDoc: DocumentItem = {
-        id: `DOC-${Date.now()}`,
-        fileName: file.name,
-        type: 'ADMISSION_FORM',
-        uploadedAt: new Date().toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }),
-        studentOrTeacherName: file.name.split('.')[0],
-        extractedFields: {
-          candidateName: file.name.split('.')[0].replace(/_/g, ' '),
-          dateOfBirth: '2011-08-15',
-          parentName: 'Guardian Name',
-          status: 'Extracted via Gemini 2.5 Flash OCR'
-        },
-        confidenceScore: 95,
-        status: 'APPROVED',
-        fileSize: `${(file.size / 1024).toFixed(0)} KB`
-      };
-      await set(ref(db, `documents/${newDoc.id}`), newDoc);
-      toast.success('Document uploaded successfully.');
-    } catch(e) {
+      await set(ref(db, `documents/${doc.id}`), doc);
+
+      // Auto-update other modules if it's an approved Fee Receipt
+      if (doc.type === 'FEE_RECEIPT' && doc.status === 'APPROVED' && doc.extractedFields.invoiceNo) {
+        // Attempt to find the matching fee record
+        const matchingFee = Object.values(fees).find(f => f.invoiceNo === doc.extractedFields.invoiceNo);
+        if (matchingFee) {
+          await update(ref(db, `fees/${matchingFee.id}`), {
+            status: 'PAID',
+            paidAmount: Number(doc.extractedFields.amount) || matchingFee.amount,
+            paidDate: doc.extractedFields.paymentDate || new Date().toISOString().split('T')[0],
+            paymentMode: doc.extractedFields.paymentMode || 'ONLINE',
+            sourceDoc: doc.id
+          });
+          toast.success('Fee receipt uploaded and invoice marked as PAID.');
+        } else {
+          toast.success('Fee receipt uploaded.');
+        }
+      } else {
+        toast.success('Document uploaded successfully.');
+      }
+    } catch (e) {
       toast.error('Failed to upload document.');
     }
   };
@@ -433,7 +448,7 @@ function CoreApplication() {
     try {
       await update(ref(db, `documents/${docId}`), { status: 'APPROVED' });
       toast.success('Document approved.');
-    } catch(e) {
+    } catch (e) {
       toast.error('Failed to approve document.');
     }
   };
@@ -446,28 +461,49 @@ function CoreApplication() {
     try {
       await update(ref(db, `documents/${docId}`), { status: 'REJECTED' });
       toast.success('Document rejected.');
-    } catch(e) {
+    } catch (e) {
       toast.error('Failed to reject document.');
     }
   };
 
   const handleGenerateTimetable = async () => {
     try {
+      const res = await fetch('/api/timetable/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ teachers: Object.values(teachers) })
+      });
+      const data = await res.json();
+
+      if (data.error) {
+        toast.error(data.error, { duration: 5000 });
+        return;
+      }
+
+      // Convert array to object for Firebase (array is fine too, but usually keyed by ID is better)
+      const timetableObj: Record<string, TimetableSlot> = {};
+      data.timetable.forEach((slot: TimetableSlot) => {
+        timetableObj[slot.id] = slot;
+      });
+
+      await set(ref(db, 'timetable'), timetableObj);
+
       const newLog: AIActionLog = {
         id: `LOG-${Date.now()}`,
         agentName: 'Timetable Agent',
         actionTitle: 'Timetable Regenerated',
-        details: 'Conflict-free weekly schedule generated across 18 classrooms.',
+        details: `Conflict-free weekly schedule generated.`,
         confidenceScore: 99,
-        reason: 'Zero room collisions & faculty workload cap respected.',
+        reason: 'Zero room collisions & faculty workload cap respected via CSP solver.',
         source: 'Schedule Optimizer',
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         status: 'SUCCESS'
       };
       await set(ref(db, `ai_logs/${newLog.id}`), newLog);
-      toast.success('Timetable regenerated.');
-    } catch(e) {
+      toast.success('Timetable regenerated successfully.');
+    } catch (e) {
       toast.error('Failed to regenerate timetable.');
+      console.error(e);
     }
   };
 
@@ -475,7 +511,7 @@ function CoreApplication() {
     try {
       await update(ref(db, `escalations/${id}`), { status: 'RESOLVED' });
       toast.success('Escalation resolved.');
-    } catch(e) {
+    } catch (e) {
       toast.error('Failed to resolve escalation.');
     }
   };
@@ -484,7 +520,7 @@ function CoreApplication() {
     try {
       await set(ref(db, `tasks/${newTask.id}`), newTask);
       toast.success('Task added.');
-    } catch(e) {
+    } catch (e) {
       toast.error('Failed to add task.');
     }
   };
@@ -493,7 +529,7 @@ function CoreApplication() {
     try {
       await update(ref(db, `tasks/${taskId}`), { status });
       // omit toast for silent checkbox updates to reduce noise, or keep it subtle
-    } catch(e) {
+    } catch (e) {
       toast.error('Failed to update task.');
     }
   };
@@ -502,7 +538,7 @@ function CoreApplication() {
     if (actionType === 'TIMETABLE_GENERATE') {
       handleGenerateTimetable();
     } else if (actionType === 'ABSENT_TEACHERS') {
-      handleAssignSubstitute('TCH-202', 'Dr. Alok Nath');
+      toast('Please select a specific slot in the Timetable matrix to assign a substitute.', { icon: 'ℹ️' });
     } else if (actionType === 'FEE_REMINDER') {
       handleSendFeeReminder('Rohan Gupta');
     }
@@ -510,7 +546,7 @@ function CoreApplication() {
 
   if (activeModule === 'landing') {
     return (
-      <LandingPage 
+      <LandingPage
         onOpenLogin={(prefillId) => {
           setLoginPrefillId(prefillId);
           setActiveModule('login');
@@ -521,14 +557,14 @@ function CoreApplication() {
 
   if (activeModule === 'login') {
     return (
-      <LoginForm 
+      <LoginForm
         prefillId={loginPrefillId}
         onLogin={(user) => {
           setIsAuthenticated(true);
           setCurrentRole(user.role);
           setCurrentUser(user);
           setActiveModule(getDefaultDashboard(user.role));
-        }} 
+        }}
       />
     );
   }
@@ -536,14 +572,14 @@ function CoreApplication() {
   // Catch-all route protection for any authenticated routes
   if (!isAuthenticated) {
     return (
-      <LoginForm 
+      <LoginForm
         prefillId={loginPrefillId}
         onLogin={(user) => {
           setIsAuthenticated(true);
           setCurrentRole(user.role);
           setCurrentUser(user);
           setActiveModule(getDefaultDashboard(user.role));
-        }} 
+        }}
       />
     );
   }
@@ -551,11 +587,11 @@ function CoreApplication() {
   return (
     <div className={`flex h-screen overflow-hidden bg-slate-50 font-sans selection:bg-emerald-600 selection:text-white ${easyMode ? 'easy-mode' : ''} ${textSize === 'large' ? 'text-scale-large' : textSize === 'xlarge' ? 'text-scale-xlarge' : ''}`}>
       {currentUser?.mustResetPassword && (
-        <ForcePasswordReset 
-          currentUser={currentUser} 
+        <ForcePasswordReset
+          currentUser={currentUser}
           onSuccess={() => {
             setCurrentUser({ ...currentUser, mustResetPassword: false });
-          }} 
+          }}
         />
       )}
       <Sidebar
@@ -575,6 +611,8 @@ function CoreApplication() {
           onSelectModule={setActiveModule}
           currentUser={currentUser}
           onLogout={() => {
+            localStorage.removeItem('sessionToken');
+            localStorage.removeItem('currentUser');
             setIsAuthenticated(false);
             setCurrentUser(null);
             setActiveModule('landing');
@@ -637,6 +675,9 @@ function CoreApplication() {
           {activeModule === 'students' && (
             <StudentManagement
               students={students}
+              fees={Object.values(fees)}
+              attendance={Object.values(attendanceRecords)}
+              documents={Object.values(documents)}
               onAddStudent={handleAddStudent}
               onUpdateStudent={handleUpdateStudent}
               onOpenDocOCR={(name) => {
@@ -748,12 +789,12 @@ export default function App() {
   const navigate = useNavigate();
   return (
     <>
-      <Toaster 
-        position="top-right" 
-        toastOptions={{ 
+      <Toaster
+        position="top-right"
+        toastOptions={{
           className: 'text-sm font-bold',
           duration: 3000,
-        }} 
+        }}
       />
       <Routes>
         <Route path="/" element={<LandingPage onOpenLogin={() => navigate('/app')} />} />

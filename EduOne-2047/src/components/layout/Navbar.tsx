@@ -101,7 +101,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   const handleReadAloud = async () => {
-    const text = `Remix EduOne School Operations. Active role is ${currentUser.role}. You can search student files, mark attendance, or ask the AI Command Center for assistance. Click Staff Guide for step-by-step help.`;
+    const text = `Remix RootShala School Operations. Active role is ${currentUser.role}. You can search student files, mark attendance, or ask the AI Command Center for assistance. Click Staff Guide for step-by-step help.`;
     
     // Attempt Premium TTS API (Requires VITE_TTS_API_KEY in .env)
     const ttsApiKey = import.meta.env.VITE_TTS_API_KEY;

@@ -42,11 +42,7 @@ export interface Student {
   parentName: string;
   parentPhone: string;
   parentEmail: string;
-  attendancePct: number;
   feeStatus: 'PAID' | 'PENDING' | 'OVERDUE' | 'PARTIAL' | 'MISMATCH';
-  totalFees: number;
-  paidFees: number;
-  pendingFees: number;
   documentsStatus: 'VERIFIED' | 'PENDING' | 'MISSING';
   riskFlag?: string;
   avatarUrl?: string;
@@ -106,9 +102,11 @@ export interface DocumentItem {
   studentOrTeacherName?: string;
   extractedFields: Record<string, any>;
   confidenceScore: number;
+  confidenceScores?: Record<string, number>;
   status: 'NEEDS_REVIEW' | 'APPROVED' | 'REJECTED';
   reason?: string;
   fileSize?: string;
+  source?: string;
 }
 
 export interface TimetableSlot {

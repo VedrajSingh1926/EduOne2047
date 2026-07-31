@@ -48,7 +48,7 @@ export const SuperAdminDashboard: React.FC = () => {
     }
 
     try {
-      const sessionToken = sessionStorage.getItem('sessionToken');
+      const sessionToken = localStorage.getItem('sessionToken');
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 
