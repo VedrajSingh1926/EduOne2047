@@ -1,8 +1,6 @@
 import express from "express";
 import path from "path";
 import { GoogleGenAI } from "@google/genai";
-import { initializeApp, cert } from "firebase-admin/app";
-import { getDatabase, ServerValue } from "firebase-admin/database";
 import fs from "fs";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
@@ -26,38 +24,13 @@ if (apiKey) {
   });
 }
 
-// Initialize Firebase Admin
-let db: any = null;
-
-try {
-  let serviceAccount;
-  if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
-    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
-  } else {
-    serviceAccount = JSON.parse(fs.readFileSync(path.join(process.cwd(), "eduone-2047-firebase-adminsdk-fbsvc-3a3f4a42f2.json"), "utf8"));
-  }
-  
-  initializeApp({
-    credential: cert(serviceAccount),
-    databaseURL: "https://eduone-2047-default-rtdb.firebaseio.com"
-  });
-  db = getDatabase();
-  console.log("[EduOne 2047] Firebase Admin initialized successfully.");
-} catch (error) {
-  console.error("Firebase Admin SDK could not be initialized:", error);
-}
-
-// 1. Health check
+// Initialize Gemini Client
 app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", geminiEnabled: !!apiKey, app: "EduOne 2047" });
 });
 
 // Auth: Login
 app.post("/api/auth/login", async (req, res) => {
-  if (!db) {
-    res.status(500).json({ error: "Database not configured" });
-    return;
-  }
   const { staffId, password } = req.body;
   if (!staffId || !password) {
     res.status(400).json({ error: "Missing staffId or password" });
@@ -65,14 +38,13 @@ app.post("/api/auth/login", async (req, res) => {
   }
 
   try {
-    const userRef = db.ref(`users/${staffId}`);
-    const snapshot = await userRef.once("value");
-    if (!snapshot.exists()) {
+    const response = await fetch(`https://eduone-2047-default-rtdb.firebaseio.com/users/${staffId}.json`);
+    const userData = await response.json();
+    
+    if (!userData) {
       res.status(401).json({ error: "Invalid credentials" });
       return;
     }
-
-    const userData = snapshot.val();
     const isMatch = await bcrypt.compare(password, userData.password);
 
     if (!isMatch) {
@@ -82,10 +54,14 @@ app.post("/api/auth/login", async (req, res) => {
 
     // Generate Session Token
     const sessionToken = crypto.randomUUID();
-    await db.ref(`sessions/${sessionToken}`).set({
-      staffId: userData.id,
-      role: userData.role,
-      createdAt: ServerValue.TIMESTAMP
+    await fetch(`https://eduone-2047-default-rtdb.firebaseio.com/sessions/${sessionToken}.json`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        staffId: userData.id,
+        role: userData.role,
+        createdAt: Date.now()
+      })
     });
 
     const safeUser = {
@@ -105,10 +81,6 @@ app.post("/api/auth/login", async (req, res) => {
 
 // Auth: Register (Guarded)
 app.post("/api/auth/register", async (req, res) => {
-  if (!db) {
-    res.status(500).json({ error: "Database not configured" });
-    return;
-  }
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(403).json({ error: "Missing or invalid authorization header" });
@@ -117,13 +89,13 @@ app.post("/api/auth/register", async (req, res) => {
 
   const token = authHeader.split(" ")[1];
   try {
-    const sessionSnapshot = await db.ref(`sessions/${token}`).once("value");
-    if (!sessionSnapshot.exists()) {
+    const sessionResponse = await fetch(`https://eduone-2047-default-rtdb.firebaseio.com/sessions/${token}.json`);
+    const sessionData = await sessionResponse.json();
+    
+    if (!sessionData) {
       res.status(403).json({ error: "Invalid or expired session" });
       return;
     }
-
-    const sessionData = sessionSnapshot.val();
     if (sessionData.role !== "Super Admin") {
       res.status(403).json({ error: "Insufficient permissions. Only Super Admins can register staff." });
       return;
@@ -135,21 +107,25 @@ app.post("/api/auth/register", async (req, res) => {
       return;
     }
 
-    const userRef = db.ref(`users/${staffId}`);
-    const existing = await userRef.once("value");
-    if (existing.exists()) {
+    const userResponse = await fetch(`https://eduone-2047-default-rtdb.firebaseio.com/users/${staffId}.json`);
+    const existing = await userResponse.json();
+    if (existing) {
       res.status(409).json({ error: "User already exists" });
       return;
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    await userRef.set({
-      id: staffId,
-      name,
-      role,
-      password: hashedPassword,
-      email: email || `${staffId.toLowerCase()}@eduone.com`
+    await fetch(`https://eduone-2047-default-rtdb.firebaseio.com/users/${staffId}.json`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        id: staffId,
+        name,
+        role,
+        password: hashedPassword,
+        email: email || `${staffId.toLowerCase()}@eduone.com`
+      })
     });
 
     res.json({ success: true });
@@ -161,10 +137,6 @@ app.post("/api/auth/register", async (req, res) => {
 
 // Auth: Reset Password
 app.post("/api/auth/reset-password", async (req, res) => {
-  if (!db) {
-    res.status(500).json({ error: "Database not configured" });
-    return;
-  }
   const { staffId, currentPassword, newPassword } = req.body;
   if (!staffId || !currentPassword || !newPassword) {
     res.status(400).json({ error: "Missing required fields" });
@@ -172,14 +144,13 @@ app.post("/api/auth/reset-password", async (req, res) => {
   }
   
   try {
-    const userRef = db.ref(`users/${staffId}`);
-    const snapshot = await userRef.once("value");
-    if (!snapshot.exists()) {
+    const userResponse = await fetch(`https://eduone-2047-default-rtdb.firebaseio.com/users/${staffId}.json`);
+    const userData = await userResponse.json();
+    
+    if (!userData) {
       res.status(401).json({ error: "User not found" });
       return;
     }
-
-    const userData = snapshot.val();
     const isMatch = await bcrypt.compare(currentPassword, userData.password);
 
     if (!isMatch) {
@@ -188,9 +159,13 @@ app.post("/api/auth/reset-password", async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await userRef.update({
-      password: hashedPassword,
-      mustResetPassword: null
+    await fetch(`https://eduone-2047-default-rtdb.firebaseio.com/users/${staffId}.json`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        password: hashedPassword,
+        mustResetPassword: null
+      })
     });
 
     res.json({ success: true });
