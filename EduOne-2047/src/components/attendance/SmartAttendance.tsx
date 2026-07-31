@@ -32,7 +32,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
   const [selectedClass, setSelectedClass] = useState('Grade 10-A');
   const [searchTerm, setSearchTerm] = useState('');
   const [alertSentMap, setAlertSentMap] = useState<Record<string, boolean>>({});
-  const [autoMode, setAutoMode] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
   const [recentScans, setRecentScans] = useState<{ id: string, name: string, time: string, gate: string }[]>([]);
 
   // Real CV Auto-Attendance using html5-qrcode natively
@@ -41,11 +41,12 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
     let lastScannedId = '';
     let lastScanTime = 0;
 
-    if (autoMode) {
+    if (isScanning) {
       html5QrCode = new Html5Qrcode("qr-reader");
+      // Remove qrbox constraint so it scans the whole frame, improving detection
       html5QrCode.start(
         { facingMode: "environment" },
-        { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 },
+        { fps: 10 },
         (decodedText) => {
           const now = Date.now();
           // Debounce same scan by 3 seconds
@@ -61,16 +62,19 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
 
           if (student) {
             setRecentScans(prev => [
-              { id: student.id, name: student.name, time: timeString, gate: 'Optical Scanner Node 1' },
+              { id: student.id, name: student.name, time: timeString, gate: 'Manual QR Scan' },
               ...prev
             ].slice(0, 10));
             onMarkAttendance(student.id, 'PRESENT');
           } else {
             setRecentScans(prev => [
-              { id: decodedText, name: 'Unknown / Staff', time: timeString, gate: 'Optical Scanner Node 1' },
+              { id: decodedText, name: 'Unknown / Staff', time: timeString, gate: 'Manual QR Scan' },
               ...prev
             ].slice(0, 10));
           }
+          
+          // Automatically stop scanning after a successful scan!
+          setIsScanning(false);
         },
         (error) => {
           // Ignore scanning errors (occurs constantly when no QR code is in frame)
@@ -85,7 +89,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
         html5QrCode.stop().then(() => html5QrCode?.clear()).catch(console.error);
       }
     };
-  }, [autoMode, students, onMarkAttendance]);
+  }, [isScanning, students, onMarkAttendance]);
 
   const filteredStudents = students.filter((s) => {
     const matchesClass = `${s.grade}-${s.section}` === selectedClass || selectedClass === 'ALL';
@@ -113,20 +117,20 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
 
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setAutoMode(!autoMode)}
+            onClick={() => setIsScanning(!isScanning)}
             className={`px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 transition-all ${
-              autoMode 
-                ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20 animate-pulse-slow' 
-                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+              isScanning 
+                ? 'bg-rose-600 text-white shadow-lg shadow-rose-600/20' 
+                : 'bg-emerald-600 text-white hover:bg-emerald-700'
             }`}
           >
-            {autoMode ? <ScanLine className="w-4 h-4 animate-spin-slow" /> : <Wifi className="w-4 h-4" />}
-            {autoMode ? 'Auto-Attendance: ACTIVE' : 'Enable Auto-Attendance'}
+            {isScanning ? <ScanLine className="w-4 h-4 animate-spin-slow" /> : <ScanLine className="w-4 h-4" />}
+            {isScanning ? 'Cancel Scan' : 'Scan ID Card'}
           </button>
         </div>
       </div>
 
-      {autoMode && (
+      {isScanning && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-2 p-6 rounded-2xl bg-slate-900 text-white shadow-xl relative overflow-hidden border border-slate-800">
             {/* Ambient Background Effects */}
@@ -201,7 +205,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
       )}
 
       {/* AI Risk Detection Banner */}
-      {!autoMode && lowAttendanceStudents.length > 0 && (
+      {!isScanning && lowAttendanceStudents.length > 0 && (
         <div className="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-start gap-3">
             <ShieldAlert className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
@@ -228,7 +232,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
       )}
 
       {/* Bulk Action Bar */}
-      {!autoMode && (
+      {!isScanning && (
         <div className="p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex items-center justify-between gap-3 mb-2">
           <div className="text-xs font-semibold text-slate-700">
             Manual Override Actions ({filteredStudents.length} students selected)
@@ -282,7 +286,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
       </div>
 
       {/* Attendance Roster Table */}
-      <div className={`rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden interaction-card ${autoMode ? 'opacity-70 pointer-events-none' : ''}`}>
+      <div className={`rounded-2xl bg-white border border-slate-200/90 shadow-2xs overflow-hidden interaction-card ${isScanning ? 'opacity-70 pointer-events-none' : ''}`}>
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead className="bg-emerald-50 text-emerald-800">
