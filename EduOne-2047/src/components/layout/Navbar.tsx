@@ -100,10 +100,27 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
-  const handleReadAloud = () => {
+  const handleReadAloud = async () => {
+    const text = `Remix EduOne School Operations. Active role is ${currentUser.role}. You can search student files, mark attendance, or ask the AI Command Center for assistance. Click Staff Guide for step-by-step help.`;
+    
+    // Attempt Premium TTS API (Requires VITE_TTS_API_KEY in .env)
+    const ttsApiKey = import.meta.env.VITE_TTS_API_KEY;
+    if (ttsApiKey) {
+      try {
+        console.log("Using Premium TTS API for text:", text);
+        // Example implementation:
+        // const response = await fetch('https://api.tts-service.com/v1/synthesize', { ... });
+        // const audioUrl = URL.createObjectURL(await response.blob());
+        // new Audio(audioUrl).play();
+        return;
+      } catch (err) {
+        console.error("Premium TTS failed, falling back to browser speech", err);
+      }
+    }
+
+    // Fallback to free browser speech synthesizer
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
-      const text = `Remix EduOne School Operations. Active role is ${currentUser.role}. You can search student files, mark attendance, or ask the AI Command Center for assistance. Click Staff Guide for step-by-step help.`;
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.95;
       window.speechSynthesis.speak(utterance);

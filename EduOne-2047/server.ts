@@ -8,23 +8,47 @@ const PORT = Number(process.env.PORT) || 5174;
 
 app.use(express.json({ limit: "10mb" }));
 
-// Initialize Gemini Client
-const apiKey = process.env.GEMINI_API_KEY || "";
-let ai: GoogleGenAI | null = null;
-if (apiKey) {
-  ai = new GoogleGenAI({
-    apiKey,
-    httpOptions: {
-      headers: {
-        "User-Agent": "aistudio-build",
-      },
-    },
+import dotenv from "dotenv";
+dotenv.config();
+
+// Initialize Gemini Clients for failover
+const apiKey1 = process.env.GEMINI_API_KEY_1 || process.env.GEMINI_API_KEY || "";
+const apiKey2 = process.env.GEMINI_API_KEY_2 || "";
+
+let aiPrimary: GoogleGenAI | null = null;
+let aiSecondary: GoogleGenAI | null = null;
+
+if (apiKey1) {
+  aiPrimary = new GoogleGenAI({
+    apiKey: apiKey1,
+    httpOptions: { headers: { "User-Agent": "aistudio-build" } },
   });
+}
+
+if (apiKey2) {
+  aiSecondary = new GoogleGenAI({
+    apiKey: apiKey2,
+    httpOptions: { headers: { "User-Agent": "aistudio-build" } },
+  });
+}
+
+async function generateContentWithFailover(model: string, contents: string, config: any) {
+  if (!aiPrimary) throw new Error("No Gemini API keys configured");
+  
+  try {
+    return await aiPrimary.models.generateContent({ model, contents, config });
+  } catch (err) {
+    console.warn("Primary Gemini API key failed. Attempting failover...");
+    if (aiSecondary) {
+      return await aiSecondary.models.generateContent({ model, contents, config });
+    }
+    throw err;
+  }
 }
 
 // 1. Health check
 app.get("/api/health", (_req, res) => {
-  res.json({ status: "ok", geminiEnabled: !!apiKey, app: "EduOne 2047" });
+  res.json({ status: "ok", geminiEnabled: !!apiKey1, failoverEnabled: !!apiKey2, app: "EduOne 2047" });
 });
 
 // 2. AI Command Center Endpoint
@@ -39,11 +63,11 @@ app.post("/api/ai/command", async (req, res) => {
   const normalizedPrompt = prompt.toLowerCase().trim();
 
   // Primary Gemini Execution if available
-  if (ai) {
+  if (aiPrimary) {
     try {
-      const response = await ai.models.generateContent({
-        model: "gemini-3.6-flash",
-        contents: `You are EduOne 2047 AI Command Center engine for a school operations platform.
+      const response = await generateContentWithFailover(
+        "gemini-3.6-flash",
+        `You are EduOne 2047 AI Command Center engine for a school operations platform.
 User Role: ${role}
 Query: "${prompt}"
 
@@ -58,10 +82,8 @@ Analyze the prompt and return JSON with the following structure:
   "requiresApproval": boolean (true if confidence < 90 or high monetary/schedule risk)
 }
 Return STRICT valid JSON only.`,
-        config: {
-          responseMimeType: "application/json",
-        },
-      });
+        { responseMimeType: "application/json" }
+      );
 
       const responseText = response.text;
       if (responseText) {
@@ -159,11 +181,11 @@ Return STRICT valid JSON only.`,
 app.post("/api/ai/ocr", async (req, res) => {
   const { fileName, documentType } = req.body;
 
-  if (ai) {
+  if (aiPrimary) {
     try {
-      const response = await ai.models.generateContent({
-        model: "gemini-3.6-flash",
-        contents: `Perform OCR analysis for document type: "${documentType}", File: "${fileName}".
+      const response = await generateContentWithFailover(
+        "gemini-3.6-flash",
+        `Perform OCR analysis for document type: "${documentType}", File: "${fileName}".
 Return JSON object:
 {
   "extractedFields": { "key": "value" },
@@ -171,10 +193,8 @@ Return JSON object:
   "status": "APPROVED" | "NEEDS_REVIEW",
   "reason": "Detailed OCR feedback"
 }`,
-        config: {
-          responseMimeType: "application/json",
-        },
-      });
+        { responseMimeType: "application/json" }
+      );
 
       const responseText = response.text;
       if (responseText) {
