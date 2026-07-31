@@ -206,6 +206,20 @@ Return JSON object:
   });
 });
 
+// 4. Auto-Attendance Hardware Webhook Endpoint
+app.post("/api/attendance/auto-scan", (req, res) => {
+  const { tagId } = req.body;
+  // This endpoint serves as a hardware webhook receiver for RFID scanners.
+  // In a production setup, this would use firebase-admin to update the database.
+  // The frontend currently simulates this write for demonstration purposes.
+  res.json({
+    success: true,
+    message: "RFID hardware ping received",
+    scannedId: tagId,
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Mount Vite middleware or static directory
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {

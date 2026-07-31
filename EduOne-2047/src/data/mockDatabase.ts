@@ -27,7 +27,8 @@ export const INITIAL_STUDENTS: Student[] = [
     paidFees: 45000,
     pendingFees: 0,
     documentsStatus: 'VERIFIED',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250'
+    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250',
+    rfidTag: 'RFID-1001'
   },
   {
     id: 'STU-1002',
@@ -45,7 +46,8 @@ export const INITIAL_STUDENTS: Student[] = [
     pendingFees: 15000,
     documentsStatus: 'PENDING',
     riskFlag: 'Continuous 3-day absence & payment discrepancy detected',
-    avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=250'
+    avatarUrl: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=250',
+    rfidTag: 'RFID-1002'
   },
   {
     id: 'STU-1003',
@@ -61,7 +63,8 @@ export const INITIAL_STUDENTS: Student[] = [
     totalFees: 45000,
     paidFees: 20000,
     pendingFees: 25000,
-    documentsStatus: 'VERIFIED'
+    documentsStatus: 'VERIFIED',
+    rfidTag: 'RFID-1003'
   },
   {
     id: 'STU-1004',

@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   AlertTriangle,
   Send,
   BellRing,
   ShieldAlert,
   Search,
-  CheckCircle2
+  CheckCircle2,
+  ScanLine,
+  X
 } from 'lucide-react';
 import { Student, AttendanceRecord } from '../../types';
 
@@ -28,6 +30,11 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [alertSentMap, setAlertSentMap] = useState<Record<string, boolean>>({});
 
+  const [isScanning, setIsScanning] = useState(false);
+  const [scannedIds, setScannedIds] = useState<Set<string>>(new Set());
+  const [scanStatus, setScanStatus] = useState<string>('');
+  const scanRef = useRef<boolean>(false);
+
   const filteredStudents = students.filter((s) => {
     const matchesClass = `${s.grade}-${s.section}` === selectedClass || selectedClass === 'ALL';
     const matchesSearch = s.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -37,6 +44,48 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
   const handleAlert = (student: Student, reason: string) => {
     onSendParentAlert(student.name, student.parentPhone, reason);
     setAlertSentMap((prev) => ({ ...prev, [student.id]: true }));
+  };
+
+  const simulateScan = async (studentsList: Student[]) => {
+    setIsScanning(true);
+    setScannedIds(new Set());
+    scanRef.current = true;
+    setScanStatus('Initializing Scanner...');
+    await new Promise(r => setTimeout(r, 800));
+    
+    const studentsToScan = [...studentsList].sort(() => 0.5 - Math.random());
+    const targetCount = Math.max(1, Math.floor(studentsToScan.length * 0.8)); // 80% present
+
+    for (let i = 0; i < targetCount; i++) {
+      if (!scanRef.current) break;
+      const s = studentsToScan[i];
+      setScanStatus(`Detecting RFID ${s.rfidTag || 'TAG-' + s.id}...`);
+      await new Promise(r => setTimeout(r, 600));
+      
+      if (!scanRef.current) break;
+      setScanStatus(`Logged: ${s.name}`);
+      onMarkAttendance(s.id, 'PRESENT');
+      setScannedIds(prev => new Set(prev).add(s.id));
+      await new Promise(r => setTimeout(r, 400));
+    }
+    
+    if (scanRef.current) {
+      setScanStatus('Scanning area clear. Waiting for tags...');
+    }
+  };
+
+  const finishScan = () => {
+    scanRef.current = false;
+    setIsScanning(false);
+    
+    const absentIds = filteredStudents.filter(s => !scannedIds.has(s.id)).map(s => s.id);
+    if (absentIds.length > 0) {
+      if (onBulkMarkAttendance) {
+        onBulkMarkAttendance(absentIds, 'ABSENT');
+      } else {
+        absentIds.forEach(id => onMarkAttendance(id, 'ABSENT'));
+      }
+    }
   };
 
   const lowAttendanceStudents = students.filter((s) => s.attendancePct < 80);
@@ -89,19 +138,28 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
         <div className="text-xs font-semibold text-slate-700">
           Bulk Actions ({filteredStudents.length} students selected)
         </div>
-        <button
-          onClick={() => {
-            if (onBulkMarkAttendance) {
-              onBulkMarkAttendance(filteredStudents.map(s => s.id), 'PRESENT');
-            } else {
-              filteredStudents.forEach(s => onMarkAttendance(s.id, 'PRESENT'));
-            }
-          }}
-          className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-medium flex items-center gap-1.5 shadow-2xs hover:bg-emerald-700 transition-colors"
-        >
-          <CheckCircle2 className="w-3.5 h-3.5" />
-          <span>Mark All Present</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => simulateScan(filteredStudents)}
+            className="px-3 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-medium flex items-center gap-1.5 shadow-2xs hover:bg-indigo-700 transition-colors"
+          >
+            <ScanLine className="w-3.5 h-3.5" />
+            <span>Start RFID Auto-Scan</span>
+          </button>
+          <button
+            onClick={() => {
+              if (onBulkMarkAttendance) {
+                onBulkMarkAttendance(filteredStudents.map(s => s.id), 'PRESENT');
+              } else {
+                filteredStudents.forEach(s => onMarkAttendance(s.id, 'PRESENT'));
+              }
+            }}
+            className="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-medium flex items-center gap-1.5 shadow-2xs hover:bg-emerald-700 transition-colors"
+          >
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Mark All Present</span>
+          </button>
+        </div>
       </div>
 
       {/* Controls Bar */}
@@ -230,6 +288,63 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
           </table>
         </div>
       </div>
+      </div>
+
+      {/* RFID Auto-Scan Modal Overlay */}
+      {isScanning && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm">
+          <div className="bg-slate-900 rounded-3xl w-full max-w-md border border-slate-700 shadow-2xl p-6 relative overflow-hidden text-center">
+            
+            {/* Background effects */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <button 
+              onClick={() => {
+                scanRef.current = false;
+                setIsScanning(false);
+              }}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors z-10"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="w-20 h-20 rounded-full bg-indigo-500/10 flex items-center justify-center mb-6 relative">
+                {/* Ping animation rings */}
+                <div className="absolute inset-0 rounded-full border-2 border-indigo-500/30 animate-ping" style={{ animationDuration: '2s' }}></div>
+                <div className="absolute inset-[-10px] rounded-full border border-indigo-500/10 animate-ping" style={{ animationDuration: '3s' }}></div>
+                <ScanLine className="w-10 h-10 text-indigo-400" />
+              </div>
+
+              <h2 className="text-xl font-bold text-white mb-2">RFID Sensor Active</h2>
+              <p className="text-sm text-indigo-200 mb-8 h-6 flex items-center justify-center">
+                {scanStatus}
+              </p>
+
+              <div className="w-full bg-slate-800 rounded-xl p-4 mb-6">
+                <div className="flex justify-between items-center text-sm font-medium">
+                  <span className="text-slate-400">Class Target:</span>
+                  <span className="text-white">{selectedClass}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm font-medium mt-2">
+                  <span className="text-slate-400">Scanned So Far:</span>
+                  <span className="text-emerald-400 font-bold">{scannedIds.size} / {filteredStudents.length}</span>
+                </div>
+              </div>
+
+              <button
+                onClick={finishScan}
+                className="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-colors shadow-lg shadow-emerald-900/20"
+              >
+                Finish Scan & Mark Absentees
+              </button>
+              <p className="text-[10px] text-slate-500 mt-4">
+                Note: Any un-scanned students will be automatically marked ABSENT when finishing.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
