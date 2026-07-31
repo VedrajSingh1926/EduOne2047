@@ -111,7 +111,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Smart Attendance</h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Real-time biometric & computer vision logs, auto-attendance, and absence pattern tracking.
+            Real-time ID card scanning and absence pattern tracking.
           </p>
         </div>
 
@@ -144,7 +144,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
                 </div>
                 <div>
                   <h3 className="text-lg font-bold">Live Scanner Feed</h3>
-                  <p className="text-xs text-slate-400">Monitoring RFID gates and AI Vision nodes...</p>
+                  <p className="text-xs text-slate-400">Monitoring physical ID card scans...</p>
                 </div>
               </div>
               <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full text-xs font-semibold border border-emerald-500/30">
@@ -185,18 +185,18 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
           
           <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
              <div>
-               <h3 className="text-lg font-bold text-slate-900 mb-2">Automated Roll Call</h3>
+               <h3 className="text-lg font-bold text-slate-900 mb-2">QR ID Scanner</h3>
                <p className="text-sm text-slate-600 mb-6">
-                 Students passing through campus gates and equipped classrooms are automatically marked as PRESENT in real-time. 
+                 Scan student and staff ID cards (QR Codes) using your device camera to instantly mark attendance. 
                </p>
                <div className="space-y-4">
                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-                   <div className="text-sm font-semibold text-slate-700 mb-1">Today's Campus Traffic</div>
+                   <div className="text-sm font-semibold text-slate-700 mb-1">Total Scans Today</div>
                    <div className="text-3xl font-extrabold text-emerald-600">842 <span className="text-sm font-medium text-slate-500">/ 1080</span></div>
                  </div>
                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-                   <div className="text-sm font-semibold text-slate-700 mb-1">Active AI Nodes</div>
-                   <div className="text-lg font-bold text-slate-900">14 <span className="text-sm font-medium text-slate-500">Online</span></div>
+                   <div className="text-sm font-semibold text-slate-700 mb-1">Scanner Status</div>
+                   <div className="text-lg font-bold text-emerald-600">Ready <span className="text-sm font-medium text-slate-500">Device Camera</span></div>
                  </div>
                </div>
              </div>
