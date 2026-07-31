@@ -54,6 +54,10 @@ app.get("/api/health", (_req, res) => {
 
 // Auth: Login
 app.post("/api/auth/login", async (req, res) => {
+  if (!db) {
+    res.status(500).json({ error: "Firebase DB not initialized. Missing Service Account Key on Vercel." });
+    return;
+  }
   const { staffId, password } = req.body;
   if (!staffId || !password) {
     res.status(400).json({ error: "Missing staffId or password" });
@@ -101,6 +105,10 @@ app.post("/api/auth/login", async (req, res) => {
 
 // Auth: Register (Guarded)
 app.post("/api/auth/register", async (req, res) => {
+  if (!db) {
+    res.status(500).json({ error: "Firebase DB not initialized. Missing Service Account Key on Vercel." });
+    return;
+  }
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     res.status(403).json({ error: "Missing or invalid authorization header" });
@@ -153,6 +161,10 @@ app.post("/api/auth/register", async (req, res) => {
 
 // Auth: Reset Password
 app.post("/api/auth/reset-password", async (req, res) => {
+  if (!db) {
+    res.status(500).json({ error: "Firebase DB not initialized. Missing Service Account Key on Vercel." });
+    return;
+  }
   const { staffId, currentPassword, newPassword } = req.body;
   if (!staffId || !currentPassword || !newPassword) {
     res.status(400).json({ error: "Missing required fields" });
