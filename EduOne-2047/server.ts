@@ -45,7 +45,14 @@ app.post("/api/auth/login", async (req, res) => {
       res.status(401).json({ error: "Invalid credentials" });
       return;
     }
-    const isMatch = await bcrypt.compare(password, userData.password);
+    
+    let isMatch = false;
+    if (userData.password && (userData.password.startsWith("$2b$") || userData.password.startsWith("$2a$"))) {
+      isMatch = await bcrypt.compare(password, userData.password);
+    } else {
+      // Fallback for plaintext passwords in the database
+      isMatch = password === userData.password;
+    }
 
     if (!isMatch) {
       res.status(401).json({ error: "Invalid credentials" });
@@ -151,7 +158,12 @@ app.post("/api/auth/reset-password", async (req, res) => {
       res.status(401).json({ error: "User not found" });
       return;
     }
-    const isMatch = await bcrypt.compare(currentPassword, userData.password);
+    let isMatch = false;
+    if (userData.password && (userData.password.startsWith("$2b$") || userData.password.startsWith("$2a$"))) {
+      isMatch = await bcrypt.compare(currentPassword, userData.password);
+    } else {
+      isMatch = currentPassword === userData.password;
+    }
 
     if (!isMatch) {
       res.status(401).json({ error: "Invalid current password" });
