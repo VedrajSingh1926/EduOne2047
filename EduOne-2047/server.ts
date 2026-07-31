@@ -5,7 +5,7 @@ import { GoogleGenAI } from "@google/genai";
 import { initializeApp, cert } from "firebase-admin/app";
 import { getDatabase, ServerValue } from "firebase-admin/database";
 import fs from "fs";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import crypto from "crypto";
 
 const app = express();

@@ -2,7 +2,7 @@ import { initializeApp, cert } from "firebase-admin/app";
 import { getDatabase } from "firebase-admin/database";
 import fs from "fs";
 import path from "path";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 async function run() {
   let serviceAccount;
