@@ -11,6 +11,7 @@ import {
   Activity,
   UserCheck
 } from 'lucide-react';
+import { Html5QrcodeScanner } from 'html5-qrcode';
 import { Student, AttendanceRecord } from '../../types';
 
 interface SmartAttendanceProps {
@@ -34,34 +35,58 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
   const [autoMode, setAutoMode] = useState(false);
   const [recentScans, setRecentScans] = useState<{ id: string, name: string, time: string, gate: string }[]>([]);
 
-  // Simulation of RFID / CV Auto-Attendance
+  // Real CV Auto-Attendance using html5-qrcode
   useEffect(() => {
-    let interval: any;
-    if (autoMode) {
-      interval = setInterval(() => {
-        // Pick a random student from the currently selected class who is not yet marked present today
-        const classStudents = students.filter(s => `${s.grade}-${s.section}` === selectedClass || selectedClass === 'ALL');
-        // In this simulation we just pick any student and show a scan event
-        if (classStudents.length > 0) {
-          const randomStudent = classStudents[Math.floor(Math.random() * classStudents.length)];
-          
-          const now = new Date();
-          const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-          const gates = ['Main Gate RFID', 'Library Camera AI', 'Hallway B Scanner', 'Entrance Facial Recognition'];
-          const randomGate = gates[Math.floor(Math.random() * gates.length)];
+    let scanner: Html5QrcodeScanner | null = null;
+    let lastScannedId = '';
+    let lastScanTime = 0;
 
-          setRecentScans(prev => [
-            { id: randomStudent.id, name: randomStudent.name, time: timeString, gate: randomGate },
-            ...prev
-          ].slice(0, 10)); // Keep last 10
-          
-          // Mark them present
-          onMarkAttendance(randomStudent.id, 'PRESENT');
+    if (autoMode) {
+      scanner = new Html5QrcodeScanner(
+        "qr-reader",
+        { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 },
+        false
+      );
+
+      scanner.render(
+        (decodedText) => {
+          const now = Date.now();
+          // Debounce same scan by 3 seconds
+          if (decodedText === lastScannedId && now - lastScanTime < 3000) {
+            return;
+          }
+
+          lastScannedId = decodedText;
+          lastScanTime = now;
+
+          const student = students.find(s => s.id === decodedText);
+          const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+          if (student) {
+            setRecentScans(prev => [
+              { id: student.id, name: student.name, time: timeString, gate: 'Optical Scanner Node 1' },
+              ...prev
+            ].slice(0, 10));
+            onMarkAttendance(student.id, 'PRESENT');
+          } else {
+            setRecentScans(prev => [
+              { id: decodedText, name: 'Unknown / Staff', time: timeString, gate: 'Optical Scanner Node 1' },
+              ...prev
+            ].slice(0, 10));
+          }
+        },
+        (error) => {
+          // Ignore scanning errors (occurs constantly when no QR code is in frame)
         }
-      }, 3500); // Trigger a scan every 3.5 seconds
+      );
     }
-    return () => clearInterval(interval);
-  }, [autoMode, students, selectedClass, onMarkAttendance]);
+
+    return () => {
+      if (scanner) {
+        scanner.clear().catch(console.error);
+      }
+    };
+  }, [autoMode, students, onMarkAttendance]);
 
   const filteredStudents = students.filter((s) => {
     const matchesClass = `${s.grade}-${s.section}` === selectedClass || selectedClass === 'ALL';
@@ -126,10 +151,12 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
             </div>
 
             <div className="space-y-3 relative z-10 min-h-[200px]">
+              <div id="qr-reader" className="w-full bg-slate-800 rounded-xl overflow-hidden border border-slate-700/50 mb-4 [&_button]:bg-emerald-600 [&_button]:text-white [&_button]:px-3 [&_button]:py-1 [&_button]:rounded-md [&_select]:text-slate-900 [&_select]:p-1 [&_select]:rounded" />
+              
               {recentScans.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-48 text-slate-500">
-                  <ScanLine className="w-10 h-10 mb-3 opacity-20" />
-                  <p className="text-sm">Awaiting scans...</p>
+                <div className="flex flex-col items-center justify-center h-24 text-slate-500">
+                  <ScanLine className="w-8 h-8 mb-2 opacity-20" />
+                  <p className="text-sm">Awaiting camera scans...</p>
                 </div>
               ) : (
                 recentScans.map((scan, i) => (
