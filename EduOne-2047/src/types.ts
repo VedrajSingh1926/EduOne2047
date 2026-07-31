@@ -50,6 +50,7 @@ export interface Student {
   documentsStatus: 'VERIFIED' | 'PENDING' | 'MISSING';
   riskFlag?: string;
   avatarUrl?: string;
+  rfidTag?: string;
 }
 
 export interface Teacher {
@@ -76,6 +77,7 @@ export interface AttendanceRecord {
   status: 'PRESENT' | 'ABSENT' | 'LATE' | 'EXCUSED';
   riskDetected?: boolean;
   riskReason?: string;
+  autoScanned?: boolean;
 }
 
 export interface FeeRecord {

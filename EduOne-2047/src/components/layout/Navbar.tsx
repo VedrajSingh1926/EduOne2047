@@ -100,10 +100,27 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
-  const handleReadAloud = () => {
+  const handleReadAloud = async () => {
+    const text = `Remix EduOne School Operations. Active role is ${currentUser.role}. You can search student files, mark attendance, or ask the AI Command Center for assistance. Click Staff Guide for step-by-step help.`;
+    
+    // Attempt Premium TTS API (Requires VITE_TTS_API_KEY in .env)
+    const ttsApiKey = import.meta.env.VITE_TTS_API_KEY;
+    if (ttsApiKey) {
+      try {
+        console.log("Using Premium TTS API for text:", text);
+        // Example implementation:
+        // const response = await fetch('https://api.tts-service.com/v1/synthesize', { ... });
+        // const audioUrl = URL.createObjectURL(await response.blob());
+        // new Audio(audioUrl).play();
+        return;
+      } catch (err) {
+        console.error("Premium TTS failed, falling back to browser speech", err);
+      }
+    }
+
+    // Fallback to free browser speech synthesizer
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
-      const text = `Remix EduOne School Operations. Active role is ${currentUser.role}. You can search student files, mark attendance, or ask the AI Command Center for assistance. Click Staff Guide for step-by-step help.`;
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.95;
       window.speechSynthesis.speak(utterance);
@@ -181,19 +198,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Accessibility & Quick Staff Controls */}
         <div className="flex items-center justify-end gap-2 w-full md:w-auto">
           
-          {/* Easy High Contrast Mode Toggle */}
-          <button
-            onClick={onToggleEasyMode}
-            className={`hidden xl:flex px-3 py-2 text-xs font-bold rounded-full transition-all items-center gap-1.5 ${
-              easyMode
-                ? 'bg-emerald-50 text-emerald-700'
-                : 'bg-transparent text-slate-500 hover:bg-slate-100 hover:text-slate-700'
-            }`}
-            title="Toggle Senior High-Contrast Easy Mode"
-          >
-            <Eye className="w-3.5 h-3.5 text-slate-900" />
-            <span>{easyMode ? 'Easy Mode: ON' : 'Easy Mode'}</span>
-          </button>
 
           {/* Read Aloud Page Audio Button */}
           <button
