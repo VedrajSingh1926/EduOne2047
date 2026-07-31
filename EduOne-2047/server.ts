@@ -1,6 +1,5 @@
 import express from "express";
 import path from "path";
-import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import { initializeApp, cert } from "firebase-admin/app";
 import { getDatabase, ServerValue } from "firebase-admin/database";
@@ -204,7 +203,7 @@ app.post("/api/ai/command", async (req, res) => {
   if (ai) {
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-3.6-flash",
+        model: "gemini-1.5-flash",
         contents: `You are EduOne 2047 AI Command Center engine for a school operations platform.
 User Role: ${role}
 Query: "${prompt}"
@@ -324,7 +323,7 @@ app.post("/api/ai/ocr", async (req, res) => {
   if (ai) {
     try {
       const response = await ai.models.generateContent({
-        model: "gemini-3.6-flash",
+        model: "gemini-1.5-flash",
         contents: `Perform OCR analysis for document type: "${documentType}", File: "${fileName}".
 Return JSON object:
 {
@@ -368,29 +367,18 @@ Return JSON object:
   });
 });
 
-// Mount Vite middleware or static directory
-async function startServer() {
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (_req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
-  }
-
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`[EduOne 2047] Server running on http://localhost:${PORT}`);
+// 4. Auto-Attendance Hardware Webhook Endpoint
+app.post("/api/attendance/auto-scan", (req, res) => {
+  const { tagId } = req.body;
+  // This endpoint serves as a hardware webhook receiver for RFID scanners.
+  // In a production setup, this would use firebase-admin to update the database.
+  // The frontend currently simulates this write for demonstration purposes.
+  res.json({
+    success: true,
+    message: "RFID hardware ping received",
+    scannedId: tagId,
+    timestamp: new Date().toISOString()
   });
-}
-
-if (process.env.VERCEL !== '1') {
-  startServer();
-}
+});
 
 export default app;
