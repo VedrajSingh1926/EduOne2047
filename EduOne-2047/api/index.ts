@@ -33,7 +33,8 @@ try {
   if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
     serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
   } else {
-    serviceAccount = JSON.parse(fs.readFileSync(path.join(process.cwd(), "eduone-2047-firebase-adminsdk-fbsvc-3a3f4a42f2.json"), "utf8"));
+    const rawPath = path.join(process.cwd(), "eduone-2047-firebase-adminsdk-fbsvc-3a3f4a42f2.json");
+    serviceAccount = JSON.parse(fs.readFileSync(rawPath, "utf8"));
   }
 
   initializeApp({
@@ -67,12 +68,14 @@ app.post("/api/auth/login", async (req, res) => {
     const userRef = db.ref(`users/${staffId}`);
     const snapshot = await userRef.once("value");
     if (!snapshot.exists()) {
+      console.log(`[Login] User ${staffId} not found in DB.`);
       res.status(401).json({ error: "Invalid credentials" });
       return;
     }
 
     const userData = snapshot.val();
     const isMatch = await bcrypt.compare(password, userData.password);
+    console.log(`[Login] User ${staffId} found. Password match: ${isMatch}`);
 
     if (!isMatch) {
       res.status(401).json({ error: "Invalid credentials" });
@@ -515,30 +518,127 @@ app.post("/api/timetable/generate", (req, res) => {
   }
 });
 
-// Mount Vite middleware or static directory
-async function startServer() {
-  if (process.env.NODE_ENV !== "production") {
-    const { createServer: createViteServer } = await import("vite");
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
+app.post("/api/ai/predict-risk", async (req, res) => {
+  try {
+    if (!ai) return res.status(503).json({ error: "Gemini AI not configured" });
+    const { students, attendance, tasks } = req.body;
+    
+    const prompt = `You are EduPredict, an AI Student Success predictor. Analyze the following student data. Return a JSON object mapping each student ID to a prediction object. The object must match this schema:
+    {
+      "Student_ID": {
+        "riskLevel": "Low" | "Medium" | "High",
+        "riskScore": number (0-100, where 100 is highest risk),
+        "reasoning": "1 sentence explaining why",
+        "interventionPlan": "2 actionable steps for the teacher"
+      }
+    }
+    
+    Data:
+    Students: ${JSON.stringify(students).slice(0, 1000)}
+    Attendance: ${JSON.stringify(attendance).slice(0, 1000)}
+    Tasks: ${JSON.stringify(tasks).slice(0, 1000)}
+    `;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: `System Instruction: You are an AI data analyst for schools. Always return valid JSON.\n\n${prompt}`,
+      config: { responseMimeType: "application/json" }
     });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (_req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
+
+    let result = {};
+    try {
+      result = JSON.parse(response.text);
+    } catch (e) {
+      console.warn("Failed to parse Gemini response:", response.text);
+    }
+    res.json(result);
+  } catch (e) {
+    console.error("Predict Risk Error:", e);
+    res.status(500).json({ error: "Failed to predict risks" });
   }
+});
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`[RootShala] Server running on http://localhost:${PORT}`);
-  });
-}
+app.post("/api/ai/lesson-plan", async (req, res) => {
+  try {
+    if (!ai) return res.status(503).json({ error: "Gemini AI not configured" });
+    const { topic, grade, duration } = req.body;
 
-if (process.env.VERCEL !== '1') {
-  startServer();
-}
+    const prompt = `Generate a lesson plan and quiz for ${topic} for class ${grade} lasting ${duration} minutes in an Indian CBSE/ICSE context.
+    Return JSON matching this schema:
+    {
+      "title": "string",
+      "objectives": ["string", "string"],
+      "sections": [
+        { "title": "string", "content": "string", "durationMins": number }
+      ],
+      "quiz": [
+        {
+          "question": "string",
+          "options": ["A", "B", "C", "D"],
+          "correctAnswerIndex": number
+        }
+      ]
+    }`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: `System Instruction: You are an expert teacher and curriculum designer. Return only valid JSON.\n\n${prompt}`,
+      config: { responseMimeType: "application/json" }
+    });
+
+    let result = {};
+    try {
+      result = JSON.parse(response.text);
+    } catch (e) {
+      console.warn("Failed to parse Gemini response:", response.text);
+    }
+    res.json(result);
+  } catch (e) {
+    console.error("Lesson Plan Error:", e);
+    res.status(500).json({ error: "Failed to generate lesson plan" });
+  }
+});
+
+app.post("/api/ai/briefing", async (req, res) => {
+  try {
+    if (!ai) return res.status(503).json({ error: "Gemini AI not configured" });
+    const { role, stats } = req.body;
+
+    const prompt = `You are the AI Operations Director for EduOne school management system.
+    The current user logged in is a ${role}.
+    Here are the current school stats: ${JSON.stringify(stats)}
+    
+    Based on their role, generate a short morning briefing (2-3 sentences) summarizing urgent tasks they should care about, and suggest 1-2 actionable 1-click resolutions they can run right now.
+    
+    Return JSON matching this schema:
+    {
+      "greeting": "Good morning [Role]!",
+      "briefingText": "You have 3 absent teachers today and $4k in pending fees...",
+      "suggestedActions": [
+        {
+          "label": "1-Click: Assign Substitutes",
+          "commandToRun": "Find absent teachers and assign substitutes"
+        }
+      ]
+    }`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+      config: { responseMimeType: "application/json" }
+    });
+
+    let result = { greeting: "Hello!", briefingText: "Operations normal.", suggestedActions: [] };
+    try {
+      result = JSON.parse(response.text);
+    } catch (e) {
+      console.warn("Failed to parse Gemini response:", response.text);
+    }
+    res.json(result);
+  } catch (e) {
+    console.error("Briefing Error:", e);
+    res.status(500).json({ error: "Failed to generate briefing" });
+  }
+});
 
 export default app;
