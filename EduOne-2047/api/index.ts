@@ -31,7 +31,11 @@ let db: any = null;
 try {
   let serviceAccount;
   if (process.env.FIREBASE_SERVICE_ACCOUNT_KEY) {
-    serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+    let envVal = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+    if (envVal.charCodeAt(0) === 0xFEFF) {
+      envVal = envVal.slice(1);
+    }
+    serviceAccount = JSON.parse(envVal);
   } else {
     const rawPath = path.join(process.cwd(), "eduone-2047-firebase-adminsdk-fbsvc-3a3f4a42f2.json");
     serviceAccount = JSON.parse(fs.readFileSync(rawPath, "utf8"));
