@@ -1,10 +1,10 @@
-# EduOne 2047
+# Rootshala
 
 <div align="center">
-  <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=1200&h=400" alt="EduOne 2047 Banner" width="100%" />
+  <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=1200&h=400" alt="Rootshala Banner" width="100%" />
 </div>
 
-**EduOne 2047** is a next-generation Educational ERP (Enterprise Resource Planning) and school management dashboard designed for the future of education. It leverages automation, simulated AI agents, and collaborative tools to streamline school operations, from fee reconciliation to timetable generation.
+**RootShala** is a next-generation Educational ERP (Enterprise Resource Planning) and school management dashboard designed for the future of education. It leverages automation, simulated AI agents, and collaborative tools to streamline school operations, from fee reconciliation to timetable generation.
 
 ## 🌟 Key Features
 
