@@ -9,6 +9,10 @@ test('UI/UX: Hover states and styling', async ({ page }) => {
   await expect(page.locator('text="Initialize Session"')).toBeHidden({ timeout: 10000 });
   
   // Verify sidebar hover state
+  const menuBtn = page.locator('header button.md\\:hidden').first();
+  if (await menuBtn.isVisible()) {
+    await menuBtn.click();
+  }
   const sidebarBtn = page.locator('nav button').first();
   await sidebarBtn.hover();
   // We can't strictly assert CSS transitions in Playwright effectively without visual regression,

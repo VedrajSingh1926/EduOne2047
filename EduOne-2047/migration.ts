@@ -2,7 +2,7 @@ import { initializeApp, cert } from 'firebase-admin/app';
 import { getDatabase } from 'firebase-admin/database';
 import fs from 'fs';
 import path from 'path';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 async function migrate() {
   const serviceAccount = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'eduone-2047-firebase-adminsdk-fbsvc-3a3f4a42f2.json'), 'utf8'));

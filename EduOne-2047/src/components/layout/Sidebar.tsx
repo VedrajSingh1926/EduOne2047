@@ -91,7 +91,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         isActive ? 'text-emerald-600' : 'text-slate-400'
                       }`}
                     />
-                    <span className="truncate">{item.title}</span>
+                    <span className="truncate">
+                      {item.id === 'students' && currentUser.role === 'Class Teacher' ? 'Students & Roster' : item.title}
+                    </span>
                   </div>
                 </button>
               );

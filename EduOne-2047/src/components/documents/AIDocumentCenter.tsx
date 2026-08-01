@@ -153,7 +153,7 @@ export const AIDocumentCenter: React.FC<AIDocumentCenterProps> = ({
                 return (
                   <div key={k} className="flex flex-col gap-1 border-b border-slate-200 pb-2 last:border-0 last:pb-0">
                     <div className="flex justify-between items-center">
-                      <span className="text-slate-500 capitalize font-medium">{k.replace(/([A-Z])/g, ' ₹1')}:</span>
+                      <span className="text-slate-500 capitalize font-medium">{k.replace(/([A-Z])/g, ' $1')}:</span>
                       <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${isLow ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}`}>
                         {conf}%
                       </span>
@@ -297,7 +297,7 @@ export const AIDocumentCenter: React.FC<AIDocumentCenterProps> = ({
                 </div>
                 {Object.entries(doc.extractedFields).map(([k, v]) => (
                   <div key={k} className="flex justify-between text-[11px]">
-                    <span className="text-slate-400 capitalize">{k.replace(/([A-Z])/g, ' ₹1')}:</span>
+                    <span className="text-slate-400 capitalize">{k.replace(/([A-Z])/g, ' $1')}:</span>
                     <span className="font-medium text-slate-800">{String(v)}</span>
                   </div>
                 ))}

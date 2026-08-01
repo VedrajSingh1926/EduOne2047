@@ -21,3 +21,11 @@ const db = getDatabase(app);
 const auth = getAuth(app);
 
 export { app, db, auth };
+
+if (typeof window !== 'undefined') {
+  (window as any).db = db;
+  import('firebase/database').then((mod) => {
+    (window as any).firebaseSet = mod.set;
+    (window as any).firebaseRef = mod.ref;
+  });
+}

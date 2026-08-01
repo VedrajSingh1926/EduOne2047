@@ -32,16 +32,14 @@ test('RBAC Data-Layer: Class Teacher cannot write to fees', async ({ page }) => 
   const result = await page.evaluate(async () => {
     try {
       // @ts-ignore
-      const { ref, set } = await import('firebase/database');
-      // @ts-ignore
-      await set(ref(window.db, 'fees/test-unauthorized'), { amount: 100 });
+      await window.firebaseSet(window.firebaseRef(window.db, 'fees/test-unauthorized'), { amount: 100 });
       return 'success';
     } catch (e: any) {
       return e.message;
     }
   });
 
-  expect(result).toBe('success');
+  expect(result.toLowerCase()).toContain('permission denied');
 });
 
 test('RBAC Data-Layer: Receptionist cannot write to fees', async ({ page }) => {
@@ -54,16 +52,14 @@ test('RBAC Data-Layer: Receptionist cannot write to fees', async ({ page }) => {
   const result = await page.evaluate(async () => {
     try {
       // @ts-ignore
-      const { ref, set } = await import('firebase/database');
-      // @ts-ignore
-      await set(ref(window.db, 'fees/test-unauthorized-2'), { amount: 200 });
+      await window.firebaseSet(window.firebaseRef(window.db, 'fees/test-unauthorized-2'), { amount: 200 });
       return 'success';
     } catch (e: any) {
       return e.message;
     }
   });
 
-  expect(result).toBe('success');
+  expect(result.toLowerCase()).toContain('permission denied');
 });
 
 test('RBAC Data-Layer: Accountant cannot write to timetable', async ({ page }) => {
@@ -76,14 +72,12 @@ test('RBAC Data-Layer: Accountant cannot write to timetable', async ({ page }) =
   const result = await page.evaluate(async () => {
     try {
       // @ts-ignore
-      const { ref, set } = await import('firebase/database');
-      // @ts-ignore
-      await set(ref(window.db, 'timetable/test-unauthorized-3'), { subject: 'Math' });
+      await window.firebaseSet(window.firebaseRef(window.db, 'timetable/test-unauthorized-3'), { subject: 'Math' });
       return 'success';
     } catch (e: any) {
       return e.message;
     }
   });
 
-  expect(result).toBe('success');
+  expect(result.toLowerCase()).toContain('permission denied');
 });
