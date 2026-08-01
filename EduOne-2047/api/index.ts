@@ -10,9 +10,15 @@ import crypto from "crypto";
 const app = express();
 const PORT = Number(process.env.PORT) || 5174;
 
-if (!process.env.VERCEL) {
-  app.use(express.json({ limit: "10mb" }));
-}
+// Vercel serverless functions sometimes pre-parse req.body and consume the stream.
+// Calling express.json() again will cause the request to hang forever.
+app.use((req, res, next) => {
+  if (req.body) {
+    next(); // Body is already parsed by Vercel
+  } else {
+    express.json({ limit: "10mb" })(req, res, next); // Parse it locally
+  }
+});
 
 // Initialize Gemini Client
 const apiKey = process.env.GEMINI_API_KEY || "";
