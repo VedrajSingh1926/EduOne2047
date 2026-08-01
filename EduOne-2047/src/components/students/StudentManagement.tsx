@@ -36,13 +36,13 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [reassignStudent, setReassignStudent] = useState<Student | null>(null);
-  const [reassignData, setReassignData] = useState({ grade: 'Grade 10', section: 'A' });
+  const [reassignData, setReassignData] = useState({ grade: 'Class 10', section: 'A' });
 
   // Form State
   const [formData, setFormData] = useState({
     name: '',
     rollNo: '',
-    grade: 'Grade 10',
+    grade: 'Class 10',
     section: 'A',
     parentName: '',
     parentPhone: '',
@@ -64,10 +64,10 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
       s.rollNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
       s.parentName.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesGrade = selectedGrade === 'ALL' || s.grade === selectedGrade;
+    const matchesClass = selectedGrade === 'ALL' || s.grade === selectedGrade;
     const matchesFee = selectedFeeStatus === 'ALL' || s.feeStatus === selectedFeeStatus;
 
-    return matchesSearch && matchesGrade && matchesFee;
+    return matchesSearch && matchesClass && matchesFee;
   });
 
   const handleCreateStudent = (e: React.FormEvent) => {
@@ -92,7 +92,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
     setFormData({
       name: '',
       rollNo: '',
-      grade: 'Grade 10',
+      grade: 'Class 10',
       section: 'A',
       parentName: '',
       parentPhone: '',
@@ -149,11 +149,11 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
             onChange={(e) => setSelectedGrade(e.target.value)}
             className="px-3 py-1.5 text-xs bg-slate-100/70 rounded-lg border border-slate-200 text-slate-700 focus:outline-none"
           >
-            <option value="ALL">All Grades</option>
-            <option value="Grade 9">Grade 9</option>
-            <option value="Grade 10">Grade 10</option>
-            <option value="Grade 11">Grade 11</option>
-            <option value="Grade 12">Grade 12</option>
+            <option value="ALL">All Classes</option>
+            <option value="Class 9">Class 9</option>
+            <option value="Class 10">Class 10</option>
+            <option value="Class 11">Class 11</option>
+            <option value="Class 12">Class 12</option>
           </select>
 
           <select
@@ -177,7 +177,7 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
             <thead className="bg-emerald-50 text-emerald-800">
               <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
                 <th className="p-3.5 pl-4 text-emerald-800">Student</th>
-                <th className="p-3.5 text-emerald-800">Grade & Roll</th>
+                <th className="p-3.5 text-emerald-800">Class & Roll</th>
                 <th className="p-3.5 text-emerald-800">Parent Contact</th>
                 <th className="p-3.5 text-emerald-800">Attendance</th>
                 <th className="p-3.5 text-emerald-800">Fee Status</th>
@@ -491,10 +491,10 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                     onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
                     className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200"
                   >
-                    <option value="Grade 9">Grade 9</option>
-                    <option value="Grade 10">Grade 10</option>
-                    <option value="Grade 11">Grade 11</option>
-                    <option value="Grade 12">Grade 12</option>
+                    <option value="Class 9">Class 9</option>
+                    <option value="Class 10">Class 10</option>
+                    <option value="Class 11">Class 11</option>
+                    <option value="Class 12">Class 12</option>
                   </select>
                 </div>
               </div>
@@ -576,10 +576,10 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                     onChange={(e) => setReassignData({ ...reassignData, grade: e.target.value })}
                     className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200"
                   >
-                    <option value="Grade 9">Grade 9</option>
-                    <option value="Grade 10">Grade 10</option>
-                    <option value="Grade 11">Grade 11</option>
-                    <option value="Grade 12">Grade 12</option>
+                    <option value="Class 9">Class 9</option>
+                    <option value="Class 10">Class 10</option>
+                    <option value="Class 11">Class 11</option>
+                    <option value="Class 12">Class 12</option>
                   </select>
                 </div>
                 <div>

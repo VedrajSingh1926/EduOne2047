@@ -19,7 +19,7 @@ export const AITimetable: React.FC<AITimetableProps> = ({
   onAssignSubstitute
 }) => {
   const [selectedDay, setSelectedDay] = useState<'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday'>('Monday');
-  const [selectedClass, setSelectedClass] = useState('Grade 10-A');
+  const [selectedClass, setSelectedClass] = useState('Class 10-A');
   const [isGenerating, setIsGenerating] = useState(false);
 
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] as const;
@@ -96,9 +96,9 @@ export const AITimetable: React.FC<AITimetableProps> = ({
           className="px-3 py-1.5 text-xs bg-slate-100/70 rounded-lg border border-slate-200 text-slate-700 font-medium focus:outline-none"
         >
           <option value="ALL">All Classes</option>
-          <option value="Grade 10-A">Grade 10-A</option>
-          <option value="Grade 10-B">Grade 10-B</option>
-          <option value="Grade 11-A">Grade 11-A</option>
+          <option value="Class 10-A">Class 10-A</option>
+          <option value="Class 10-B">Class 10-B</option>
+          <option value="Class 11-A">Class 11-A</option>
         </select>
       </div>
 

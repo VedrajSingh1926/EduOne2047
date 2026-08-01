@@ -115,7 +115,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
   ];
 
   const inboxTasks = [
-    { type: 'Attendance', title: 'Teacher Absent (Grade 10 Math)', action: 'Approve Substitute: Mr. Sharma', icon: AlertTriangle, color: 'text-emerald-500', bg: 'bg-emerald-100' },
+    { type: 'Attendance', title: 'Teacher Absent (Class 10 Math)', action: 'Approve Substitute: Mr. Sharma', icon: AlertTriangle, color: 'text-emerald-500', bg: 'bg-emerald-100' },
     { type: 'Finance', title: 'Fee Mismatch: Term 2 Tuition', action: 'Verify Payment Receipt', icon: CreditCard, color: 'text-emerald-500', bg: 'bg-emerald-100' },
     { type: 'Documents', title: 'OCR Confidence Low: Transfer Cert', action: 'Review Highlighted Fields', icon: FileCheck, color: 'text-emerald-500', bg: 'bg-emerald-100' }
   ];
@@ -263,7 +263,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenLogin }) => {
                   </div>
                   <div className="text-left flex-1">
                     <div className="text-sm font-bold text-slate-900">Teacher Absent</div>
-                    <div className="text-xs text-slate-500">Grade 10 Math — Mr. Davis</div>
+                    <div className="text-xs text-slate-500">Class 10 Math — Mr. Davis</div>
                   </div>
                 </motion.div>
               ) : (

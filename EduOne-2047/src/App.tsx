@@ -21,18 +21,6 @@ import { GmailCommsCenter } from './components/gmail/GmailCommsCenter';
 import { LoginForm } from './components/auth/LoginForm';
 import { ForcePasswordReset } from './components/auth/ForcePasswordReset';
 import { SuperAdminDashboard } from './components/admin/SuperAdminDashboard';
-import {
-  INITIAL_STUDENTS,
-  INITIAL_TEACHERS,
-  INITIAL_FEES,
-  INITIAL_DOCUMENTS,
-  INITIAL_TIMETABLE,
-  INITIAL_ESCALATIONS,
-  INITIAL_AI_LOGS,
-  INITIAL_SUPPLY_ITEMS,
-  INITIAL_TASKS,
-  INITIAL_ATTENDANCE_RECORDS
-} from './data/mockDatabase';
 import { useFirebaseState } from './hooks/useFirebaseState';
 import { ref, set, update, push, get } from 'firebase/database';
 import { db } from './lib/firebase';
@@ -155,16 +143,16 @@ function CoreApplication() {
 
 
   // App State Store
-  const students = useFirebaseState<Student>('students', INITIAL_STUDENTS);
-  const teachers = useFirebaseState<Teacher>('teachers', INITIAL_TEACHERS);
-  const fees = useFirebaseState<FeeRecord>('fees', INITIAL_FEES);
-  const documents = useFirebaseState<DocumentItem>('documents', INITIAL_DOCUMENTS);
-  const timetable = useFirebaseState<TimetableSlot>('timetable', INITIAL_TIMETABLE);
-  const escalations = useFirebaseState<EscalationItem>('escalations', INITIAL_ESCALATIONS);
-  const aiLogs = useFirebaseState<AIActionLog>('ai_logs', INITIAL_AI_LOGS);
-  const supplyItems = useFirebaseState<SupplyItem>('supplies', INITIAL_SUPPLY_ITEMS);
-  const tasks = useFirebaseState<CollaborativeTask>('tasks', INITIAL_TASKS);
-  const attendanceRecords = useFirebaseState<AttendanceRecord>('attendance', INITIAL_ATTENDANCE_RECORDS);
+  const students = useFirebaseState<Student>('students', []);
+  const teachers = useFirebaseState<Teacher>('teachers', []);
+  const fees = useFirebaseState<FeeRecord>('fees', []);
+  const documents = useFirebaseState<DocumentItem>('documents', []);
+  const timetable = useFirebaseState<TimetableSlot>('timetable', []);
+  const escalations = useFirebaseState<EscalationItem>('escalations', []);
+  const aiLogs = useFirebaseState<AIActionLog>('ai_logs', []);
+  const supplyItems = useFirebaseState<SupplyItem>('supplies', []);
+  const tasks = useFirebaseState<CollaborativeTask>('tasks', []);
+  const attendanceRecords = useFirebaseState<AttendanceRecord>('attendance', []);
 
   const unresolvedEscalationsCount = escalations.filter((e) => e.status === 'UNRESOLVED').length;
 

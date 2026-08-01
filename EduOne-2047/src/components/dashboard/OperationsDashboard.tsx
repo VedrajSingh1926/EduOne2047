@@ -111,7 +111,7 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
             <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
               <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Total Students</span><Users className="w-4 h-4 text-slate-400" /></div>
               <div className="mt-3 flex items-baseline justify-between"><span className="text-2xl font-bold text-slate-900 tracking-tight">1,240</span><span className="text-xs font-semibold text-emerald-600 flex items-center gap-0.5">+2.4% <TrendingUp className="w-3 h-3" /></span></div>
-              <p className="text-[11px] text-slate-400 mt-1">Grades 8 to 12 enrolled</p>
+              <p className="text-[11px] text-slate-400 mt-1">Classes 8 to 12 enrolled</p>
             </div>
             <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs">
               <div className="flex items-center justify-between"><span className="text-xs font-medium text-slate-500">Total Teachers</span><GraduationCap className="w-4 h-4 text-slate-400" /></div>
@@ -454,7 +454,7 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
                   </div>
                   <div className="flex justify-between items-center text-sm p-2 bg-emerald-50 border border-emerald-100 rounded-lg">
                     <span className="font-semibold text-emerald-800">02:00 PM - Smart Board Repair</span>
-                    <span className="text-xs text-emerald-600">Grade 9-B</span>
+                    <span className="text-xs text-emerald-600">Class 9-B</span>
                   </div>
                 </div>
               ) : currentUser.role === 'Librarian' ? (
@@ -473,7 +473,7 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-sm p-2 bg-slate-50 rounded-lg">
                     <span className="font-semibold text-slate-800">11:00 AM - 1-on-1 Session</span>
-                    <span className="text-xs text-slate-500">Grade 10</span>
+                    <span className="text-xs text-slate-500">Class 10</span>
                   </div>
                   <div className="flex justify-between items-center text-sm p-2 bg-emerald-50 border border-emerald-100 rounded-lg">
                     <span className="font-semibold text-emerald-800">03:00 PM - Parent Meeting</span>
@@ -488,11 +488,11 @@ export const OperationsDashboard: React.FC<OperationsDashboardProps> = ({
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-sm p-2 bg-slate-50 rounded-lg">
                     <span className="font-semibold text-slate-800">08:00 AM - Physics</span>
-                    <span className="text-xs text-slate-500">Grade 10-A</span>
+                    <span className="text-xs text-slate-500">Class 10-A</span>
                   </div>
                   <div className="flex justify-between items-center text-sm p-2 bg-emerald-50 border border-emerald-100 rounded-lg">
                     <span className="font-semibold text-emerald-800">09:00 AM - Math (Substitute)</span>
-                    <span className="text-xs text-emerald-600">Grade 9-B</span>
+                    <span className="text-xs text-emerald-600">Class 9-B</span>
                   </div>
                 </div>
               ) : currentUser.role === 'Student' ? (

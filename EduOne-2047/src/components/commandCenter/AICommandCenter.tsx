@@ -43,7 +43,7 @@ export const AICommandCenter: React.FC<AICommandCenterProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const samplePrompts = [
-    { label: 'Generate timetable', prompt: 'Generate a conflict-free timetable for Grade 10 and Grade 11' },
+    { label: 'Generate timetable', prompt: 'Generate a conflict-free timetable for Class 10 and Class 11' },
     { label: 'Show fee defaulters', prompt: 'Show fee defaulters and total pending amount' },
     { label: 'Read admission forms', prompt: 'Read admission forms and extract data via OCR' },
     { label: 'Find absent teachers', prompt: 'Find today absent teachers and recommend substitute' },

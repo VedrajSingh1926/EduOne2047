@@ -29,7 +29,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
   onBulkMarkAttendance,
   onSendParentAlert
 }) => {
-  const [selectedClass, setSelectedClass] = useState('Grade 10-A');
+  const [selectedClass, setSelectedClass] = useState('Class 10-A');
   const [searchTerm, setSearchTerm] = useState('');
   const [alertSentMap, setAlertSentMap] = useState<Record<string, boolean>>({});
   const [isScanning, setIsScanning] = useState(false);
@@ -270,13 +270,13 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
             className="px-3 py-1.5 text-xs bg-slate-100/70 rounded-lg border border-slate-200 font-medium text-slate-800 focus:outline-none"
           >
             <option value="ALL">All Classes</option>
-            <option value="Grade 9-A">Grade 9-A</option>
-            <option value="Grade 10-A">Grade 10-A</option>
-            <option value="Grade 10-B">Grade 10-B</option>
-            <option value="Grade 11-A">Grade 11-A</option>
-            <option value="Grade 11-B">Grade 11-B</option>
-            <option value="Grade 12-A">Grade 12-A</option>
-            <option value="Grade 12-C">Grade 12-C</option>
+            <option value="Class 9-A">Class 9-A</option>
+            <option value="Class 10-A">Class 10-A</option>
+            <option value="Class 10-B">Class 10-B</option>
+            <option value="Class 11-A">Class 11-A</option>
+            <option value="Class 11-B">Class 11-B</option>
+            <option value="Class 12-A">Class 12-A</option>
+            <option value="Class 12-C">Class 12-C</option>
           </select>
         </div>
 

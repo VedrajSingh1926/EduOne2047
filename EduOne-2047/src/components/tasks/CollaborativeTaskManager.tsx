@@ -375,7 +375,7 @@ export const CollaborativeTaskManager: React.FC<CollaborativeTaskManagerProps> =
                   value={taskTitle}
                   onChange={(e) => setTaskTitle(e.target.value)}
                   className="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
-                  placeholder="e.g. Confirm fee receipt adjustment for Grade 8"
+                  placeholder="e.g. Confirm fee receipt adjustment for Class 8"
                 />
               </div>
 

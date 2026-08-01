@@ -35,7 +35,7 @@ export const TeacherManagement: React.FC<TeacherManagementProps> = ({
 
   const handleConfirmSubstitute = () => {
     if (selectedTeacherForSub && selectedSub) {
-      onAssignSubstitute(selectedTeacherForSub.id, selectedSub, `Grade 10-A Period 2 ${selectedTeacherForSub.subject}`);
+      onAssignSubstitute(selectedTeacherForSub.id, selectedSub, `Class 10-A Period 2 ${selectedTeacherForSub.subject}`);
       setSelectedTeacherForSub(null);
       setSelectedSub('');
     }

@@ -316,7 +316,7 @@ export const StaffHelpModal: React.FC<StaffHelpModalProps> = ({
                     <span>🎙️ Voice Microphone Command</span>
                   </div>
                   <p className="text-slate-600 leading-relaxed">
-                    Look for the microphone button next to the search bar at the top or in the AI Command Center. Click it and speak out loud (e.g., <em>"Show me Grade 10 fee defaulters"</em> or <em>"Find math substitute"</em>).
+                    Look for the microphone button next to the search bar at the top or in the AI Command Center. Click it and speak out loud (e.g., <em>"Show me Class 10 fee defaulters"</em> or <em>"Find math substitute"</em>).
                   </p>
                 </div>
 
