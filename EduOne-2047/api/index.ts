@@ -10,7 +10,9 @@ import crypto from "crypto";
 const app = express();
 const PORT = Number(process.env.PORT) || 5174;
 
-app.use(express.json({ limit: "10mb" }));
+if (!process.env.VERCEL) {
+  app.use(express.json({ limit: "10mb" }));
+}
 
 // Initialize Gemini Client
 const apiKey = process.env.GEMINI_API_KEY || "";
