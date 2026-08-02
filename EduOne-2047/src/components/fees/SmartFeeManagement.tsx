@@ -8,6 +8,7 @@ import {
   Search
 } from 'lucide-react';
 import { FeeRecord, Student } from '../../types';
+import toast from 'react-hot-toast';
 
 interface SmartFeeManagementProps {
   feeRecords: FeeRecord[];
@@ -41,13 +42,45 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
     return matchesSearch && matchesStatus;
   });
 
-  const handleSimulateOCRScan = () => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleRealOCRScan = async () => {
+    if (!selectedFile) {
+      toast.error('Please select an image file first.');
+      return;
+    }
     setIsScanning(true);
-    setTimeout(() => {
+    try {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const base64data = reader.result as string;
+        const res = await fetch('/api/documents/extract', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            imageBase64: base64data,
+            mimeType: selectedFile.type,
+            documentType: 'FEE_RECEIPT',
+            fileName: selectedFile.name
+          })
+        });
+        const data = await res.json();
+        
+        if (data.error) {
+          toast.error(`OCR Error: ${data.error}`);
+        } else {
+          toast.success('Receipt scanned successfully!');
+          onUploadReceipt(selectedFile.name, data.extractedFields?.studentName || 'Unknown Student');
+          setShowReceiptModal(false);
+          setSelectedFile(null);
+        }
+        setIsScanning(false);
+      };
+      reader.readAsDataURL(selectedFile);
+    } catch (e) {
       setIsScanning(false);
-      onUploadReceipt('UPI_Receipt_Ananya_July.png', 'Ananya Verma');
-      setShowReceiptModal(false);
-    }, 1200);
+      toast.error('Failed to process image');
+    }
   };
 
   const handleSimulateBankRecon = () => {
@@ -278,17 +311,27 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
               <p className="text-xs text-slate-400">Extracts UTR, bank name, and payment amount</p>
             </div>
 
-            <div className="p-6 border border-dashed border-slate-300 rounded-xl text-center space-y-2 cursor-pointer bg-slate-50">
+            <div className="p-6 border border-dashed border-slate-300 rounded-xl text-center space-y-2 cursor-pointer bg-slate-50 relative hover:bg-slate-100 transition-colors">
+              <input 
+                type="file" 
+                accept="image/*" 
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files[0]) {
+                    setSelectedFile(e.target.files[0]);
+                  }
+                }}
+              />
               <Upload className="w-6 h-6 text-slate-400 mx-auto" />
               <div className="text-xs font-medium text-slate-700">
-                Drop receipt scan or click to browse
+                {selectedFile ? selectedFile.name : "Drop receipt scan or click to browse"}
               </div>
             </div>
 
             <button
-              onClick={handleSimulateOCRScan}
-              disabled={isScanning}
-              className="w-full py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs flex items-center justify-center gap-2"
+              onClick={handleRealOCRScan}
+              disabled={isScanning || !selectedFile}
+              className="w-full py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-medium text-xs flex items-center justify-center gap-2"
             >
               {isScanning ? (
                 <>
@@ -296,7 +339,7 @@ export const SmartFeeManagement: React.FC<SmartFeeManagementProps> = ({
                   <span>Scanning Receipt...</span>
                 </>
               ) : (
-                <span>Simulate AI Receipt Extraction</span>
+                <span>AI Receipt Extraction</span>
               )}
             </button>
           </div>

@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Sparkles,
   RefreshCw
 } from 'lucide-react';
+import { ref, get } from 'firebase/database';
+import { db } from '../../lib/firebase';
 import { TimetableSlot, Teacher } from '../../types';
 
 interface AITimetableProps {
@@ -19,8 +21,32 @@ export const AITimetable: React.FC<AITimetableProps> = ({
   onAssignSubstitute
 }) => {
   const [selectedDay, setSelectedDay] = useState<'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday'>('Monday');
-  const [selectedClass, setSelectedClass] = useState('Class 10-A');
+  const [selectedClass, setSelectedClass] = useState('Grade 10-A');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [availableClasses, setAvailableClasses] = useState<string[]>(['Grade 10-A']);
+
+  useEffect(() => {
+    const fetchGrades = async () => {
+      try {
+        const snapshot = await get(ref(db, 'settings/school/grades'));
+        if (snapshot.exists()) {
+          const grades = snapshot.val();
+          const classList: string[] = [];
+          grades.forEach((g: any) => {
+            const sections = g.sections.split(',');
+            sections.forEach((s: string) => {
+              classList.push(`${g.name}-${s.trim()}`);
+            });
+          });
+          setAvailableClasses(classList);
+          if (classList.length > 0) setSelectedClass(classList[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching grades:", error);
+      }
+    };
+    fetchGrades();
+  }, []);
 
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] as const;
   const periods = [1, 2, 3, 4, 5];
@@ -96,9 +122,9 @@ export const AITimetable: React.FC<AITimetableProps> = ({
           className="px-3 py-1.5 text-xs bg-slate-100/70 rounded-lg border border-slate-200 text-slate-700 font-medium focus:outline-none"
         >
           <option value="ALL">All Classes</option>
-          <option value="Class 10-A">Class 10-A</option>
-          <option value="Class 10-B">Class 10-B</option>
-          <option value="Class 11-A">Class 11-A</option>
+          {availableClasses.map((c, idx) => (
+            <option key={idx} value={c}>{c}</option>
+          ))}
         </select>
       </div>
 

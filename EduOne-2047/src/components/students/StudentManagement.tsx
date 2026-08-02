@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Users,
   Search,
@@ -9,6 +9,8 @@ import {
   ShieldAlert,
   X
 } from 'lucide-react';
+import { ref, get } from 'firebase/database';
+import { db } from '../../lib/firebase';
 import { Student, FeeRecord, AttendanceRecord, DocumentItem } from '../../types';
 
 interface StudentManagementProps {
@@ -36,13 +38,30 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [reassignStudent, setReassignStudent] = useState<Student | null>(null);
-  const [reassignData, setReassignData] = useState({ grade: 'Class 10', section: 'A' });
+  const [reassignData, setReassignData] = useState({ grade: 'Grade 10', section: 'A' });
+  const [availableGrades, setAvailableGrades] = useState<{name: string, sections: string}[]>([
+    { name: 'Grade 10', sections: 'A, B, C' }
+  ]);
+
+  useEffect(() => {
+    const fetchGrades = async () => {
+      try {
+        const snapshot = await get(ref(db, 'settings/school/grades'));
+        if (snapshot.exists()) {
+          setAvailableGrades(snapshot.val());
+        }
+      } catch (error) {
+        console.error("Error fetching grades:", error);
+      }
+    };
+    fetchGrades();
+  }, []);
 
   // Form State
   const [formData, setFormData] = useState({
     name: '',
     rollNo: '',
-    grade: 'Class 10',
+    grade: 'Grade 10',
     section: 'A',
     parentName: '',
     parentPhone: '',
@@ -92,8 +111,8 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
     setFormData({
       name: '',
       rollNo: '',
-      grade: 'Class 10',
-      section: 'A',
+      grade: availableGrades[0]?.name || 'Grade 10',
+      section: availableGrades[0]?.sections.split(',')[0].trim() || 'A',
       parentName: '',
       parentPhone: '',
       parentEmail: '',
@@ -150,10 +169,9 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
             className="px-3 py-1.5 text-xs bg-slate-100/70 rounded-lg border border-slate-200 text-slate-700 focus:outline-none"
           >
             <option value="ALL">All Classes</option>
-            <option value="Class 9">Class 9</option>
-            <option value="Class 10">Class 10</option>
-            <option value="Class 11">Class 11</option>
-            <option value="Class 12">Class 12</option>
+            {availableGrades.map((g, idx) => (
+              <option key={idx} value={g.name}>{g.name}</option>
+            ))}
           </select>
 
           <select
@@ -488,13 +506,24 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                   <label className="block font-medium text-slate-700 mb-1">Grade</label>
                   <select
                     value={formData.grade}
-                    onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, grade: e.target.value, section: availableGrades.find(g => g.name === e.target.value)?.sections.split(',')[0].trim() || 'A' })}
                     className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200"
                   >
-                    <option value="Class 9">Class 9</option>
-                    <option value="Class 10">Class 10</option>
-                    <option value="Class 11">Class 11</option>
-                    <option value="Class 12">Class 12</option>
+                    {availableGrades.map((g, idx) => (
+                      <option key={idx} value={g.name}>{g.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block font-medium text-slate-700 mb-1">Section</label>
+                  <select
+                    value={formData.section}
+                    onChange={(e) => setFormData({ ...formData, section: e.target.value })}
+                    className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200"
+                  >
+                    {(availableGrades.find(g => g.name === formData.grade)?.sections || 'A,B,C').split(',').map((sec, idx) => (
+                      <option key={idx} value={sec.trim()}>{sec.trim()}</option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -573,13 +602,12 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                   <label className="block font-medium text-slate-700 mb-1">Grade</label>
                   <select
                     value={reassignData.grade}
-                    onChange={(e) => setReassignData({ ...reassignData, grade: e.target.value })}
+                    onChange={(e) => setReassignData({ ...reassignData, grade: e.target.value, section: availableGrades.find(g => g.name === e.target.value)?.sections.split(',')[0].trim() || 'A' })}
                     className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200"
                   >
-                    <option value="Class 9">Class 9</option>
-                    <option value="Class 10">Class 10</option>
-                    <option value="Class 11">Class 11</option>
-                    <option value="Class 12">Class 12</option>
+                    {availableGrades.map((g, idx) => (
+                      <option key={idx} value={g.name}>{g.name}</option>
+                    ))}
                   </select>
                 </div>
                 <div>
@@ -589,9 +617,9 @@ export const StudentManagement: React.FC<StudentManagementProps> = ({
                     onChange={(e) => setReassignData({ ...reassignData, section: e.target.value })}
                     className="w-full px-3 py-2 rounded-lg bg-slate-50 border border-slate-200"
                   >
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
+                    {(availableGrades.find(g => g.name === reassignData.grade)?.sections || 'A,B,C').split(',').map((sec, idx) => (
+                      <option key={idx} value={sec.trim()}>{sec.trim()}</option>
+                    ))}
                   </select>
                 </div>
               </div>

@@ -475,8 +475,12 @@ app.post("/api/timetable/generate", (req, res) => {
   });
 
   const assignments: any[] = [];
+  let iterations = 0;
+  const MAX_ITERATIONS = 100000;
 
   function solve(index: number): boolean {
+    iterations++;
+    if (iterations > MAX_ITERATIONS) return false;
     if (index === lessons.length) return true;
 
     const lesson = lessons[index];

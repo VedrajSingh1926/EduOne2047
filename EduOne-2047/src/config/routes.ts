@@ -10,7 +10,8 @@ import {
   AlertTriangle,
   BarChart3,
   CheckSquare,
-  Mail
+  Mail,
+  Settings
 } from 'lucide-react';
 import { PERMISSIONS, Permission } from './rbac';
 
@@ -116,7 +117,13 @@ export const APP_ROUTES: AppRoute[] = [
     id: 'admin-panel',
     title: 'Super Admin Panel',
     icon: Users,
-    permission: PERMISSIONS.USERS_MANAGE_ALL,
+    section: 'comms'
+  },
+  {
+    id: 'school-settings',
+    title: 'School Settings',
+    icon: Settings,
+    permission: PERMISSIONS.USERS_MANAGE_ALL, // Restricted to Super Admin / Principal
     section: 'comms'
   }
 ];

@@ -12,6 +12,8 @@ import {
   UserCheck
 } from 'lucide-react';
 import { Html5Qrcode } from 'html5-qrcode';
+import { ref, get } from 'firebase/database';
+import { db } from '../../lib/firebase';
 import { Student, AttendanceRecord } from '../../types';
 
 interface SmartAttendanceProps {
@@ -29,11 +31,35 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
   onBulkMarkAttendance,
   onSendParentAlert
 }) => {
-  const [selectedClass, setSelectedClass] = useState('Class 10-A');
+  const [selectedClass, setSelectedClass] = useState('Grade 10-A');
   const [searchTerm, setSearchTerm] = useState('');
   const [alertSentMap, setAlertSentMap] = useState<Record<string, boolean>>({});
   const [isScanning, setIsScanning] = useState(false);
   const [recentScans, setRecentScans] = useState<{ id: string, name: string, time: string, gate: string }[]>([]);
+  const [availableClasses, setAvailableClasses] = useState<string[]>(['Grade 10-A']);
+
+  useEffect(() => {
+    const fetchGrades = async () => {
+      try {
+        const snapshot = await get(ref(db, 'settings/school/grades'));
+        if (snapshot.exists()) {
+          const grades = snapshot.val();
+          const classList: string[] = [];
+          grades.forEach((g: any) => {
+            const sections = g.sections.split(',');
+            sections.forEach((s: string) => {
+              classList.push(`${g.name}-${s.trim()}`);
+            });
+          });
+          setAvailableClasses(classList);
+          if (classList.length > 0) setSelectedClass(classList[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching grades:", error);
+      }
+    };
+    fetchGrades();
+  }, []);
 
   // Real CV Auto-Attendance using html5-qrcode natively
   useEffect(() => {
@@ -270,13 +296,9 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
             className="px-3 py-1.5 text-xs bg-slate-100/70 rounded-lg border border-slate-200 font-medium text-slate-800 focus:outline-none"
           >
             <option value="ALL">All Classes</option>
-            <option value="Class 9-A">Class 9-A</option>
-            <option value="Class 10-A">Class 10-A</option>
-            <option value="Class 10-B">Class 10-B</option>
-            <option value="Class 11-A">Class 11-A</option>
-            <option value="Class 11-B">Class 11-B</option>
-            <option value="Class 12-A">Class 12-A</option>
-            <option value="Class 12-C">Class 12-C</option>
+            {availableClasses.map((c, idx) => (
+              <option key={idx} value={c}>{c}</option>
+            ))}
           </select>
         </div>
 

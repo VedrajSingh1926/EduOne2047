@@ -21,6 +21,7 @@ import { GmailCommsCenter } from './components/gmail/GmailCommsCenter';
 import { LoginForm } from './components/auth/LoginForm';
 import { ForcePasswordReset } from './components/auth/ForcePasswordReset';
 import { SuperAdminDashboard } from './components/admin/SuperAdminDashboard';
+import { SchoolAdminSettings } from './components/admin/SchoolAdminSettings';
 import { useFirebaseState } from './hooks/useFirebaseState';
 import { ref, set, update, push, get } from 'firebase/database';
 import { db } from './lib/firebase';
@@ -617,6 +618,10 @@ function CoreApplication() {
         <main className="flex-1 overflow-y-auto bg-slate-50/50 p-4 md:p-6 lg:p-8 relative">
           {activeModule === 'admin-panel' && canAccess(currentUser, PERMISSIONS.USERS_MANAGE_ALL) && (
             <SuperAdminDashboard />
+          )}
+
+          {activeModule === 'school-settings' && canAccess(currentUser, PERMISSIONS.USERS_MANAGE_ALL) && (
+            <SchoolAdminSettings />
           )}
 
           {activeModule === 'dashboard' && (
