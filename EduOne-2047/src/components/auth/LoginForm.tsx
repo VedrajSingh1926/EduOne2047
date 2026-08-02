@@ -80,9 +80,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
       const data = await response.json();
       
       if (response.ok && data.success) {
-        // Save session token and user in localStorage for persistence
+        // Save session token for API usage (e.g. Super Admin dashboard)
+        // Purposely NOT saving currentUser in localStorage to force re-login on page refresh.
         localStorage.setItem('sessionToken', data.token);
-        localStorage.setItem('currentUser', JSON.stringify(data.user));
         
         onLogin(data.user);
       } else {

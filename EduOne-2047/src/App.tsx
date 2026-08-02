@@ -46,13 +46,12 @@ function CoreApplication() {
   const [activeModule, setActiveModule] = useState<string>('dashboard');
 
   // Authentication State
-  const savedUserString = localStorage.getItem('currentUser');
-  const savedUser = savedUserString ? JSON.parse(savedUserString) : null;
-  const initialIsAuthenticated = !!savedUser;
+  // As requested, we no longer persist sessions across refresh.
+  const initialIsAuthenticated = false;
   
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(initialIsAuthenticated);
-  const [currentRole, setCurrentRole] = useState<Role>(savedUser ? savedUser.role : 'Super Admin');
-  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(savedUser);
+  const [currentRole, setCurrentRole] = useState<Role>('Super Admin');
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
 
   // Login Prefill State
   const [loginPrefillId, setLoginPrefillId] = useState<string | undefined>(undefined);
