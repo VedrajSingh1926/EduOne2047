@@ -790,7 +790,7 @@ export default function App() {
       />
       <Routes>
         <Route path="/" element={<LandingPage onOpenLogin={() => navigate('/app')} />} />
-        <Route path="/app" element={<CoreApplication />} />
+        <Route path="/app/*" element={<CoreApplication />} />
         <Route path="/init-db" element={<InitDBRoute />} />
       </Routes>
     </>

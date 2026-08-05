@@ -77,7 +77,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
         body: JSON.stringify({ staffId: staffId.trim(), password })
       });
       
-      const data = await response.json();
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonErr) {
+        throw new Error('Invalid response from server (possibly a 500/404 HTML page).');
+      }
       
       if (response.ok && data.success) {
         // Save session token for API usage (e.g. Super Admin dashboard)
@@ -86,11 +91,11 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, prefillId }) => {
         
         onLogin(data.user);
       } else {
-        setError(data.error || 'Invalid credentials.');
+        setError(data?.error || 'Invalid credentials.');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setError('Server connection error.');
+      setError(err.message || 'Server connection error.');
     } finally {
       setIsAuthenticating(false);
     }
