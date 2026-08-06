@@ -14151,6 +14151,15 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Geography"
     ],
+    "homeroomClass": "Class 1-A",
+    "teachingClasses": [
+      "Class 1-A",
+      "Class 2-A"
+    ],
+    "status": "PRESENT",
+    "availability": "Available",
+    "lecturesPerWeek": 16,
+    "maxLecturesPerDay": 4,
     "phone": "+91 9878263553",
     "email": "sneha.deshmukh@eduone.org"
   },
@@ -14161,7 +14170,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Computer Science"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 12-A",
       "Class 3-C"
     ],
@@ -14179,7 +14188,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Physical Education"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 10-A",
       "Class 2-A",
       "Class 6-A"
@@ -14198,7 +14207,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Arts"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 8-C",
       "Class 4-A",
       "Class 12-C"
@@ -14217,7 +14226,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Mathematics"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 2-A",
       "Class 9-B",
       "Class 12-C"
@@ -14236,7 +14245,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Physics"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 11-A",
       "Class 4-B",
       "Class 12-C"
@@ -14255,7 +14264,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Chemistry"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 3-B",
       "Class 4-B",
       "Class 9-B"
@@ -14274,7 +14283,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Biology"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 4-C",
       "Class 7-A",
       "Class 11-B"
@@ -14293,7 +14302,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "English"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 1-A",
       "Class 11-C",
       "Class 6-C"
@@ -14312,7 +14321,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "History"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 7-A",
       "Class 8-C",
       "Class 9-B"
@@ -14331,7 +14340,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Geography"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 8-C",
       "Class 5-B",
       "Class 5-C"
@@ -14350,7 +14359,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Computer Science"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 6-B",
       "Class 2-B",
       "Class 1-C"
@@ -14369,7 +14378,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Physical Education"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 11-A",
       "Class 2-C"
     ],
@@ -14387,7 +14396,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Arts"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 6-A",
       "Class 11-A",
       "Class 1-A"
@@ -14406,7 +14415,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Mathematics"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 1-B",
       "Class 8-B",
       "Class 12-A"
@@ -14425,7 +14434,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Physics"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 9-B",
       "Class 10-B"
     ],
@@ -14443,7 +14452,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Chemistry"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 9-B",
       "Class 10-B",
       "Class 11-C"
@@ -14462,7 +14471,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Biology"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 12-C",
       "Class 5-B",
       "Class 10-A"
@@ -14481,7 +14490,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "English"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 7-A",
       "Class 5-A",
       "Class 6-A"
@@ -14500,7 +14509,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "History"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 7-B",
       "Class 11-B",
       "Class 2-B"
@@ -14519,7 +14528,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Geography"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 6-C",
       "Class 5-B",
       "Class 8-B"
@@ -14538,7 +14547,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Computer Science"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 4-B",
       "Class 11-C",
       "Class 4-C"
@@ -14557,7 +14566,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Physical Education"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 2-B",
       "Class 4-A",
       "Class 11-B"
@@ -14576,7 +14585,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Arts"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 11-A",
       "Class 2-A",
       "Class 10-C"
@@ -14595,7 +14604,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Mathematics"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 10-B",
       "Class 3-B",
       "Class 1-C"
@@ -14614,7 +14623,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Physics"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 10-A",
       "Class 2-B"
     ],
@@ -14632,7 +14641,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Chemistry"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 11-A",
       "Class 6-B",
       "Class 10-A"
@@ -14651,7 +14660,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Biology"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 3-A",
       "Class 9-A",
       "Class 6-B"
@@ -14670,7 +14679,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "English"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 1-A",
       "Class 2-C"
     ],
@@ -14688,7 +14697,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "History"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 5-B",
       "Class 8-B",
       "Class 9-A"
@@ -14707,7 +14716,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Geography"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 4-C",
       "Class 12-A",
       "Class 1-A"
@@ -14726,7 +14735,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Computer Science"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 9-B",
       "Class 7-A",
       "Class 10-C"
@@ -14745,7 +14754,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Physical Education"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 5-B",
       "Class 7-C",
       "Class 7-A"
@@ -14764,7 +14773,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Arts"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 12-A",
       "Class 5-A",
       "Class 12-B"
@@ -14783,7 +14792,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Mathematics"
     ],
-    "gradeClasses": [
+    "teachingClasses": [
       "Class 10-B",
       "Class 1-B",
       "Class 9-B"
