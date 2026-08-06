@@ -61,50 +61,46 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
     fetchGrades();
   }, []);
 
+  const lastScannedRef = React.useRef({ id: '', time: 0 });
+
+  const handleScanSuccess = React.useCallback((decodedText: string) => {
+    const now = Date.now();
+    if (decodedText === lastScannedRef.current.id && now - lastScannedRef.current.time < 3000) {
+      return;
+    }
+
+    lastScannedRef.current = { id: decodedText, time: now };
+
+    const student = students.find(s => s.id === decodedText);
+    const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+    if (student) {
+      setRecentScans(prev => [
+        { id: student.id, name: student.name, time: timeString, gate: 'Manual QR Scan' },
+        ...prev
+      ].slice(0, 10));
+      onMarkAttendance(student.id, 'PRESENT');
+    } else {
+      setRecentScans(prev => [
+        { id: decodedText, name: 'Unknown / Staff', time: timeString, gate: 'Manual QR Scan' },
+        ...prev
+      ].slice(0, 10));
+    }
+    
+    setIsScanning(false);
+  }, [students, onMarkAttendance]);
+
   // Real CV Auto-Attendance using html5-qrcode natively
   useEffect(() => {
     let html5QrCode: Html5Qrcode | null = null;
-    let lastScannedId = '';
-    let lastScanTime = 0;
 
     if (isScanning) {
       html5QrCode = new Html5Qrcode("qr-reader");
-      // Remove qrbox constraint so it scans the whole frame, improving detection
       html5QrCode.start(
         { facingMode: "environment" },
         { fps: 10 },
-        (decodedText) => {
-          const now = Date.now();
-          // Debounce same scan by 3 seconds
-          if (decodedText === lastScannedId && now - lastScanTime < 3000) {
-            return;
-          }
-
-          lastScannedId = decodedText;
-          lastScanTime = now;
-
-          const student = students.find(s => s.id === decodedText);
-          const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-          if (student) {
-            setRecentScans(prev => [
-              { id: student.id, name: student.name, time: timeString, gate: 'Manual QR Scan' },
-              ...prev
-            ].slice(0, 10));
-            onMarkAttendance(student.id, 'PRESENT');
-          } else {
-            setRecentScans(prev => [
-              { id: decodedText, name: 'Unknown / Staff', time: timeString, gate: 'Manual QR Scan' },
-              ...prev
-            ].slice(0, 10));
-          }
-          
-          // Automatically stop scanning after a successful scan!
-          setIsScanning(false);
-        },
-        (error) => {
-          // Ignore scanning errors (occurs constantly when no QR code is in frame)
-        }
+        handleScanSuccess,
+        (error) => {} // Ignore continuous scanning errors
       ).catch(err => {
         console.error("Failed to start QR scanner natively", err);
       });
@@ -115,7 +111,10 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
         html5QrCode.stop().then(() => html5QrCode?.clear()).catch(console.error);
       }
     };
-  }, [isScanning, students, onMarkAttendance]);
+  }, [isScanning, handleScanSuccess]);
+
+  const [mockId, setMockId] = useState('');
+
 
   const filteredStudents = students.filter((s) => {
     const matchesClass = `${s.grade}-${s.section}` === selectedClass || selectedClass === 'ALL';
@@ -230,6 +229,35 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
                    <div className="text-sm font-semibold text-slate-700 mb-1">Scanner Status</div>
                    <div className="text-lg font-bold text-emerald-600">Ready <span className="text-sm font-medium text-slate-500">Device Camera</span></div>
+                 </div>
+
+                 {/* Mock Entry Form */}
+                 <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
+                   <div className="text-sm font-semibold text-slate-700 mb-2">Mock QR Entry</div>
+                   <form 
+                     onSubmit={(e) => {
+                       e.preventDefault();
+                       if (mockId.trim()) {
+                         handleScanSuccess(mockId.trim());
+                         setMockId('');
+                       }
+                     }}
+                     className="flex gap-2"
+                   >
+                     <input
+                       type="text"
+                       value={mockId}
+                       onChange={(e) => setMockId(e.target.value)}
+                       placeholder="e.g. STU-1820"
+                       className="flex-1 px-3 py-1.5 text-sm bg-white rounded-lg border border-slate-200 text-slate-900 focus:outline-none"
+                     />
+                     <button
+                       type="submit"
+                       className="px-3 py-1.5 bg-emerald-600 text-white text-sm font-medium rounded-lg hover:bg-emerald-700"
+                     >
+                       Scan
+                     </button>
+                   </form>
                  </div>
                </div>
              </div>
