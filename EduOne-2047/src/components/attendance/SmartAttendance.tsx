@@ -97,7 +97,7 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
     if (isScanning) {
       html5QrCode = new Html5Qrcode("qr-reader");
       html5QrCode.start(
-        { facingMode: "environment" },
+        { facingMode: "user" },
         { fps: 10 },
         handleScanSuccess,
         (error) => {} // Ignore continuous scanning errors
@@ -396,26 +396,47 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
                     </td>
 
                     <td className="p-3.5">
-                      <div className="flex items-center gap-1">
-                        <button
-                          onClick={() => onMarkAttendance(s.id, 'PRESENT')}
-                          className="px-2 py-1 rounded bg-slate-100 text-slate-800 text-xs font-medium interaction-btn-secondary border border-transparent"
-                        >
-                          Present
-                        </button>
-                        <button
-                          onClick={() => onMarkAttendance(s.id, 'ABSENT')}
-                          className="px-2 py-1 rounded bg-slate-100 text-slate-800 text-xs font-medium interaction-btn-secondary border border-transparent"
-                        >
-                          Absent
-                        </button>
-                        <button
-                          onClick={() => onMarkAttendance(s.id, 'LATE')}
-                          className="px-2 py-1 rounded bg-slate-100 text-slate-800 text-xs font-medium interaction-btn-secondary border border-transparent"
-                        >
-                          Late
-                        </button>
-                      </div>
+                      {(() => {
+                        const todayString = new Date().toISOString().split('T')[0];
+                        const todayRecord = attendanceRecords.find(r => r.studentId === s.id && r.date === todayString);
+                        
+                        if (todayRecord) {
+                          return (
+                            <div className="flex items-center gap-1.5">
+                              <span className={`px-2 py-1 rounded text-xs font-semibold ${
+                                todayRecord.status === 'PRESENT' ? 'bg-emerald-100 text-emerald-800' :
+                                todayRecord.status === 'ABSENT' ? 'bg-rose-100 text-rose-800' :
+                                'bg-amber-100 text-amber-800'
+                              }`}>
+                                {todayRecord.status}
+                              </span>
+                            </div>
+                          );
+                        }
+
+                        return (
+                          <div className="flex items-center gap-1">
+                            <button
+                              onClick={() => onMarkAttendance(s.id, 'PRESENT')}
+                              className="px-2 py-1 rounded bg-slate-100 text-slate-800 text-xs font-medium interaction-btn-secondary border border-transparent"
+                            >
+                              Present
+                            </button>
+                            <button
+                              onClick={() => onMarkAttendance(s.id, 'ABSENT')}
+                              className="px-2 py-1 rounded bg-slate-100 text-slate-800 text-xs font-medium interaction-btn-secondary border border-transparent"
+                            >
+                              Absent
+                            </button>
+                            <button
+                              onClick={() => onMarkAttendance(s.id, 'LATE')}
+                              className="px-2 py-1 rounded bg-slate-100 text-slate-800 text-xs font-medium interaction-btn-secondary border border-transparent"
+                            >
+                              Late
+                            </button>
+                          </div>
+                        );
+                      })()}
                     </td>
 
                     <td className="p-3.5 text-right pr-4">
