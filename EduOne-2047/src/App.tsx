@@ -726,6 +726,7 @@ function CoreApplication() {
               teachers={teachers}
               onGenerateTimetable={handleGenerateTimetable}
               onAssignSubstitute={handleAssignSubstitute}
+              currentRole={currentRole}
             />
           )}
 

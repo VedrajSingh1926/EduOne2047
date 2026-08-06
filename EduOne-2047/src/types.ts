@@ -53,14 +53,15 @@ export interface Teacher {
   id: string;
   name: string;
   subject: string;
-  secondarySubjects: string[];
-  gradeClasses: string[];
-  status: 'PRESENT' | 'ABSENT' | 'ON_LEAVE';
-  availability: string;
+  secondarySubjects?: string[];
+  homeroomClass?: string;
+  teachingClasses?: string[];
+  status: 'PRESENT' | 'ABSENT' | 'ON_LEAVE' | 'SUBSTITUTE_REQUIRED';
+  availability: 'Available' | 'Busy' | 'In Class';
   lecturesPerWeek: number;
-  maxLecturesPerDay: number;
-  phone: string;
-  email: string;
+  maxLecturesPerDay?: number;
+  phone?: string;
+  email?: string;
   avatarUrl?: string;
 }
 

@@ -14051,7 +14051,8 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Physics"
     ],
-    "gradeClasses": [
+    "homeroomClass": "Class 12-B",
+    "teachingClasses": [
       "Class 2-B",
       "Class 2-C",
       "Class 12-B"
@@ -14070,7 +14071,8 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Chemistry"
     ],
-    "gradeClasses": [
+    "homeroomClass": "Class 11-A",
+    "teachingClasses": [
       "Class 2-C",
       "Class 11-A",
       "Class 7-C"
@@ -14089,7 +14091,8 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Biology"
     ],
-    "gradeClasses": [
+    "homeroomClass": "Class 10-B",
+    "teachingClasses": [
       "Class 7-C",
       "Class 10-B",
       "Class 11-A"
@@ -14098,7 +14101,7 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "availability": "Available",
     "lecturesPerWeek": 20,
     "maxLecturesPerDay": 5,
-    "phone": "+91 9834657832",
+    "phone": "+91 9846059954",
     "email": "sunita.nath@eduone.org"
   },
   {
@@ -14108,7 +14111,8 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "English"
     ],
-    "gradeClasses": [
+    "homeroomClass": "Class 8-A",
+    "teachingClasses": [
       "Class 8-A",
       "Class 4-B",
       "Class 8-C"
@@ -14127,7 +14131,8 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "History"
     ],
-    "gradeClasses": [
+    "homeroomClass": "Class 5-A",
+    "teachingClasses": [
       "Class 3-C",
       "Class 5-A",
       "Class 3-A"
@@ -14146,14 +14151,6 @@ export const INITIAL_TEACHERS: Teacher[] = [
     "secondarySubjects": [
       "Geography"
     ],
-    "gradeClasses": [
-      "Class 1-A",
-      "Class 6-A"
-    ],
-    "status": "PRESENT",
-    "availability": "Available",
-    "lecturesPerWeek": 22,
-    "maxLecturesPerDay": 5,
     "phone": "+91 9878263553",
     "email": "sneha.deshmukh@eduone.org"
   },

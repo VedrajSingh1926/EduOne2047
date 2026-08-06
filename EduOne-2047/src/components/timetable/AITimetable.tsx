@@ -5,25 +5,27 @@ import {
 } from 'lucide-react';
 import { ref, get } from 'firebase/database';
 import { db } from '../../lib/firebase';
-import { TimetableSlot, Teacher } from '../../types';
+import { Role } from '../../types';
 
 interface AITimetableProps {
   timetable: TimetableSlot[];
   teachers: Teacher[];
   onGenerateTimetable: () => void;
   onAssignSubstitute: (slotId: string) => void;
+  currentRole: Role;
 }
 
 export const AITimetable: React.FC<AITimetableProps> = ({
   timetable,
   teachers,
   onGenerateTimetable,
-  onAssignSubstitute
+  onAssignSubstitute,
+  currentRole
 }) => {
   const [selectedDay, setSelectedDay] = useState<'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday'>('Monday');
-  const [selectedClass, setSelectedClass] = useState('Grade 10-A');
+  const [selectedClass, setSelectedClass] = useState('ALL');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [availableClasses, setAvailableClasses] = useState<string[]>(['Grade 10-A']);
+  const [availableClasses, setAvailableClasses] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchGrades = async () => {
@@ -39,19 +41,33 @@ export const AITimetable: React.FC<AITimetableProps> = ({
             });
           });
           setAvailableClasses(classList);
-          if (classList.length > 0) setSelectedClass(classList[0]);
+          if (classList.length > 0) setSelectedClass('ALL');
+        } else {
+          // Fallback to classes derived from teachers
+          const fallbackClasses = new Set<string>();
+          teachers.forEach(t => {
+            (t.teachingClasses || []).forEach(c => fallbackClasses.add(c));
+          });
+          const classList = Array.from(fallbackClasses).sort();
+          setAvailableClasses(classList);
+          if (classList.length > 0) setSelectedClass('ALL');
         }
       } catch (error) {
         console.error("Error fetching grades:", error);
       }
     };
     fetchGrades();
-  }, []);
+  }, [teachers]);
 
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'] as const;
   const periods = [1, 2, 3, 4, 5];
 
   const handleRunOptimizer = () => {
+    if (timetable.length > 0) {
+      if (!window.confirm("A timetable already exists. Are you sure you want to overwrite it and regenerate the entire schedule?")) {
+        return;
+      }
+    }
     setIsGenerating(true);
     setTimeout(() => {
       onGenerateTimetable();
@@ -79,23 +95,25 @@ export const AITimetable: React.FC<AITimetableProps> = ({
           </p>
         </div>
 
-        <button
-          onClick={handleRunOptimizer}
-          disabled={isGenerating}
-          className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs self-start sm:self-auto"
-        >
-          {isGenerating ? (
-            <>
-              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-              <span>Optimizing...</span>
-            </>
-          ) : (
-            <>
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Generate Timetable</span>
-            </>
-          )}
-        </button>
+        {(currentRole === 'Super Admin' || currentRole === 'Principal' || currentRole === 'Class Teacher') && (
+          <button
+            onClick={handleRunOptimizer}
+            disabled={isGenerating}
+            className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium transition-all flex items-center gap-1.5 shadow-2xs self-start sm:self-auto"
+          >
+            {isGenerating ? (
+              <>
+                <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                <span>Optimizing...</span>
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Generate Timetable</span>
+              </>
+            )}
+          </button>
+        )}
       </div>
 
       {/* Controls & Filter Bar */}

@@ -450,7 +450,7 @@ app.post("/api/timetable/generate", (req, res) => {
   const LECTURES_PER_CLASS_PER_WEEK = 4;
 
   teachers.forEach(t => {
-    (t.gradeClasses || []).forEach((c: string) => {
+    (t.teachingClasses || []).forEach((c: string) => {
       for (let i = 0; i < LECTURES_PER_CLASS_PER_WEEK; i++) {
         lessons.push({
           id: `L-${t.id}-${c}-${i}`,
