@@ -92,23 +92,43 @@ export const SmartAttendance: React.FC<SmartAttendanceProps> = ({
 
   // Real CV Auto-Attendance using html5-qrcode natively
   useEffect(() => {
-    let html5QrCode: Html5Qrcode | null = null;
+    if (!isScanning) return;
 
-    if (isScanning) {
-      html5QrCode = new Html5Qrcode("qr-reader");
-      html5QrCode.start(
-        { facingMode: "user" },
-        { fps: 10 },
-        handleScanSuccess,
-        (error) => {} // Ignore continuous scanning errors
-      ).catch(err => {
-        console.error("Failed to start QR scanner natively", err);
-      });
-    }
+    const html5QrCode = new Html5Qrcode("qr-reader");
+    let isComponentMounted = true;
+
+    html5QrCode.start(
+      { facingMode: "user" },
+      { 
+        fps: 10, 
+        qrbox: { width: 250, height: 250 },
+        aspectRatio: 1.0
+      },
+      (decodedText) => {
+        if (isComponentMounted) {
+          handleScanSuccess(decodedText);
+        }
+      },
+      (error) => {} // Ignore continuous scanning errors
+    ).catch(err => {
+      console.error("Failed to start QR scanner natively", err);
+    });
 
     return () => {
-      if (html5QrCode && html5QrCode.isScanning) {
-        html5QrCode.stop().then(() => html5QrCode?.clear()).catch(console.error);
+      isComponentMounted = false;
+      try {
+        if (html5QrCode.isScanning) {
+          html5QrCode.stop().then(() => html5QrCode.clear()).catch(console.error);
+        } else {
+          // If it was still starting up when unmounted, aggressively stop it after a delay
+          setTimeout(() => {
+            if (html5QrCode.isScanning) {
+              html5QrCode.stop().then(() => html5QrCode.clear()).catch(console.error);
+            }
+          }, 2000);
+        }
+      } catch (e) {
+        console.error("Error cleaning up scanner", e);
       }
     };
   }, [isScanning, handleScanSuccess]);
