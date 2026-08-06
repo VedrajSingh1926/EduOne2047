@@ -67,6 +67,27 @@ export const APP_ROUTES: AppRoute[] = [
     permission: [PERMISSIONS.TIMETABLE_VIEW, PERMISSIONS.TIMETABLE_MANAGE],
     section: 'primary'
   },
+  {
+    id: 'exams',
+    title: 'Exams & Grading',
+    icon: GraduationCap,
+    permission: [PERMISSIONS.DASHBOARD_VIEW_FULL, PERMISSIONS.DASHBOARD_VIEW_SCOPED],
+    section: 'primary'
+  },
+  {
+    id: 'classes',
+    title: 'Classes & Subjects',
+    icon: Users,
+    permission: [PERMISSIONS.USERS_MANAGE_ALL],
+    section: 'primary'
+  },
+  {
+    id: 'notices',
+    title: 'Notice Board',
+    icon: Mail,
+    permission: [PERMISSIONS.DASHBOARD_VIEW_FULL, PERMISSIONS.DASHBOARD_VIEW_SCOPED],
+    section: 'primary'
+  },
 
   // Comms & AI Workflows
   {

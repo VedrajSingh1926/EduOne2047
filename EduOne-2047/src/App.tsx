@@ -22,6 +22,9 @@ import { LoginForm } from './components/auth/LoginForm';
 import { ForcePasswordReset } from './components/auth/ForcePasswordReset';
 import { SuperAdminDashboard } from './components/admin/SuperAdminDashboard';
 import { SchoolAdminSettings } from './components/admin/SchoolAdminSettings';
+import { ExamsManagement } from './components/exams/ExamsManagement';
+import { ClassesManagement } from './components/classes/ClassesManagement';
+import { NoticeBoard } from './components/notices/NoticeBoard';
 import { useFirebaseState } from './hooks/useFirebaseState';
 import { ref, set, update, push, get } from 'firebase/database';
 import { db } from './lib/firebase';
@@ -745,6 +748,18 @@ function CoreApplication() {
               onAddTask={handleAddTask}
               onUpdateTaskStatus={handleUpdateTaskStatus}
             />
+          )}
+
+          {activeModule === 'exams' && (
+            <ExamsManagement students={students} />
+          )}
+
+          {activeModule === 'classes' && (
+            <ClassesManagement teachers={Object.values(teachers)} />
+          )}
+
+          {activeModule === 'notices' && (
+            <NoticeBoard currentRole={currentRole} />
           )}
         </main>
       </div>
