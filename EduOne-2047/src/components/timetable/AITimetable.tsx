@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import { ref, get } from 'firebase/database';
 import { db } from '../../lib/firebase';
-import { Role } from '../../types';
+import { TimetableSlot, Teacher, Role } from '../../types';
 
 interface AITimetableProps {
   timetable: TimetableSlot[];
